@@ -1,0 +1,24 @@
+dsl Legio
+
+Artifact("rlp.footrix", "1.0.0-SNAPSHOT") protrix
+	Dsl("konos", "12.3.0") > Builder(generationPackage="box")
+	Imports
+		Test("junit", "junit", "4.13")
+		Compile("io.intino.alexandria", "core-framework", "2.2.0")
+		Compile("io.intino.alexandria", "logger4j", "1.0.1")
+		Compile("io.intino.alexandria", "ui-framework", "5.4.4")
+		Compile("rlp.footrix", "framework", "1.0.0-SNAPSHOT")
+		Web("rlp.footrix", "protrix-ui", "1.0.0-SNAPSHOT")
+
+	Package(ModulesAndLibrariesLinkedByManifest) as Runnable("rlp.footrix.protrix.box.Main")
+
+	Parameter("port")
+	Parameter("debug")
+
+RunConfiguration local
+	Argument("port", "9001")
+	Argument("debug", "false")
+
+RunConfiguration localDebug
+	Argument("port", "9001")
+	Argument("debug", "true")

@@ -1,0 +1,7 @@
+dsl Legio
+
+Artifact("rlp.footrix", "1.0.0-SNAPSHOT") framework
+	Imports
+		Compile("com.google.code.gson", "gson", "2.9.0")
+		Test("junit", "junit", "4.13.2")
+	Package(mode = ModulesAndLibrariesLinkedByManifest, attachDoc=true)
