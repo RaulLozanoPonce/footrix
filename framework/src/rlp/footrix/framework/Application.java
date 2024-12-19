@@ -5,6 +5,7 @@ import rlp.footrix.framework.events.EventConfiguration;
 import rlp.footrix.framework.managers.*;
 import rlp.footrix.framework.stores.MatchMemoryStore;
 import rlp.footrix.framework.types.definitions.MatchDefinition;
+import rlp.footrix.framework.var.Var;
 
 import java.time.Instant;
 import java.util.function.Function;
@@ -19,7 +20,8 @@ public class Application {
     private final TeamManager teamManager;
     private final PlayerManager playerManager;
     private final RulesManager rulesManager;
-    private final StatisticTables statisticTables;
+    private final StatisticTables statisticTables;  //TODO DESAPARECERÁ
+    private final Var var;
 
     private Function<MatchDefinition, MatchSimulator> matchSimulator;
 
@@ -36,6 +38,7 @@ public class Application {
         this.rulesManager = new RulesManager();
 
         this.statisticTables = new StatisticTables(this.playerManager, this.matchStore);
+        this.var = new Var();
 
         this.eventManager.add(configuration.initEvents());
         this.timeManager.set(configuration.initDate());
@@ -85,6 +88,10 @@ public class Application {
         return statisticTables;
     }
 
+    public Var var() {
+        return var;
+    }
+
     private EventConfiguration eventConfiguration() {
         return new EventConfiguration() {
             @Override
@@ -125,6 +132,11 @@ public class Application {
             @Override
             public TimeManager timeManager() {
                 return timeManager;
+            }
+
+            @Override
+            public Var var() {
+                return var;
             }
         };
     }

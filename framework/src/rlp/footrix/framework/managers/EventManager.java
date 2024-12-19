@@ -31,7 +31,7 @@ public class EventManager {
         this.events = futureEvents;
         eventsToExecute.forEach(e -> e.with(configuration));
         if (eventsToExecute.stream().allMatch(Event::preconditions)) {
-            eventsToExecute.forEach(Event::execute);
+            eventsToExecute.forEach(e -> e.setup().execute());
         } else {
             this.events.addAll(eventsToExecute);
         }

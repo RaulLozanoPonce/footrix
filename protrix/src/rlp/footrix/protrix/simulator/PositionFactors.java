@@ -199,17 +199,17 @@ public class PositionFactors {
     );
 
     private static Map<Position, Double> fatigueFactor = new HashMap<>() {{
-        put(Position.PT, 0.3);
-        put(Position.CT, 0.7);
-        put(Position.CAR, 1.225);
-        put(Position.LAT, 1.15);
-        put(Position.CCD, 0.925);
-        put(Position.CC, 1.0);
-        put(Position.MP, 1.0);
-        put(Position.VOL, 1.075);
-        put(Position.EXT, 1.3);
-        put(Position.SS, 1.15);
-        put(Position.DL, 1.0);
+        put(Position.PT, 0.417);
+        put(Position.CT, 0.583);
+        put(Position.CAR, 0.917);
+        put(Position.LAT, 1.0);
+        put(Position.CCD, 0.833);
+        put(Position.CC, 0.875);
+        put(Position.MP, 0.75);
+        put(Position.VOL, 0.958);
+        put(Position.EXT, 0.917);
+        put(Position.SS, 0.75);
+        put(Position.DL, 0.708);
     }};
 
     private static Map<Integer, Double> substitutionPercent = new HashMap<>() {{

@@ -25,4 +25,8 @@ public abstract class Event {
     public boolean preconditions() {
         return true;
     }
+
+    public Event setup() {
+        return this;
+    }
 }

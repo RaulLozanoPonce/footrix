@@ -47,7 +47,6 @@ public class ProtrixMatchSimulator implements MatchSimulator {
             simulateSubMinute(i);
             simulateSubMinute(i);
             state.addMinutes();
-            state.addFatigue();
             boolean areSubstitutions = handleSubstitutions(i);
             if (areSubstitutions) state.init(state.teamWithPossession(), state.playerWithPossession());
         }
@@ -56,6 +55,7 @@ public class ProtrixMatchSimulator implements MatchSimulator {
     private void simulateSubMinute(int minute) {
         state.events().addAll(eventsOf(minute));
         handleOuts(minute);
+        state.addFatigue();
     }
 
     private List<Match.MatchEvent> eventsOf(int minute) {

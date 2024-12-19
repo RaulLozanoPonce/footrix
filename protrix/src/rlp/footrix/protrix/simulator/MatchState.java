@@ -202,7 +202,7 @@ public class MatchState {
     }
 
     private double fatigueOf(Player player) {
-        return fatigueFactorOf(positionOf(player)) * ((-0.005 * (((ProtrixPlayer) player).stamina() - 1.0) / 98.0) + 0.01);
+        return fatigueFactorOf(positionOf(player)) * (((ProtrixPlayer) player).stamina() * (-0.01688) + 1.92839) / (90 * 3);    //TODO, ESTOS SON LOS FRAMES POR PARTIDO
     }
 
     private Match.PlayerStatistics playerStatisticsOf(String player) {

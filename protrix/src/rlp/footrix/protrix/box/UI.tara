@@ -1,9 +1,11 @@
 dsl konos
 
+use PlayerTrace
 use Theme
 
 Service protrixUi as UI(port = "{port}", title = "Protrix", favicon = "")
 	Resource("/") home as Page(appTemplate) Main
+	Resource("/player-trace/:playerId") playerTrace as Page(playerTraceTemplate)
 
 Template appTemplate as Relative(height=100%, width=100%)
 	Block(layout=Horizontal) as Relative(height=5%)

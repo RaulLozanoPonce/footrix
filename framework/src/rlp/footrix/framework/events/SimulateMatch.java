@@ -2,16 +2,21 @@ package rlp.footrix.framework.events;
 
 import rlp.footrix.framework.types.*;
 import rlp.footrix.framework.types.definitions.MatchDefinition;
+import rlp.footrix.framework.var.PlayerMatchPerformance;
+import rlp.footrix.framework.var.Revision;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static rlp.footrix.framework.helpers.LineupGenerator.playersLineup;
 
 public class SimulateMatch extends Event {
 
     private final MatchDefinition definition;
+    private Team local;
+    private Team visitant;
+    private List<Player> localPlayers;
+    private List<Player> visitantPlayers;
 
     public SimulateMatch(MatchDefinition definition) {
         super(definition.date());
@@ -19,28 +24,37 @@ public class SimulateMatch extends Event {
     }
 
     @Override
-    public void execute() {
-        Team local = configuration.teamManager().get(definition.local());
-        Team visitant = configuration.teamManager().get(definition.visitant());
-        List<Player> localPlayers = playersOf(local);
-        List<Player> visitantPlayers = playersOf(visitant);
-        PlayersLineup localPlayersLineup = playersLineup(local.lineup(), localPlayers);
-        PlayersLineup visitantPlayersLineup = playersLineup(visitant.lineup(), visitantPlayers);
-
-        Match match = configuration.matchSimulator(definition).simulate(localPlayersLineup, visitantPlayersLineup);
-        configuration.matchStore().save(match);
-        postMatch(match, localPlayers, visitantPlayers, local, visitant);
+    public Event setup() {
+        this.local = configuration.teamManager().get(definition.local());
+        this.visitant = configuration.teamManager().get(definition.visitant());
+        this.localPlayers = availablePlayersOf(local);
+        this.visitantPlayers = availablePlayersOf(visitant);
+        return this;
     }
 
-    private void postMatch(Match match, List<Player> localPlayers, List<Player> visitantPlayers, Team local, Team visitant) {
-        adjustMood(match, localPlayers, visitantPlayers, local, visitant);
-        reduceSanctions(allPlayersOf(local));
-        reduceSanctions(allPlayersOf(visitant));
+    @Override
+    public void execute() {
+        List<Revision> revisions = preMatchRevisions();
+        Match match = playMatch();
+        configuration.matchStore().save(match);
+        postMatch(match);
+        postMatchRevisions(revisions, match).forEach(r -> configuration.var().publish(r));
+    }
+
+    private Match playMatch() {
+        PlayersLineup localLineup = playersLineup(local.lineup(), localPlayers);
+        PlayersLineup visitantLineup = playersLineup(visitant.lineup(), visitantPlayers);
+        return configuration.matchSimulator(definition).simulate(localLineup, visitantLineup);
+    }
+
+    private void postMatch(Match match) {
+        adjustMood(match);
+        reduceSanctions();
         registerCardsAndSanctions(match);
         registerInjuries(match);
     }
 
-    private void adjustMood(Match match, List<Player> localPlayers, List<Player> visitantPlayers, Team local, Team visitant) {
+    private void adjustMood(Match match) {
         adjustMood(match, localPlayers, local);
         adjustMood(match, visitantPlayers, visitant);
     }
@@ -74,47 +88,60 @@ public class SimulateMatch extends Event {
         return 0.21 * difference;
     }
 
+    private void reduceSanctions() {
+        reduceSanctions(playersOf(local));
+        reduceSanctions(playersOf(visitant));
+    }
+
     private void reduceSanctions(List<Player> players) {
-        players.forEach(p -> p.sanction(-1, definition.competition()));
+        players.forEach(p -> p.sanction(- 1, definition.competition()));
     }
 
     private void registerCardsAndSanctions(Match match) {
-        Map<String, String> players = new HashMap<>();
+        Map<String, String> teams = new HashMap<>();
         Map<String, Integer> yellowCards = new HashMap<>();
         Map<String, Integer> expulsions = new HashMap<>();
 
         for (Match.MatchEvent event : match.events()) {
-            if (event.type() == Match.MatchEvent.Type.YellowCard) {
-                players.put(event.who(), event.team());
-                yellowCards.putIfAbsent(event.who(), 0);
-                yellowCards.put(event.who(), yellowCards.get(event.who()) + 1);
-            } else if (event.type() == Match.MatchEvent.Type.Expulsion) {
-                players.put(event.who(), event.team());
-                expulsions.putIfAbsent(event.who(), 0);
-                expulsions.put(event.who(), expulsions.get(event.who()) + 1);
-            }
+            fill(event, teams, yellowCards, expulsions);
         }
 
         //TODO TENGO QUE PONER AQUI EL REGISTRO DE SANCIONES
-        for (String playerId : players.keySet()) {
+        for (String playerId : teams.keySet()) {
             Player player = configuration.playerManager().get(playerId);
-            if (expulsions.containsKey(playerId)) {
-                player.yellowCards(-5, definition.competition());
-                if (yellowCards.containsKey(playerId) && yellowCards.get(playerId) >= 2) {
-                    configuration.teamManager().get(players.get(playerId)).registrationOf(playerId).addSanction(1);
-                    player.sanction(1, definition.competition());
-                } else {
-                    configuration.teamManager().get(players.get(playerId)).registrationOf(playerId).addSanction(3);
-                    player.sanction(3, definition.competition());
-                }
+            registerCardsAndSanctionsTo(player, teams.get(playerId), yellowCards, expulsions);
+        }
+    }
+
+    private void registerCardsAndSanctionsTo(Player player, String teamId, Map<String, Integer> yellowCards, Map<String, Integer> expulsions) {
+        if (expulsions.containsKey(player.definition().id())) {
+            player.yellowCards(-5, definition.competition());
+            if (yellowCards.containsKey(player.definition().id()) && yellowCards.get(player.definition().id()) >= 2) {
+                configuration.teamManager().get(teamId).registrationOf(player.definition().id()).addSanction(1);
+                player.sanction(1, definition.competition());
             } else {
-                player.yellowCards(yellowCards.get(playerId), definition.competition());
-                if (player.yellowCards(definition.competition()) >= 5) {
-                    player.yellowCards(-5, definition.competition());
-                    configuration.teamManager().get(players.get(playerId)).registrationOf(playerId).addSanction(1);
-                    player.sanction(1, definition.competition());
-                }
+                configuration.teamManager().get(teamId).registrationOf(player.definition().id()).addSanction(3);
+                player.sanction(3, definition.competition());
             }
+        } else {
+            player.yellowCards(yellowCards.get(player.definition().id()), definition.competition());
+            if (player.yellowCards(definition.competition()) >= 5) {
+                player.yellowCards(-5, definition.competition());
+                configuration.teamManager().get(teamId).registrationOf(player.definition().id()).addSanction(1);
+                player.sanction(1, definition.competition());
+            }
+        }
+    }
+
+    private static void fill(Match.MatchEvent event, Map<String, String> players, Map<String, Integer> yellowCards, Map<String, Integer> expulsions) {
+        if (event.type() == Match.MatchEvent.Type.YellowCard) {
+            players.put(event.who(), event.team());
+            yellowCards.putIfAbsent(event.who(), 0);
+            yellowCards.put(event.who(), yellowCards.get(event.who()) + 1);
+        } else if (event.type() == Match.MatchEvent.Type.Expulsion) {
+            players.put(event.who(), event.team());
+            expulsions.putIfAbsent(event.who(), 0);
+            expulsions.put(event.who(), expulsions.get(event.who()) + 1);
         }
     }
 
@@ -127,16 +154,56 @@ public class SimulateMatch extends Event {
                 });
     }
 
-    private List<Player> playersOf(Team team) {
-        return allPlayersOf(team).stream()
+    private List<Player> availablePlayersOf(Team team) {
+        return playersOf(team).stream()
                 .filter(p -> !p.isInjured())
                 .filter(p -> !p.hasSanction(definition.competition()))
                 .toList();
     }
 
-    private List<Player> allPlayersOf(Team team) {
+    private List<Player> playersOf(Team team) {
         return team.players().stream()
                 .map(d -> configuration.playerManager().get(d.id()))
                 .toList();
+    }
+
+    private List<Revision> preMatchRevisions() {
+        List<Revision> revisions = new ArrayList<>();
+        revisions.addAll(playersOf(local).stream().map(p -> revisionOf(p, local.registrationOf(p.definition().id()))).toList());
+        revisions.addAll(playersOf(visitant).stream().map(p -> revisionOf(p, visitant.registrationOf(p.definition().id()))).toList());
+        return revisions;
+    }
+
+    private Revision revisionOf(Player player, PlayerRegistration registration) {
+        return new PlayerMatchPerformance(ts)
+                .player(player.definition().id())
+                .match(definition.local() + " - " + definition.visitant())
+                .preEnergy(player.energy())
+                .preHappiness(player.mood().gameTime())
+                .note(noteOf(player));
+    }
+
+    private String noteOf(Player player) {
+        if (player.isInjured()) return "Lesionado";
+        if (player.hasSanction(definition.competition())) return "Sancionado";
+        return null;
+    }
+
+    private List<Revision> postMatchRevisions(List<Revision> revisions, Match match) {
+        Map<String, List<Revision>> revisionMap = revisions.stream().collect(Collectors.groupingBy(r -> ((PlayerMatchPerformance) r).player()));
+        playersOf(local).forEach(p -> revisionOf(p, (PlayerMatchPerformance) revisionMap.get(p.definition().id()).getFirst(), match));
+        playersOf(visitant).forEach(p -> revisionOf(p, (PlayerMatchPerformance) revisionMap.get(p.definition().id()).getFirst(), match));
+        return revisions;
+    }
+
+    private void revisionOf(Player player, PlayerMatchPerformance revision, Match match) {
+        Match.PlayerStatistics statistics = match.playerStatistics().get(player.definition().id());
+        revision.position(statistics == null ? null : statistics.minutes().entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey).orElse(null));
+        revision.postEnergy(player.energy());
+        revision.postHappiness(player.mood().gameTime());
+        revision.expelled(match.events().stream().anyMatch(e -> e.who().equals(player.definition().id()) && e.type() == Match.MatchEvent.Type.Expulsion));
+        revision.injured(match.events().stream().anyMatch(e -> e.who().equals(player.definition().id()) && e.type() == Match.MatchEvent.Type.Injury));
+        revision.enterMinute(match.events().stream().filter(e -> e.who().equals(player.definition().id()) && e.type() == Match.MatchEvent.Type.SubstituteIn).map(Match.MatchEvent::minute).findFirst().orElse(null));
+        revision.exitMinute(match.events().stream().filter(e -> e.who().equals(player.definition().id()) && e.type() == Match.MatchEvent.Type.SubstituteOut).map(Match.MatchEvent::minute).findFirst().orElse(null));
     }
 }

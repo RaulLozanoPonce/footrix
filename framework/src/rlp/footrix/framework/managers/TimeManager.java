@@ -28,7 +28,7 @@ public class TimeManager {
         game.date(date);
         playerManager.players().forEach(p -> {
             if (p.isInjured() && !p.recoveryDate().isAfter(date)) p.recovery();
-            p.energy(0.1);
+            p.energy(0.07143);
         });
         eventManager.execute(date);
     }

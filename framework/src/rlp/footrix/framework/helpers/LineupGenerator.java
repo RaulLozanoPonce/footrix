@@ -6,10 +6,10 @@ import java.util.*;
 
 public class LineupGenerator {
 
-    private static final double EnergyFactor = 0.41;
-    private static final double RoleFactor = 0.3;
-    private static final double GameTimeFactor = 0.17;
-    private static final double IndividualFactor = 0.12;
+    private static final double EnergyFactor = 0.40;
+    private static final double RoleFactor = 0.25;
+    private static final double GameTimeFactor = 0.20;
+    private static final double IndividualFactor = 0.15;
 
     public static PlayersLineup playersLineup(Lineup lineup, List<Player> players) {
         Map<Player, Integer[]> playersMap = starters(entries(lineup, players));
