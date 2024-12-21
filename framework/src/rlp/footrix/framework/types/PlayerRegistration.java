@@ -8,7 +8,6 @@ public class PlayerRegistration {
     private final Map<String, Double> playedMinutes = new HashMap<>();
     private final Map<String, Double> possibleMinutes = new HashMap<>();
     private int sanctions = 0;
-    private int injuries = 0;
 
     public PlayerRegistration(PlayerContract contract) {
         this.contract = contract;
@@ -37,13 +36,5 @@ public class PlayerRegistration {
 
     public void addSanction(int deltaSanctions) {
         this.sanctions = Math.max(0, sanctions + deltaSanctions);
-    }
-
-    public int injuries() {
-        return injuries;
-    }
-
-    public void addInjury() {
-        this.injuries++;
     }
 }

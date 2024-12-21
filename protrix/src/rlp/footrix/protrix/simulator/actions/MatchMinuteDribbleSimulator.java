@@ -104,8 +104,15 @@ public class MatchMinuteDribbleSimulator extends ActionSimulator {
 
     private void injury(List<Match.MatchEvent> events) {
         state.addInjury();
-        events.add(new Match.MatchEvent(team, Injury, minute, player.definition().id()));
-        player.energy(-1.0);
+        double type = Math.random();
+        if (type < 0.4954) {
+            events.add(new Match.MatchEvent(team, MinorInjury, minute, player.definition().id()));
+        } else if (type < 0.4954 + 0.4208) {
+            events.add(new Match.MatchEvent(team, SeriousInjury, minute, player.definition().id()));
+        } else {
+            events.add(new Match.MatchEvent(team, VerySeriousInjury, minute, player.definition().id()));
+        }
+        player.energy(-1.0);    //TODO DEJO ESTE VALOR CON LAS LEVES?
     }
 
     private double injuryFactor(ProtrixPlayer player) {

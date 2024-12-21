@@ -181,7 +181,7 @@ public class ProtrixMatchSimulator implements MatchSimulator {
 
     private List<Player> neededSubstitutions(String team) {
         return state.events().stream()
-                .filter(e -> e.type() == Match.MatchEvent.Type.Injury)
+                .filter(e -> e.type() == MinorInjury || e.type() == SeriousInjury || e.type() == VerySeriousInjury)
                 .filter(e -> e.team().equals(team))
                 .map(Match.MatchEvent::who)
                 .filter(id -> !state.playerWithPossession().definition().id().equals(id))

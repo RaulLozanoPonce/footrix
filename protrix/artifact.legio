@@ -17,8 +17,4 @@ Artifact("rlp.footrix", "1.0.0-SNAPSHOT") protrix
 
 RunConfiguration local
 	Argument("port", "9001")
-	Argument("debug", "false")
-
-RunConfiguration localDebug
-	Argument("port", "9001")
 	Argument("debug", "true")

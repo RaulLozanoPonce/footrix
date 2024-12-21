@@ -43,10 +43,6 @@ public class ProtrixBox extends AbstractBox {
 			application.setDate(Instant.parse("2025-08-01T00:00:00Z"));
 			System.out.println(Statistics.toText());
 			System.out.println("-----------------------------------------------------------------------------------------");
-			for (CompetitionDefinition.PhaseDefinition.GroupDefinition.TeamClassification classification : application.competitionManager().classificationOf("ESP-1", "season1", 0, 0)) {
-				System.out.println(classification.teamName() + "\t" + classification.points() + "\t" + classification.goalsFor() + "\t" + classification.goalsAgainst());
-			}
-			System.out.println("-----------------------------------------------------------------------------------------");
 			for (PlayerClassification classification : application.statisticTables().scorersOf("ESP-1", "season1", 10)) {
 				System.out.println(classification.name() + " - " + classification.score());
 			}
@@ -62,13 +58,13 @@ public class ProtrixBox extends AbstractBox {
 			for (PlayerClassification classification : application.statisticTables().bestPlayer("season1", 10)) {
 				System.out.println(classification.id() + " - " + classification.name() + " - " + classification.score());
 			}
-			Map<Integer, Integer> substitutions = new HashMap<>();
+			/*Map<Integer, Integer> substitutions = new HashMap<>();
 			application.matchStore().get("ESP-1", "season1", 0, 0)
 					.forEach(m -> m.events().stream().filter(e -> e.type() == Match.MatchEvent.Type.SubstituteIn).forEach(e -> {
 						substitutions.putIfAbsent(e.minute(), 0);
 						substitutions.put(e.minute(), substitutions.get(e.minute()) + 1);
 					}));
-			/*for (Integer minute : substitutions.keySet().stream().sorted().toList()) {
+			for (Integer minute : substitutions.keySet().stream().sorted().toList()) {
 				System.out.println(minute + "\t" + substitutions.get(minute));
 			}*/
 		}

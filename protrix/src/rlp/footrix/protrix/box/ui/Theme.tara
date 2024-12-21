@@ -1,4 +1,4 @@
 dsl konos
 
 Format("width:'100%',height:'100&'") wh100
-
+Format("width:'100%'") w100

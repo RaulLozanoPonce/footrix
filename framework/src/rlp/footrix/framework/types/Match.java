@@ -8,30 +8,6 @@ import java.util.Map;
 
 public record Match(MatchDefinition definition, Map<String, PlayerStatistics> playerStatistics, List<MatchEvent> events, String mvp, int duration) {
 
-    public int localPoints() {
-        int localGoals = localGoals();
-        int visitantGoals = visitantGoals();
-        if (localGoals == visitantGoals) return 1;
-        if (localGoals > visitantGoals) return 3;
-        return 0;
-    }
-
-    public int visitantPoints() {
-        int localGoals = localGoals();
-        int visitantGoals = visitantGoals();
-        if (localGoals == visitantGoals) return 1;
-        if (localGoals < visitantGoals) return 3;
-        return 0;
-    }
-
-    public int localGoals() {
-        return (int) events.stream().filter(e -> e.type == MatchEvent.Type.Goal).filter(e -> e.team.equals(definition.local())).count();
-    }
-
-    public int visitantGoals() {
-        return (int) events.stream().filter(e -> e.type == MatchEvent.Type.Goal).filter(e -> e.team.equals(definition.visitant())).count();
-    }
-
     public static class PlayerStatistics {
         private final Map<Position, Double> minutes = new HashMap<>();
         private Double score = 0.0;
@@ -66,6 +42,6 @@ public record Match(MatchDefinition definition, Map<String, PlayerStatistics> pl
     }
 
     public record MatchEvent(String team, Type type, int minute, String who) {
-        public enum Type {Goal, Assist, RedCard, YellowCard, SubstituteIn, SubstituteOut, Injury, NeededSubstitution, Expulsion}
+        public enum Type {Goal, Assist, RedCard, YellowCard, SubstituteIn, SubstituteOut, MinorInjury, SeriousInjury, VerySeriousInjury, NeededSubstitution, Expulsion}
     }
 }

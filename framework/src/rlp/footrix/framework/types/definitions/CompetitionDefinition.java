@@ -24,13 +24,13 @@ public interface CompetitionDefinition {
             String name(int number);
             int nTeams();
             SortPolicy sortPolicy();
-            List<TeamClassification> classification(List<TeamClassification> classification);
+            List<String> classify(List<TeamClassification> classification);
 
             enum SortPolicy {
                 Ordered, Unordered, Mirrored
             }
 
-            public record TeamClassification(String teamId, String teamName, int points, int goalsFor, int goalsAgainst) {}
+            record TeamClassification(String teamId, int points, int goalsFor, int goalsAgainst) {}
         }
 
         enum LocalPolicy {

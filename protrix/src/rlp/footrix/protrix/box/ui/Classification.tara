@@ -1,0 +1,18 @@
+dsl konos
+
+use Theme
+
+Template classificationTemplate as Relative(width=100%)
+	TemplateStamp(template = classificationRowTemplate) classificationRowStamp as Multiple
+
+Template(format=w100, layout=Horizontal) classificationRowTemplate as Absolute(height=20px)
+	Block as Relative(height=100%, width=5%) > Number position
+	Block as Relative(height=100%, width=15%) > Text team
+	Block as Relative(height=100%, width=10%) > Number playedMatches
+	Block as Relative(height=100%, width=10%) > Number winMatches
+	Block as Relative(height=100%, width=10%) > Number drawMatches
+	Block as Relative(height=100%, width=10%) > Number lostMatches
+	Block as Relative(height=100%, width=10%) > Number goalsFor
+	Block as Relative(height=100%, width=10%) > Number goalsAgainst
+	Block as Relative(height=100%, width=10%) > Number goalsDifference
+	Block as Relative(height=100%, width=10%) > Number points

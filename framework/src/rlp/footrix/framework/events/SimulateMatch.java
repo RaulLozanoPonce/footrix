@@ -4,11 +4,13 @@ import rlp.footrix.framework.types.*;
 import rlp.footrix.framework.types.definitions.MatchDefinition;
 import rlp.footrix.framework.var.PlayerMatchPerformance;
 import rlp.footrix.framework.var.Revision;
+import rlp.footrix.framework.var.TeamResult;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static rlp.footrix.framework.helpers.LineupGenerator.playersLineup;
+import static rlp.footrix.framework.types.Match.MatchEvent.Type.Goal;
 
 public class SimulateMatch extends Event {
 
@@ -34,11 +36,12 @@ public class SimulateMatch extends Event {
 
     @Override
     public void execute() {
-        List<Revision> revisions = preMatchRevisions();
+        List<Revision> revisions = preMatchPlayersRevisions();
         Match match = playMatch();
         configuration.matchStore().save(match);
         postMatch(match);
-        postMatchRevisions(revisions, match).forEach(r -> configuration.var().publish(r));
+        postMatchPlayersRevisions(revisions, match).forEach(r -> configuration.var().publish(r));
+        postMatchTeamsRevisions(match).forEach(r -> configuration.var().publish(r));
     }
 
     private Match playMatch() {
@@ -146,12 +149,16 @@ public class SimulateMatch extends Event {
     }
 
     private void registerInjuries(Match match) {
+        //TODO TENDRE QUE TOCAR POR %
         match.events().stream()
-                .filter(e -> e.type() == Match.MatchEvent.Type.Injury)
-                .forEach(e -> {
-                    configuration.teamManager().get(e.team()).registrationOf(e.who()).addInjury();
-                    configuration.playerManager().get(e.who()).addInjury(configuration.timeManager().future(30));
-                });
+                .filter(e -> e.type() == Match.MatchEvent.Type.MinorInjury)
+                .forEach(e -> configuration.playerManager().get(e.who()).addInjury(configuration.timeManager().future(10)));
+        match.events().stream()
+                .filter(e -> e.type() == Match.MatchEvent.Type.SeriousInjury)
+                .forEach(e -> configuration.playerManager().get(e.who()).addInjury(configuration.timeManager().future(60)));
+        match.events().stream()
+                .filter(e -> e.type() == Match.MatchEvent.Type.VerySeriousInjury)
+                .forEach(e -> configuration.playerManager().get(e.who()).addInjury(configuration.timeManager().future(250)));
     }
 
     private List<Player> availablePlayersOf(Team team) {
@@ -167,7 +174,7 @@ public class SimulateMatch extends Event {
                 .toList();
     }
 
-    private List<Revision> preMatchRevisions() {
+    private List<Revision> preMatchPlayersRevisions() {
         List<Revision> revisions = new ArrayList<>();
         revisions.addAll(playersOf(local).stream().map(p -> revisionOf(p, local.registrationOf(p.definition().id()))).toList());
         revisions.addAll(playersOf(visitant).stream().map(p -> revisionOf(p, visitant.registrationOf(p.definition().id()))).toList());
@@ -189,7 +196,7 @@ public class SimulateMatch extends Event {
         return null;
     }
 
-    private List<Revision> postMatchRevisions(List<Revision> revisions, Match match) {
+    private List<Revision> postMatchPlayersRevisions(List<Revision> revisions, Match match) {
         Map<String, List<Revision>> revisionMap = revisions.stream().collect(Collectors.groupingBy(r -> ((PlayerMatchPerformance) r).player()));
         playersOf(local).forEach(p -> revisionOf(p, (PlayerMatchPerformance) revisionMap.get(p.definition().id()).getFirst(), match));
         playersOf(visitant).forEach(p -> revisionOf(p, (PlayerMatchPerformance) revisionMap.get(p.definition().id()).getFirst(), match));
@@ -202,8 +209,23 @@ public class SimulateMatch extends Event {
         revision.postEnergy(player.energy());
         revision.postHappiness(player.mood().gameTime());
         revision.expelled(match.events().stream().anyMatch(e -> e.who().equals(player.definition().id()) && e.type() == Match.MatchEvent.Type.Expulsion));
-        revision.injured(match.events().stream().anyMatch(e -> e.who().equals(player.definition().id()) && e.type() == Match.MatchEvent.Type.Injury));
+        revision.injured(match.events().stream().anyMatch(e -> e.who().equals(player.definition().id()) && (e.type() == Match.MatchEvent.Type.MinorInjury || e.type() == Match.MatchEvent.Type.SeriousInjury || e.type() == Match.MatchEvent.Type.VerySeriousInjury)));
         revision.enterMinute(match.events().stream().filter(e -> e.who().equals(player.definition().id()) && e.type() == Match.MatchEvent.Type.SubstituteIn).map(Match.MatchEvent::minute).findFirst().orElse(null));
         revision.exitMinute(match.events().stream().filter(e -> e.who().equals(player.definition().id()) && e.type() == Match.MatchEvent.Type.SubstituteOut).map(Match.MatchEvent::minute).findFirst().orElse(null));
+    }
+
+    private List<Revision> postMatchTeamsRevisions(Match match) {
+        List<Revision> revisions = new ArrayList<>();
+        int localGoals = (int) match.events().stream().filter(e -> e.type() == Goal).filter(e -> e.team().equals(match.definition().local())).count();
+        int visitantGoals = (int) match.events().stream().filter(e -> e.type() == Goal).filter(e -> e.team().equals(match.definition().visitant())).count();
+        revisions.add(new TeamResult(match.definition().date()).competitionId(match.definition().competition()).teamId(match.definition().local()).goalsFor(localGoals).goalsAgainst(visitantGoals).points(pointsOf(localGoals, visitantGoals)));
+        revisions.add(new TeamResult(match.definition().date()).competitionId(match.definition().competition()).teamId(match.definition().visitant()).goalsFor(visitantGoals).goalsAgainst(localGoals).points(pointsOf(visitantGoals, localGoals)));
+        return revisions;
+    }
+
+    private int pointsOf(int goalsFor, int goalsAgainst) {
+        if (goalsFor > goalsAgainst) return 3;
+        if (goalsFor < goalsAgainst) return 0;
+        return 1;
     }
 }

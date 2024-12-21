@@ -29,7 +29,7 @@ public class Application {
         this.game = new Game().date(configuration.initDate()).season(configuration.initSeason());
         this.matchStore = new MatchMemoryStore();
 
-        this.competitionManager = new CompetitionManager(this.matchStore, this.game, configuration.initDatabase().competitions());
+        this.competitionManager = new CompetitionManager(this.game, configuration.initDatabase().competitions());
         this.teamManager = new TeamManager(configuration.initDatabase().teams());
         this.playerManager = new PlayerManager(configuration.initDatabase().players());
 
@@ -38,7 +38,7 @@ public class Application {
         this.rulesManager = new RulesManager();
 
         this.statisticTables = new StatisticTables(this.playerManager, this.matchStore);
-        this.var = new Var();
+        this.var = configuration.var();
 
         this.eventManager.add(configuration.initEvents());
         this.timeManager.set(configuration.initDate());

@@ -9,9 +9,11 @@ import rlp.footrix.framework.types.*;
 import rlp.footrix.framework.types.definitions.CompetitionDefinition;
 import rlp.footrix.framework.types.definitions.PlayerDefinition;
 import rlp.footrix.framework.types.definitions.TeamDefinition;
+import rlp.footrix.framework.var.Var;
 import rlp.footrix.protrix.model.ProtrixPlayer;
 import rlp.footrix.protrix.model.ProtrixTeam;
 import rlp.footrix.protrix.model.helpers.InitialContractGenerator;
+import rlp.footrix.protrix.var.ProtrixVar;
 
 import java.io.File;
 import java.io.IOException;
@@ -168,12 +170,12 @@ public class ProtrixAppConfiguration implements FootrixConfiguration {
                                             }
 
                                             @Override
-                                            public List<TeamClassification> classification(List<TeamClassification> list) {
+                                            public List<String> classify(List<TeamClassification> list) {
                                                 return list.stream().sorted((o1, o2) -> {
                                                     if (o1.points() > o2.points()) return -1;
                                                     else if (o1.points() == o2.points()) return 0;
                                                     return 1;
-                                                }).toList();
+                                                }).map(TeamClassification::teamId).toList();
                                             }
                                         };
                                     }
@@ -279,5 +281,10 @@ public class ProtrixAppConfiguration implements FootrixConfiguration {
                 new InitPhase(Instant.parse("2024-08-02T00:00:00Z"), "ESP-1", "season1", 0, new HashSet<>(initDatabase().teams())),
                 new SetPhaseCalendar(Instant.parse("2024-08-04T00:00:00Z"), "ESP-1", "season1", 0)
         );
+    }
+
+    @Override
+    public Var var() {
+        return new ProtrixVar();
     }
 }
