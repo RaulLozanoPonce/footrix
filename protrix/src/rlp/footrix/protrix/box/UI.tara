@@ -2,12 +2,14 @@ dsl konos
 
 use PlayerTrace
 use Classification
+use Matches
 use Theme
 
 Service protrixUi as UI(port = "{port}", title = "Protrix", favicon = "")
 	Resource("/") home as Page(appTemplate) Main
 	Resource("/player-trace/:playerId") playerTrace as Page(playerTraceTemplate)
 	Resource("/classification/:competitionId") classification as Page(classificationTemplate)
+	Resource("/matches/:competitionId/:matchDayId") matches as Page(matchesTemplate)
 
 Template(layout=Horizontal) appTemplate as Relative(height=100%, width=100%)
 	Block as Relative(width=15%)

@@ -4,8 +4,11 @@ import rlp.footrix.framework.types.Match;
 import rlp.footrix.framework.types.Player;
 import rlp.footrix.framework.types.PlayersLineup;
 import rlp.footrix.framework.types.Position;
+import rlp.footrix.framework.var.Var;
 import rlp.footrix.protrix.model.ProtrixPlayer;
+import rlp.footrix.protrix.var.*;
 
+import java.time.Instant;
 import java.util.*;
 
 import static rlp.footrix.protrix.simulator.PositionFactors.*;
@@ -17,19 +20,19 @@ public class MatchState {
     private final PlayersLineup visitantPlayers;
     private final List<Match.MatchEvent> events = new ArrayList<>();
     private final Map<String, Match.PlayerStatistics> playerStatistics = new HashMap<>();
-    private final MatchStatistics statistics;
     private String teamWithPossession;
     private Player[] playerWithPossession = new Player[2];
     private final Map<String, Integer> restSubstitutions = new HashMap<>();
+    private final Var var;
 
-    public MatchState(String local, String visitant, PlayersLineup localPlayers, PlayersLineup visitantPlayers) {
+    public MatchState(String local, String visitant, PlayersLineup localPlayers, PlayersLineup visitantPlayers, Var var) {
         this.local = local;
         this.visitant = visitant;
         this.localPlayers = localPlayers;
         this.visitantPlayers = visitantPlayers;
-        this.statistics = new MatchStatistics();
         this.restSubstitutions.put(local, 5);   //TODO depende de la competicion
         this.restSubstitutions.put(visitant, 5);
+        this.var = var;
     }
 
     public void init(String team, Player player) {
@@ -131,70 +134,70 @@ public class MatchState {
     }
 
     public void addSuccessfulDribble(Player dribbler, Player haggled) {
-        statistics.addSuccessfulDribble(positionOf(dribbler), positionOf(haggled));
         playerStatisticsOf(dribbler.definition().id()).addScore(successfulDribbleOf(positionOf(dribbler)));
+        var.publish(new SuccessfulDribbleRevision(Instant.now()).position(positionOf(dribbler)));
     }
 
     public void addUnsuccessfulDribble(Player dribbler, Player haggled) {
-        statistics.addUnsuccessfulDribble(positionOf(dribbler), positionOf(haggled));
         playerStatisticsOf(dribbler.definition().id()).addScore(unsuccessfulDribbleOf(positionOf(dribbler)));
+        var.publish(new UnsuccessfulDribbleRevision(Instant.now()).position(positionOf(dribbler)));
     }
 
     public void addSuccessfulPass(Player passer, Player cutter) {
-        statistics.addSuccessfulPass(positionOf(passer), positionOf(cutter));
         playerStatisticsOf(passer.definition().id()).addScore(successfulPassOf(positionOf(passer)));
+        var.publish(new SuccessfulPassRevision(Instant.now()).position(positionOf(passer)));
     }
 
     public void addUnsuccessfulPass(Player passer, Player cutter) {
-        statistics.addUnsuccessfulPass(positionOf(passer), positionOf(cutter));
         playerStatisticsOf(passer.definition().id()).addScore(unsuccessfulPassOf(positionOf(passer)));
+        var.publish(new UnsuccessfulPassRevision(Instant.now()).position(positionOf(passer)));
     }
 
     public void addShootOffTarget(Player shooter) {
-        statistics.addShootOffTarget(positionOf(shooter));
         playerStatisticsOf(shooter.definition().id()).addScore(shootOffTargetOf(positionOf(shooter)));
+        var.publish(new ShootOffTargetRevision(Instant.now()).position(positionOf(shooter)));
     }
 
     public void addShootInTargetSaved(Player shooter, Player goalkeeper) {
-        statistics.addShootInTargetSaved(positionOf(goalkeeper));
         playerStatisticsOf(shooter.definition().id()).addScore(addShootInTargetSavedOf(positionOf(shooter)));
         playerStatisticsOf(goalkeeper.definition().id()).addScore(addShootInTargetSavedOf(positionOf(goalkeeper)));
+        var.publish(new ShootInTargetRevision(Instant.now()).position(positionOf(shooter)));
     }
 
     public void addGoal(Player scorer, Player goalkeeper) {
-        statistics.addGoal(positionOf(scorer));
         playerStatisticsOf(goalkeeper.definition().id()).addGoalAgainst();
         playerStatisticsOf(scorer.definition().id()).addScore(goalOf(positionOf(scorer)));
         playerStatisticsOf(goalkeeper.definition().id()).addScore(goalOf(positionOf(goalkeeper)));
+        var.publish(new ScoredGoalRevision(Instant.now()).position(positionOf(scorer)));
     }
 
     public void addAssistance(Player assistant) {
-        statistics.addAssistance(positionOf(assistant));
         playerStatisticsOf(assistant.definition().id()).addScore(assistanceOf(positionOf(assistant)));
+        var.publish(new AssistanceRevision(Instant.now()).position(positionOf(assistant)));
     }
 
     public void addFault(Player fouler, Player fouled) {
-        statistics.addFault(positionOf(fouler), positionOf(fouled));
         playerStatisticsOf(fouler.definition().id()).addScore(faultCommitedOf(positionOf(fouler)));
         playerStatisticsOf(fouled.definition().id()).addScore(foulsReceivedOf(positionOf(fouled)));
+        var.publish(new FaultCommitedRevision(Instant.now()).position(positionOf(fouler)));
     }
 
     public void addYellowCard(Player fouler) {
-        statistics.addYellowCard(positionOf(fouler));
         playerStatisticsOf(fouler.definition().id()).addScore(yellowCardOf(positionOf(fouler)));
+        var.publish(new YellowCardRevision(Instant.now()).position(positionOf(fouler)));
     }
 
     public void addYellowExpulsion(Player fouler) {
-        statistics.addYellowExpulsion(positionOf(fouler));
+        var.publish(new YellowExpulsionRevision(Instant.now()).position(positionOf(fouler)));
     }
 
     public void addRedCard(Player fouler) {
-        statistics.addRedCard(positionOf(fouler));
         playerStatisticsOf(fouler.definition().id()).addScore(redCardOf(positionOf(fouler)));
+        var.publish(new RedCardRevision(Instant.now()).position(positionOf(fouler)));
     }
 
     public void addInjury() {
-        statistics.addInjury();
+        var.publish(new InjuryRevision(Instant.now()));
     }
 
     private Position positionOf(PlayersLineup playersLineup, Integer[] position) {
@@ -202,16 +205,12 @@ public class MatchState {
     }
 
     private double fatigueOf(Player player) {
-        return fatigueFactorOf(positionOf(player)) * (((ProtrixPlayer) player).stamina() * (-0.01688) + 1.92839) / (90 * 3);    //TODO, ESTOS SON LOS FRAMES POR PARTIDO
+        return fatigueFactorOf(positionOf(player)) * (((ProtrixPlayer) player).stamina() * (-0.01688) + 1.92839) / (90 * 5);    //TODO, ESTOS SON LOS FRAMES POR PARTIDO
     }
 
     private Match.PlayerStatistics playerStatisticsOf(String player) {
         if (!playerStatistics.containsKey(player)) playerStatistics.put(player, new Match.PlayerStatistics());
         return playerStatistics.get(player);
-    }
-
-    public MatchStatistics statistics() {
-        return statistics;
     }
 
     public Player substitute(String team, Player playerToSubstitute) {

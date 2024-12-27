@@ -152,7 +152,7 @@ public class SimulateMatch extends Event {
         //TODO TENDRE QUE TOCAR POR %
         match.events().stream()
                 .filter(e -> e.type() == Match.MatchEvent.Type.MinorInjury)
-                .forEach(e -> configuration.playerManager().get(e.who()).addInjury(configuration.timeManager().future(10)));
+                .forEach(e -> configuration.playerManager().get(e.who()).addInjury(configuration.timeManager().future(10)));    //TODO 10
         match.events().stream()
                 .filter(e -> e.type() == Match.MatchEvent.Type.SeriousInjury)
                 .forEach(e -> configuration.playerManager().get(e.who()).addInjury(configuration.timeManager().future(60)));

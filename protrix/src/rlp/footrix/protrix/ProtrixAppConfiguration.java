@@ -26,6 +26,11 @@ import static rlp.footrix.framework.types.Country.Spain;
 public class ProtrixAppConfiguration implements FootrixConfiguration {
 
     private static final Map<String, Map<Player, String>> players = players();
+    private final ProtrixVar var;
+
+    public ProtrixAppConfiguration(ProtrixVar var) {
+        this.var = var;
+    }
 
     private static Map<String, Map<Player, String>> players() {
         Map<String, Map<Player, String>> players = new HashMap<>();
@@ -285,6 +290,6 @@ public class ProtrixAppConfiguration implements FootrixConfiguration {
 
     @Override
     public Var var() {
-        return new ProtrixVar();
+        return var;
     }
 }

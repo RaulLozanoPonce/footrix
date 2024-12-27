@@ -8,17 +8,17 @@ import java.util.Map;
 public class PositionFactors {
     //PASS, DRIBBLE, SHOT
     private static final Map<Position, Double[]> actionProbability = new HashMap<>() {{
-        put(Position.PT, new Double[]{0.98, 0.02, 0.0});
-        put(Position.CT, new Double[]{0.9, 0.07, 0.03});
-        put(Position.CAR, new Double[]{0.83, 0.13, 0.04});
-        put(Position.LAT, new Double[]{0.80, 0.12, 0.08});
-        put(Position.CCD, new Double[]{0.88, 0.08, 0.04});
-        put(Position.CC, new Double[]{0.85, 0.07, 0.08});
-        put(Position.MP, new Double[]{0.81, 0.07, 0.12});
-        put(Position.VOL, new Double[]{0.79, 0.13, 0.08});
-        put(Position.EXT, new Double[]{0.68, 0.16, 0.16});
-        put(Position.SS, new Double[]{0.68, 0.08, 0.24});
-        put(Position.DL, new Double[]{0.62, 0.07, 0.31});
+        put(Position.PT, new Double[]{0.9878, 0.0122, 0.0});
+        put(Position.CT, new Double[]{0.9402, 0.0427, 0.0171});
+        put(Position.CAR, new Double[]{0.8979, 0.0793, 0.0228});
+        put(Position.LAT, new Double[]{0.8812, 0.0732, 0.0456});
+        put(Position.CCD, new Double[]{0.9284, 0.0488, 0.0228});
+        put(Position.CC, new Double[]{0.9117, 0.0427, 0.0456});
+        put(Position.MP, new Double[]{0.8889, 0.0427, 0.0684});
+        put(Position.VOL, new Double[]{0.8751, 0.0793, 0.0456});
+        put(Position.EXT, new Double[]{0.8112, 0.0976, 0.0912});
+        put(Position.SS, new Double[]{0.8144, 0.0488, 0.1368});
+        put(Position.DL, new Double[]{0.7806, 0.0427, 0.1767});
     }};
 
     private static final Map<Position, Map<Position, Double>> passProbability = new HashMap<>() {{
@@ -168,17 +168,17 @@ public class PositionFactors {
     }};
 
     private static final Map<Position, Double> faultPercent = new HashMap<>() {{
-        put(Position.PT, 0.005);
+        put(Position.PT, 1.0);
         put(Position.CT, 1.0);
         put(Position.CAR, 1.0);
-        put(Position.LAT, 0.5);
+        put(Position.LAT, 1.0);
         put(Position.CCD, 1.0);
-        put(Position.CC, 0.5);
-        put(Position.MP, 0.5);
-        put(Position.VOL, 0.5);
-        put(Position.EXT, 0.13);
-        put(Position.SS, 0.5);
-        put(Position.DL, 0.17);
+        put(Position.CC, 0.494);
+        put(Position.MP, 1.0);
+        put(Position.VOL, 1.0);
+        put(Position.EXT, 0.138);
+        put(Position.SS, 1.0);
+        put(Position.DL, 0.171);
     }};
 
     //successfulDribbleOf, unsuccessfulDribbleOf, successfulDribbleCutOf, unsuccessfulDribbleCutOf, successfulPassOf, unsuccessfulPassOf,
@@ -213,96 +213,52 @@ public class PositionFactors {
     }};
 
     private static Map<Integer, Double> substitutionPercent = new HashMap<>() {{
-        put(1, 0.064883623);
-        put(2, 0.069473015);
-        put(3, 0.074387027);
-        put(4, 0.079648621);
-        put(5, 0.085282381);
-        put(6, 0.091314631);
-        put(7, 0.09777356);
-        put(8, 0.104689345);
-        put(9, 0.112094303);
-        put(10, 0.120023032);
-        put(11, 0.128512583);
-        put(12, 0.137602621);
-        put(13, 0.147335623);
-        put(14, 0.157757066);
-        put(15, 0.168915645);
-        put(16, 0.180863501);
-        put(17, 0.19365646);
-        put(18, 0.207354299);
-        put(19, 0.222021024);
-        put(20, 0.237725165);
-        put(21, 0.254540102);
-        put(22, 0.272544404);
-        put(23, 0.291822199);
-        put(24, 0.312463564);
-        put(25, 0.334564947);
-        put(26, 0.358229621);
-        put(27, 0.383568161);
-        put(28, 0.410698963);
-        put(29, 0.439748799);
-        put(30, 0.470853408);
-        put(31, 0.504158129);
-        put(32, 0.539818583);
-        put(33, 0.578001395);
-        put(34, 0.61888498);
-        put(35, 0.662660371);
-        put(36, 0.709532111);
-        put(37, 0.759719216);
-        put(38, 0.813456189);
-        put(39, 0.870994121);
-        put(40, 0.932601865);
-        put(41, 0.99856729);
-        put(42, 1.069198626);
-        put(43, 1.144825906);
-        put(44, 1.225802505);
-        put(45, 1.312506795);
-        put(46, 1.405343912);
-        put(47, 1.504747647);
-        put(48, 1.611182473);
-        put(49, 1.72514572);
-        put(50, 1.847169892);
-        put(51, 1.977825161);
-        put(52, 2.117722025);
-        put(53, 2.26751417);
-        put(54, 2.427901513);
-        put(55, 2.599633483);
-        put(56, 2.783512514);
-        put(57, 2.980397801);
-        put(58, 3.191209311);
-        put(59, 3.416932083);
-        put(60, 3.306784264);
-        put(61, 3.131285545);
-        put(62, 2.962080326);
-        put(63, 2.799168605);
-        put(64, 2.642550383);
-        put(65, 2.492225661);
-        put(66, 2.348194438);
-        put(67, 2.210456714);
-        put(68, 2.079012489);
-        put(69, 1.953861763);
-        put(70, 1.835004536);
-        put(71, 1.722440809);
-        put(72, 1.61617058);
-        put(73, 1.516193851);
-        put(74, 1.422510621);
-        put(75, 1.33512089);
-        put(76, 1.254024658);
-        put(77, 1.179221925);
-        put(78, 1.110712692);
-        put(79, 1.048496957);
-        put(80, 0.992574722);
-        put(81, 0.942945986);
-        put(82, 0.899610749);
-        put(83, 0.862569011);
-        put(84, 0.831820773);
-        put(85, 0.807366033);
-        put(86, 0.789204793);
-        put(87, 0.777337051);
-        put(88, 0.771762809);
-        put(89, 0.772482066);
-        put(90, 0.779494823);
+        put(45, 1.593593966);
+        put(46, 1.706313131);
+        put(47, 1.827005223);
+        put(48, 1.956234191);
+        put(49, 2.094603868);
+        put(50, 2.242760804);
+        put(51, 2.401397275);
+        put(52, 2.571254529);
+        put(53, 2.753126241);
+        put(54, 2.947862225);
+        put(55, 3.156372407);
+        put(56, 3.379631072);
+        put(57, 3.618681419);
+        put(58, 3.874640437);
+        put(59, 4.148704121);
+        put(60, 4.014966986);
+        put(61, 3.801883365);
+        put(62, 3.596441063);
+        put(63, 3.39864008);
+        put(64, 3.208480414);
+        put(65, 3.025962067);
+        put(66, 2.851085039);
+        put(67, 2.683849329);
+        put(68, 2.524254937);
+        put(69, 2.372301863);
+        put(70, 2.227990108);
+        put(71, 2.091319671);
+        put(72, 1.962290553);
+        put(73, 1.840902753);
+        put(74, 1.727156271);
+        put(75, 1.621051108);
+        put(76, 1.522587263);
+        put(77, 1.431764736);
+        put(78, 1.348583527);
+        put(79, 1.273043637);
+        put(80, 1.205145066);
+        put(81, 1.144887813);
+        put(82, 1.092271878);
+        put(83, 1.047297261);
+        put(84, 1.009963963);
+        put(85, 0.980271983);
+        put(86, 0.958221321);
+        put(87, 0.943811978);
+        put(88, 0.937043953);
+        put(89, 0.937917247);
+        put(90, 0.946431859);
     }};
 
     public static Double passProbabilityOf(Position position) {
@@ -394,6 +350,7 @@ public class PositionFactors {
     }
 
     public static Double substitutionPercentOf(int minute) {
+        if (!substitutionPercent.containsKey(minute)) return 0.0;
         return substitutionPercent.get(minute);
     }
 }

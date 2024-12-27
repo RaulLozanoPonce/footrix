@@ -4,7 +4,7 @@ import rlp.footrix.framework.types.Match;
 import rlp.footrix.framework.types.Player;
 import rlp.footrix.framework.types.Position;
 import rlp.footrix.protrix.model.ProtrixPlayer;
-import rlp.footrix.protrix.simulator.ActionSimulator;
+import rlp.footrix.protrix.simulator.MatchActionSimulator;
 import rlp.footrix.protrix.simulator.MatchState;
 import rlp.footrix.protrix.simulator.PositionFactors;
 
@@ -13,13 +13,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class MatchMinutePassSimulator extends ActionSimulator {
+public class MatchPassSimulator extends MatchActionSimulator {
     private final ProtrixPlayer player;
     private final String team;
     private final String rivalTeam;
     private final ProtrixPlayer rival;
 
-    public MatchMinutePassSimulator(MatchState state, int minute, Player rival) {
+    public MatchPassSimulator(MatchState state, int minute, Player rival) {
         super(state, minute);
         this.player = (ProtrixPlayer) state.playerWithPossession();
         this.team = state.teamWithPossession();

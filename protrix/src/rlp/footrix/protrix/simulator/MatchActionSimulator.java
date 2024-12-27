@@ -5,12 +5,12 @@ import rlp.footrix.protrix.model.ProtrixPlayer;
 
 import java.util.List;
 
-public abstract class ActionSimulator {
+public abstract class MatchActionSimulator {
 
     protected final MatchState state;
     protected final int minute;
 
-    public ActionSimulator(MatchState state, int minute) {
+    public MatchActionSimulator(MatchState state, int minute) {
         this.state = state;
         this.minute = minute;
     }

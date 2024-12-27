@@ -5,7 +5,7 @@ import rlp.footrix.framework.types.Player;
 import rlp.footrix.framework.types.Position;
 import rlp.footrix.framework.types.definitions.PlayerDefinition;
 import rlp.footrix.protrix.model.ProtrixPlayer;
-import rlp.footrix.protrix.simulator.ActionSimulator;
+import rlp.footrix.protrix.simulator.MatchActionSimulator;
 import rlp.footrix.protrix.simulator.MatchState;
 import rlp.footrix.protrix.simulator.PositionFactors;
 
@@ -15,13 +15,13 @@ import java.util.List;
 import static rlp.footrix.framework.types.Match.MatchEvent.Type.*;
 
 
-public class MatchMinuteDribbleSimulator extends ActionSimulator {
+public class MatchDribbleSimulator extends MatchActionSimulator {
     private final ProtrixPlayer player;
     private final String team;
     private final String rivalTeam;
     private final ProtrixPlayer rival;
 
-    public MatchMinuteDribbleSimulator(MatchState state, int minute, Player rival) {
+    public MatchDribbleSimulator(MatchState state, int minute, Player rival) {
         super(state, minute);
         this.player = (ProtrixPlayer) state.playerWithPossession();
         this.team = state.teamWithPossession();
@@ -51,7 +51,7 @@ public class MatchMinuteDribbleSimulator extends ActionSimulator {
     }
 
     private boolean isSuccessfulDribble() {
-        double playerOverall = 1.65 * localFactor(team) * dribbleOf(player) * percentOf(player.overall())/100.0;
+        double playerOverall = 1.5 * localFactor(team) * dribbleOf(player) * percentOf(player.overall())/100.0;
         double rivalOverall = localFactor(rivalTeam) * defenseOf(rival) * percentOf(rival.overall())/100.0;
         double total = playerOverall + rivalOverall;
         double random = Math.random() * total;
@@ -62,7 +62,7 @@ public class MatchMinuteDribbleSimulator extends ActionSimulator {
         Position rivalPosition = state.positionOf(rival);
         if (rivalPosition == Position.PT) return false; //TODO SE DEBERÁN PODER COMETER
         if (state.events().stream().anyMatch(e -> e.type() == YellowCard && e.who().equals(rival.definition().id()))) {
-            if (Math.random() < 0.65) return false;
+            if (Math.random() < 0.65) return false; //CON ESTO SE CONTROLA QUE NO HAYAN TANTAS EXPULSIONES. ES UN VALOR QUE SE DEBE MANTENER
         }
         return Math.random() < PositionFactors.faultPercentOf(rivalPosition);
     }
@@ -91,12 +91,12 @@ public class MatchMinuteDribbleSimulator extends ActionSimulator {
 
     private void cards(List<Match.MatchEvent> events) {
         double cardRandom = Math.random();
-        if (cardRandom < 0.48) {
+        if (cardRandom < 0.42) {
             if (state.events().stream().anyMatch(e -> e.type() == YellowCard && e.who().equals(rival.definition().id())))
                 state.addYellowExpulsion(rival);
             state.addYellowCard(rival);
             events.add(new Match.MatchEvent(rivalTeam, YellowCard, minute, rival.definition().id()));
-        } else if (cardRandom < 0.48 + 0.016) {
+        } else if (cardRandom < 0.42 + 0.016) {
             state.addRedCard(rival);
             events.add(new Match.MatchEvent(rivalTeam, RedCard, minute, rival.definition().id()));
         }

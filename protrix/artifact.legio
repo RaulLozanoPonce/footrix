@@ -13,8 +13,6 @@ Artifact("rlp.footrix", "1.0.0-SNAPSHOT") protrix
 	Package(ModulesAndLibrariesLinkedByManifest) as Runnable("rlp.footrix.protrix.box.Main")
 
 	Parameter("port")
-	Parameter("debug")
 
 RunConfiguration local
 	Argument("port", "9001")
-	Argument("debug", "true")

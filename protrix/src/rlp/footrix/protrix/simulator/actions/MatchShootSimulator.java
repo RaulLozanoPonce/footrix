@@ -3,7 +3,7 @@ package rlp.footrix.protrix.simulator.actions;
 import rlp.footrix.framework.types.Match;
 import rlp.footrix.framework.types.Player;
 import rlp.footrix.protrix.model.ProtrixPlayer;
-import rlp.footrix.protrix.simulator.ActionSimulator;
+import rlp.footrix.protrix.simulator.MatchActionSimulator;
 import rlp.footrix.protrix.simulator.MatchState;
 
 import java.util.ArrayList;
@@ -13,13 +13,13 @@ import static rlp.footrix.framework.types.Match.MatchEvent.Type.Assist;
 import static rlp.footrix.framework.types.Match.MatchEvent.Type.Goal;
 import static rlp.footrix.framework.types.Position.PT;
 
-public class MatchMinuteShootSimulator extends ActionSimulator {
+public class MatchShootSimulator extends MatchActionSimulator {
 
     private final ProtrixPlayer player;
     private final String team;
     private final String rivalTeam;
 
-    public MatchMinuteShootSimulator(MatchState state, int minute) {
+    public MatchShootSimulator(MatchState state, int minute) {
         super(state, minute);
         this.player = (ProtrixPlayer) state.playerWithPossession();
         this.team = state.teamWithPossession();
@@ -29,7 +29,7 @@ public class MatchMinuteShootSimulator extends ActionSimulator {
     @Override
     public List<Match.MatchEvent> simulate() {
         double playerOverall = localFactor(team) * shootOf(player) * percentOf(player.overall())/100.0;
-        double failOverall = percentOf(78);
+        double failOverall = percentOf(76);
         double random = Math.random() * (playerOverall + failOverall);
         List<Match.MatchEvent> events = random < playerOverall ? successfulShot() : unsuccessfulShot();
         this.state.init(rivalTeam, state.playersOf(rivalTeam).getFirst());
@@ -39,7 +39,7 @@ public class MatchMinuteShootSimulator extends ActionSimulator {
     private List<Match.MatchEvent> successfulShot() {
         ProtrixPlayer goalKeeper = state.playersOf(rivalTeam).stream().filter(p -> state.positionOf(p) == PT).map(p -> (ProtrixPlayer) p).toList().getFirst();
         double rivalOverall = localFactor(rivalTeam) * goalkeeperOf(goalKeeper) * percentOf(goalKeeper.overall())/100.0;
-        double goalOverall = percentOf(65);
+        double goalOverall = percentOf(67);
         double random = Math.random() * (rivalOverall + goalOverall) * Math.pow(2.72, -0.2 * state.goalsFor(team));
         return random < rivalOverall ? save(goalKeeper) : goal(goalKeeper);
     }

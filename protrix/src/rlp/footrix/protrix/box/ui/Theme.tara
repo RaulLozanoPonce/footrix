@@ -2,3 +2,7 @@ dsl konos
 
 Format("width:'100%',height:'100&'") wh100
 Format("width:'100%'") w100
+
+Format("backgroundColor:'green'") bg
+Format("backgroundColor:'red'") br
+Format("backgroundColor:'yellow'") by
