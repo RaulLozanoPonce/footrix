@@ -1,25 +1,23 @@
 package rlp.footrix.protrix.simulator.actions;
 
 import rlp.footrix.framework.types.Match;
-import rlp.footrix.framework.types.Player;
+import rlp.footrix.framework.types.player.Player;
 import rlp.footrix.protrix.model.ProtrixPlayer;
-import rlp.footrix.protrix.simulator.MatchActionSimulator;
 import rlp.footrix.protrix.simulator.MatchState;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static rlp.footrix.framework.types.Match.MatchEvent.Type.Assist;
 import static rlp.footrix.framework.types.Match.MatchEvent.Type.Goal;
-import static rlp.footrix.framework.types.Position.PT;
+import static rlp.footrix.framework.types.player.Position.PT;
 
-public class MatchShootSimulator extends MatchActionSimulator {
+public class ShootSimulator extends ActionSimulator {
 
     private final ProtrixPlayer player;
     private final String team;
     private final String rivalTeam;
 
-    public MatchShootSimulator(MatchState state, int minute) {
+    public ShootSimulator(MatchState state, int minute) {
         super(state, minute);
         this.player = (ProtrixPlayer) state.playerWithPossession();
         this.team = state.teamWithPossession();
@@ -32,7 +30,7 @@ public class MatchShootSimulator extends MatchActionSimulator {
         double failOverall = percentOf(76);
         double random = Math.random() * (playerOverall + failOverall);
         List<Match.MatchEvent> events = random < playerOverall ? successfulShot() : unsuccessfulShot();
-        this.state.init(rivalTeam, state.playersOf(rivalTeam).getFirst());
+        this.state.setPossession(rivalTeam, state.playersOf(rivalTeam).getFirst());
         return events;
     }
 
@@ -47,11 +45,14 @@ public class MatchShootSimulator extends MatchActionSimulator {
     private List<Match.MatchEvent> goal(Player goalKeeper) {
         List<Match.MatchEvent> events = new ArrayList<>();
         state.addGoal(player, goalKeeper);
-        events.add(new Match.MatchEvent(team, Goal, minute, state.playerWithPossession().definition().id()));
-        if (state.previousPlayerWithPossession() == null) return events;
-        state.addAssistance(state.previousPlayerWithPossession());
-        events.add(new Match.MatchEvent(team, Assist, minute, state.previousPlayerWithPossession().definition().id()));
-        return  events;
+        boolean hasAssistance = state.previousPlayerWithPossession() != null;
+        if (hasAssistance) {
+            state.addAssistance(state.previousPlayerWithPossession());
+            events.add(new Match.MatchEvent(team, Goal, minute, state.playerWithPossession().definition().id(), state.previousPlayerWithPossession().definition().id()));
+        } else {
+            events.add(new Match.MatchEvent(team, Goal, minute, state.playerWithPossession().definition().id(), null));
+        }
+        return events;
     }
 
     private List<Match.MatchEvent> save(Player goalKeeper) {

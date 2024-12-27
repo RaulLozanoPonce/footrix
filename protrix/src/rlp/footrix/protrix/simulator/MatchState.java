@@ -1,9 +1,9 @@
 package rlp.footrix.protrix.simulator;
 
 import rlp.footrix.framework.types.Match;
-import rlp.footrix.framework.types.Player;
-import rlp.footrix.framework.types.PlayersLineup;
-import rlp.footrix.framework.types.Position;
+import rlp.footrix.framework.types.player.Player;
+import rlp.footrix.framework.types.team.PlayersLineup;
+import rlp.footrix.framework.types.player.Position;
 import rlp.footrix.framework.var.Var;
 import rlp.footrix.protrix.model.ProtrixPlayer;
 import rlp.footrix.protrix.var.*;
@@ -11,31 +11,42 @@ import rlp.footrix.protrix.var.*;
 import java.time.Instant;
 import java.util.*;
 
-import static rlp.footrix.protrix.simulator.PositionFactors.*;
+import static rlp.footrix.protrix.simulator.helpers.PositionFactors.*;
 
 public class MatchState {
     private final String local;
     private final String visitant;
-    private final PlayersLineup localPlayers;
-    private final PlayersLineup visitantPlayers;
     private final List<Match.MatchEvent> events = new ArrayList<>();
     private final Map<String, Match.PlayerStatistics> playerStatistics = new HashMap<>();
-    private String teamWithPossession;
-    private Player[] playerWithPossession = new Player[2];
     private final Map<String, Integer> restSubstitutions = new HashMap<>();
     private final Var var;
+    private final double matchFrames;
 
-    public MatchState(String local, String visitant, PlayersLineup localPlayers, PlayersLineup visitantPlayers, Var var) {
+    private PlayersLineup localPlayers;
+    private PlayersLineup visitantPlayers;
+    private String teamWithPossession;
+    private Player[] playerWithPossession = new Player[2];
+
+    public MatchState(String local, String visitant, Var var, int maxSubstitutions, double matchFrames) {
         this.local = local;
         this.visitant = visitant;
-        this.localPlayers = localPlayers;
-        this.visitantPlayers = visitantPlayers;
-        this.restSubstitutions.put(local, 5);   //TODO depende de la competicion
-        this.restSubstitutions.put(visitant, 5);
+        this.restSubstitutions.put(local, maxSubstitutions);
+        this.restSubstitutions.put(visitant, maxSubstitutions);
         this.var = var;
+        this.matchFrames = matchFrames;
     }
 
-    public void init(String team, Player player) {
+    public MatchState localPlayers(PlayersLineup localPlayers) {
+        this.localPlayers = localPlayers;
+        return this;
+    }
+
+    public MatchState visitantPlayers(PlayersLineup visitantPlayers) {
+        this.visitantPlayers = visitantPlayers;
+        return this;
+    }
+
+    public void setPossession(String team, Player player) {
         teamWithPossession = team;
         playerWithPossession = new ProtrixPlayer[2];
         playerWithPossession[1] = player;
@@ -109,6 +120,12 @@ public class MatchState {
 
     public List<Match.MatchEvent> events() {
         return events;
+    }
+
+    public MatchState events(List<Match.MatchEvent> events) {
+        this.events.clear();
+        this.events.addAll(events);
+        return this;
     }
 
     public String mvp() {
@@ -205,7 +222,7 @@ public class MatchState {
     }
 
     private double fatigueOf(Player player) {
-        return fatigueFactorOf(positionOf(player)) * (((ProtrixPlayer) player).stamina() * (-0.01688) + 1.92839) / (90 * 5);    //TODO, ESTOS SON LOS FRAMES POR PARTIDO
+        return fatigueFactorOf(positionOf(player)) * (((ProtrixPlayer) player).stamina() * (-0.01688) + 1.92839) / matchFrames;
     }
 
     private Match.PlayerStatistics playerStatisticsOf(String player) {

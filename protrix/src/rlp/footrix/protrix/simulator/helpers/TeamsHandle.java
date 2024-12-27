@@ -1,6 +1,7 @@
-package rlp.footrix.protrix.simulator;
+package rlp.footrix.protrix.simulator.helpers;
 
-import rlp.footrix.framework.types.Player;
+import rlp.footrix.framework.types.player.Player;
+import rlp.footrix.protrix.simulator.MatchState;
 
 import java.util.ArrayList;
 import java.util.List;

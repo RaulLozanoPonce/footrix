@@ -1,6 +1,6 @@
 package rlp.footrix.framework.managers;
 
-import rlp.footrix.framework.types.Team;
+import rlp.footrix.framework.types.team.Team;
 
 import java.util.ArrayList;
 import java.util.List;

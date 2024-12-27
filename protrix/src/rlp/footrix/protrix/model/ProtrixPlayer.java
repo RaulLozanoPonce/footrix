@@ -1,8 +1,8 @@
 package rlp.footrix.protrix.model;
 
-import rlp.footrix.framework.types.Player;
-import rlp.footrix.framework.types.Position;
 import rlp.footrix.framework.types.definitions.PlayerDefinition;
+import rlp.footrix.framework.types.player.Player;
+import rlp.footrix.framework.types.player.Position;
 import rlp.footrix.protrix.model.helpers.OverallCalculator;
 import rlp.footrix.protrix.model.helpers.PositionFactorCalculator;
 

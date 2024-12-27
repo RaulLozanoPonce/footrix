@@ -1,4 +1,6 @@
-package rlp.footrix.framework.types;
+package rlp.footrix.framework.types.team;
+
+import rlp.footrix.framework.types.player.Position;
 
 public class Lineup {
 

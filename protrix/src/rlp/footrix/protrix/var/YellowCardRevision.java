@@ -1,6 +1,6 @@
 package rlp.footrix.protrix.var;
 
-import rlp.footrix.framework.types.Position;
+import rlp.footrix.framework.types.player.Position;
 import rlp.footrix.framework.var.Revision;
 
 import java.time.Instant;

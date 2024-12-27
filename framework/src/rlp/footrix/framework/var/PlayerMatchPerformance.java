@@ -1,6 +1,6 @@
 package rlp.footrix.framework.var;
 
-import rlp.footrix.framework.types.Position;
+import rlp.footrix.framework.types.player.Position;
 
 import java.time.Instant;
 

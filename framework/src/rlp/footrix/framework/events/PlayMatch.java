@@ -1,7 +1,6 @@
 package rlp.footrix.framework.events;
 
-import com.google.gson.Gson;
-import rlp.footrix.framework.Json;
+import rlp.footrix.framework.utils.Json;
 import rlp.footrix.framework.types.Match;
 import rlp.footrix.framework.types.definitions.MatchDefinition;
 

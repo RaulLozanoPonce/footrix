@@ -1,14 +1,16 @@
 package rlp.footrix.framework;
 
 import rlp.footrix.framework.configuration.TeamRule;
+import rlp.footrix.framework.deprecated.StatisticTables;
 import rlp.footrix.framework.events.EventConfiguration;
 import rlp.footrix.framework.managers.*;
 import rlp.footrix.framework.stores.MatchMemoryStore;
+import rlp.footrix.framework.types.definitions.CompetitionDefinition;
 import rlp.footrix.framework.types.definitions.MatchDefinition;
+import rlp.footrix.framework.utils.TriFunction;
 import rlp.footrix.framework.var.Var;
 
 import java.time.Instant;
-import java.util.function.Function;
 
 public class Application {
 
@@ -23,7 +25,7 @@ public class Application {
     private final StatisticTables statisticTables;  //TODO DESAPARECERÁ
     private final Var var;
 
-    private Function<MatchDefinition, MatchSimulator> matchSimulator;
+    private TriFunction<MatchDefinition, CompetitionDefinition, Var, MatchSimulator> matchSimulator;
 
     public Application(FootrixConfiguration configuration) {
         this.game = new Game().date(configuration.initDate()).season(configuration.initSeason());
@@ -48,7 +50,7 @@ public class Application {
         this.rulesManager.add(id, rule);
     }
 
-    protected void add(Function<MatchDefinition, MatchSimulator> matchSimulator) {
+    protected void add(TriFunction<MatchDefinition, CompetitionDefinition, Var, MatchSimulator> matchSimulator) {
         this.matchSimulator = matchSimulator;
     }
 
@@ -106,7 +108,7 @@ public class Application {
 
             @Override
             public MatchSimulator matchSimulator(MatchDefinition definition) {
-                return matchSimulator.apply(definition);
+                return matchSimulator.apply(definition, competitionManager.get(definition.competition(), definition.season()).definition(), var);
             }
 
             @Override

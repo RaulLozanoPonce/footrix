@@ -1,11 +1,11 @@
 package rlp.footrix.protrix.model;
 
-import rlp.footrix.framework.types.Lineup;
-import rlp.footrix.framework.types.Position;
-import rlp.footrix.framework.types.Team;
+import rlp.footrix.framework.types.team.Lineup;
+import rlp.footrix.framework.types.player.Position;
+import rlp.footrix.framework.types.team.Team;
 import rlp.footrix.framework.types.definitions.TeamDefinition;
 
-import static rlp.footrix.framework.types.Position.*;
+import static rlp.footrix.framework.types.player.Position.*;
 
 public class ProtrixTeam extends Team {
 

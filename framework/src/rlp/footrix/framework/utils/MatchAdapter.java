@@ -1,4 +1,4 @@
-package rlp.footrix.framework;
+package rlp.footrix.framework.utils;
 
 import com.google.gson.JsonObject;
 import com.google.gson.TypeAdapter;

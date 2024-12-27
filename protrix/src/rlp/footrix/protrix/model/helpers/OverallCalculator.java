@@ -1,6 +1,6 @@
 package rlp.footrix.protrix.model.helpers;
 
-import rlp.footrix.framework.types.Position;
+import rlp.footrix.framework.types.player.Position;
 import rlp.footrix.protrix.model.ProtrixPlayer;
 
 import java.util.HashMap;

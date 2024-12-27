@@ -4,7 +4,7 @@ import rlp.footrix.framework.configuration.TeamRule;
 import rlp.footrix.framework.types.Competition;
 import rlp.footrix.framework.types.Competition.Phase;
 import rlp.footrix.framework.types.Competition.Phase.Group;
-import rlp.footrix.framework.types.Team;
+import rlp.footrix.framework.types.team.Team;
 
 import java.time.Instant;
 import java.util.ArrayList;

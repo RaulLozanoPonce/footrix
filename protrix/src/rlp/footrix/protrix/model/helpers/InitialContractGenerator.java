@@ -1,7 +1,7 @@
 package rlp.footrix.protrix.model.helpers;
 
-import rlp.footrix.framework.types.Player;
-import rlp.footrix.framework.types.PlayerContract;
+import rlp.footrix.framework.types.player.Player;
+import rlp.footrix.framework.types.team_player.PlayerContract;
 
 import java.time.Instant;
 import java.util.*;

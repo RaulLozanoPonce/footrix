@@ -2,6 +2,7 @@ package rlp.footrix.framework.types;
 
 import rlp.footrix.framework.types.definitions.CompetitionDefinition;
 import rlp.footrix.framework.types.definitions.CompetitionDefinition.PhaseDefinition.GroupDefinition;
+import rlp.footrix.framework.types.team.Team;
 
 import java.util.ArrayList;
 import java.util.List;

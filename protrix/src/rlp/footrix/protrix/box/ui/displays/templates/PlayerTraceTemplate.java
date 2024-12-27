@@ -1,7 +1,7 @@
 package rlp.footrix.protrix.box.ui.displays.templates;
 
 import io.intino.alexandria.ui.displays.events.AddCollectionItemEvent;
-import rlp.footrix.framework.types.Team;
+import rlp.footrix.framework.types.team.Team;
 import rlp.footrix.framework.var.PlayerMatchPerformance;
 import rlp.footrix.protrix.box.ProtrixBox;
 import rlp.footrix.protrix.box.ui.datasources.PlayerTraceDatasource;

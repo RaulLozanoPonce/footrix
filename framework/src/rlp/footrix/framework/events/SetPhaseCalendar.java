@@ -1,7 +1,7 @@
 package rlp.footrix.framework.events;
 
 import rlp.footrix.framework.types.Competition;
-import rlp.footrix.framework.types.Team;
+import rlp.footrix.framework.types.team.Team;
 import rlp.footrix.framework.types.definitions.MatchDefinition;
 
 import java.time.Instant;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static rlp.footrix.framework.types.definitions.CompetitionDefinition.PhaseDefinition.GroupDefinition.SortPolicy.*;
+import static rlp.footrix.framework.types.definitions.CompetitionDefinition.PhaseDefinition.SecondLegPolicy.*;
 
 public class SetPhaseCalendar extends Event {
 
@@ -40,14 +40,11 @@ public class SetPhaseCalendar extends Event {
     }
 
     private void setCalendar(Competition.Phase.Group group, int groupId) {
-        List<Team> teams = new ArrayList<>(group.teams());
-        Collections.shuffle(teams);
-        List<List<Team[]>> matchDays = matchDays(teams);
-        if (group.definition().sortPolicy() != Ordered) Collections.shuffle(matchDays);
-        if (phase.definition().secondLeg()) {
-            List<List<Team[]>> reversedMatchDays = reverse(matchDays);
-            if (group.definition().sortPolicy() == Unordered) Collections.shuffle(reversedMatchDays);
-            matchDays.addAll(reversedMatchDays);
+        List<List<Team[]>> matchDays = matchDays(group);
+
+        if (phase.definition().secondLegPolicy() != OnlyOneLeg) {
+            if (phase.definition().secondLegPolicy() == Ordered) matchDays.addAll(reverse(matchDays));
+            if (phase.definition().secondLegPolicy() == Unordered) matchDays.addAll(matchDays(group));
         }
 
         Instant date = ts;
@@ -60,7 +57,9 @@ public class SetPhaseCalendar extends Event {
         }
     }
 
-    private List<List<Team[]>> matchDays(List<Team> teams) {
+    private List<List<Team[]>> matchDays(Competition.Phase.Group group) {
+        List<Team> teams = new ArrayList<>(group.teams());
+        Collections.shuffle(teams);
         List<List<Team[]>> matchDays = new ArrayList<>();
         for (int i = 0; i < teams.size() - 1; i++) {
             List<Team[]> matchDay = new ArrayList<>();

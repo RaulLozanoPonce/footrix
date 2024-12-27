@@ -1,6 +1,7 @@
 package rlp.footrix.framework.types;
 
 import rlp.footrix.framework.types.definitions.MatchDefinition;
+import rlp.footrix.framework.types.player.Position;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +42,7 @@ public record Match(MatchDefinition definition, Map<String, PlayerStatistics> pl
         }
     }
 
-    public record MatchEvent(String team, Type type, int minute, String who) {
-        public enum Type {Goal, Assist, RedCard, YellowCard, SubstituteIn, SubstituteOut, MinorInjury, SeriousInjury, VerySeriousInjury, NeededSubstitution, Expulsion}
+    public record MatchEvent(String team, Type type, int minute, String who, String secondaryWho) {
+        public enum Type {Goal, RedCard, YellowCard, Substitution, MinorInjury, SeriousInjury, VerySeriousInjury, NeededSubstitution, Expulsion}
     }
 }

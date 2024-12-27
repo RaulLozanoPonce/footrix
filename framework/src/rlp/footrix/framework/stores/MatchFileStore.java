@@ -1,6 +1,6 @@
 package rlp.footrix.framework.stores;
 
-import rlp.footrix.framework.Json;
+import rlp.footrix.framework.utils.Json;
 import rlp.footrix.framework.types.Match;
 import rlp.footrix.framework.types.definitions.MatchDefinition;
 

@@ -1,11 +1,13 @@
-package rlp.footrix.framework.types;
+package rlp.footrix.framework.types.team;
 
-import rlp.footrix.framework.helpers.LineupGenerator;
+import rlp.footrix.framework.generators.LineupGenerator;
+import rlp.footrix.framework.types.player.Player;
+import rlp.footrix.framework.types.player.Position;
 
 import java.util.List;
 import java.util.Map;
 
-import static rlp.footrix.framework.helpers.LineupGenerator.scoreOfMatch;
+import static rlp.footrix.framework.generators.LineupGenerator.scoreOfMatch;
 
 public record PlayersLineup(Lineup lineup, Map<Player, Integer[]> positions, List<Player> substitutes) {
 

@@ -1,16 +1,18 @@
-package rlp.footrix.framework.managers;
+package rlp.footrix.framework.deprecated;
 
+import rlp.footrix.framework.managers.PlayerManager;
 import rlp.footrix.framework.stores.MatchMemoryStore;
 import rlp.footrix.framework.types.Match;
-import rlp.footrix.framework.types.Player;
-import rlp.footrix.framework.types.PlayerClassification;
-import rlp.footrix.framework.types.Position;
+import rlp.footrix.framework.types.player.Player;
+import rlp.footrix.framework.types.player.Position;
 
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static rlp.footrix.framework.types.Match.MatchEvent.Type.Goal;
 
 public class StatisticTables {
 
@@ -24,7 +26,7 @@ public class StatisticTables {
 
     public List<PlayerClassification> scorersOf(String competition, String season, int n) {
         Map<String, List<Match.MatchEvent>> goals = matchStore.get(competition, season).stream()
-                .flatMap(m -> m.events().stream().filter(e -> e.type() == Match.MatchEvent.Type.Goal))
+                .flatMap(m -> m.events().stream().filter(e -> e.type() == Goal))
                 .collect(Collectors.groupingBy(Match.MatchEvent::who));
         return goals.keySet().stream()
                 .map(id -> new PlayerClassification(id, playerManager.get(id).definition().name(), (double) goals.get(id).size()))
@@ -35,8 +37,8 @@ public class StatisticTables {
 
     public List<PlayerClassification> assistantsOf(String competition, String season, int n) {
         Map<String, List<Match.MatchEvent>> assists = matchStore.get(competition, season).stream()
-                .flatMap(m -> m.events().stream().filter(e -> e.type() == Match.MatchEvent.Type.Assist))
-                .collect(Collectors.groupingBy(Match.MatchEvent::who));
+                .flatMap(m -> m.events().stream().filter(e -> e.type() == Goal && e.secondaryWho() != null))
+                .collect(Collectors.groupingBy(Match.MatchEvent::secondaryWho));
         return assists.keySet().stream()
                 .map(id -> new PlayerClassification(id, playerManager.get(id).definition().name(), (double) assists.get(id).size()))
                 .sorted((o1, o2) -> o2.score().compareTo(o1.score()))

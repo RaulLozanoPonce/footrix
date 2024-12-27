@@ -2,6 +2,10 @@ package rlp.footrix.framework.events;
 
 import rlp.footrix.framework.types.*;
 import rlp.footrix.framework.types.definitions.MatchDefinition;
+import rlp.footrix.framework.types.player.Player;
+import rlp.footrix.framework.types.team.PlayersLineup;
+import rlp.footrix.framework.types.team.Team;
+import rlp.footrix.framework.types.team_player.PlayerRegistration;
 import rlp.footrix.framework.var.PlayerMatchPerformance;
 import rlp.footrix.framework.var.Revision;
 import rlp.footrix.framework.var.TeamResult;
@@ -9,12 +13,14 @@ import rlp.footrix.framework.var.TeamResult;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static rlp.footrix.framework.helpers.LineupGenerator.playersLineup;
+import static rlp.footrix.framework.generators.LineupGenerator.playersLineup;
 import static rlp.footrix.framework.types.Match.MatchEvent.Type.Goal;
+import static rlp.footrix.framework.types.Match.MatchEvent.Type.Substitution;
 
 public class SimulateMatch extends Event {
 
     private final MatchDefinition definition;
+    private Competition competition;
     private Team local;
     private Team visitant;
     private List<Player> localPlayers;
@@ -27,6 +33,7 @@ public class SimulateMatch extends Event {
 
     @Override
     public Event setup() {
+        this.competition = configuration.competitionManager().get(definition.competition(), definition.season());
         this.local = configuration.teamManager().get(definition.local());
         this.visitant = configuration.teamManager().get(definition.visitant());
         this.localPlayers = availablePlayersOf(local);
@@ -45,8 +52,8 @@ public class SimulateMatch extends Event {
     }
 
     private Match playMatch() {
-        PlayersLineup localLineup = playersLineup(local.lineup(), localPlayers);
-        PlayersLineup visitantLineup = playersLineup(visitant.lineup(), visitantPlayers);
+        PlayersLineup localLineup = playersLineup(competition, local.lineup(), localPlayers);
+        PlayersLineup visitantLineup = playersLineup(competition, visitant.lineup(), visitantPlayers);
         return configuration.matchSimulator(definition).simulate(localLineup, visitantLineup);
     }
 
@@ -109,7 +116,6 @@ public class SimulateMatch extends Event {
             fill(event, teams, yellowCards, expulsions);
         }
 
-        //TODO TENGO QUE PONER AQUI EL REGISTRO DE SANCIONES
         for (String playerId : teams.keySet()) {
             Player player = configuration.playerManager().get(playerId);
             registerCardsAndSanctionsTo(player, teams.get(playerId), yellowCards, expulsions);
@@ -118,20 +124,20 @@ public class SimulateMatch extends Event {
 
     private void registerCardsAndSanctionsTo(Player player, String teamId, Map<String, Integer> yellowCards, Map<String, Integer> expulsions) {
         if (expulsions.containsKey(player.definition().id())) {
-            player.yellowCards(-5, definition.competition());
+            player.yellowCards(- competition.definition().accumulatedYellowCardNumber(), definition.competition());
             if (yellowCards.containsKey(player.definition().id()) && yellowCards.get(player.definition().id()) >= 2) {
-                configuration.teamManager().get(teamId).registrationOf(player.definition().id()).addSanction(1);
-                player.sanction(1, definition.competition());
+                configuration.teamManager().get(teamId).registrationOf(player.definition().id()).addSanction(competition.definition().doubleYellowCardSanction());
+                player.sanction(competition.definition().doubleYellowCardSanction(), definition.competition());
             } else {
-                configuration.teamManager().get(teamId).registrationOf(player.definition().id()).addSanction(3);
-                player.sanction(3, definition.competition());
+                configuration.teamManager().get(teamId).registrationOf(player.definition().id()).addSanction(competition.definition().redCardSanction());
+                player.sanction(competition.definition().redCardSanction(), definition.competition());
             }
         } else {
             player.yellowCards(yellowCards.get(player.definition().id()), definition.competition());
-            if (player.yellowCards(definition.competition()) >= 5) {
-                player.yellowCards(-5, definition.competition());
-                configuration.teamManager().get(teamId).registrationOf(player.definition().id()).addSanction(1);
-                player.sanction(1, definition.competition());
+            if (player.yellowCards(definition.competition()) >= competition.definition().accumulatedYellowCardNumber()) {
+                player.yellowCards(- competition.definition().accumulatedYellowCardNumber(), definition.competition());
+                configuration.teamManager().get(teamId).registrationOf(player.definition().id()).addSanction(competition.definition().accumulatedYellowCardSanction());
+                player.sanction(competition.definition().accumulatedYellowCardSanction(), definition.competition());
             }
         }
     }
@@ -152,7 +158,7 @@ public class SimulateMatch extends Event {
         //TODO TENDRE QUE TOCAR POR %
         match.events().stream()
                 .filter(e -> e.type() == Match.MatchEvent.Type.MinorInjury)
-                .forEach(e -> configuration.playerManager().get(e.who()).addInjury(configuration.timeManager().future(10)));    //TODO 10
+                .forEach(e -> configuration.playerManager().get(e.who()).addInjury(configuration.timeManager().future(10)));
         match.events().stream()
                 .filter(e -> e.type() == Match.MatchEvent.Type.SeriousInjury)
                 .forEach(e -> configuration.playerManager().get(e.who()).addInjury(configuration.timeManager().future(60)));
@@ -210,8 +216,8 @@ public class SimulateMatch extends Event {
         revision.postHappiness(player.mood().gameTime());
         revision.expelled(match.events().stream().anyMatch(e -> e.who().equals(player.definition().id()) && e.type() == Match.MatchEvent.Type.Expulsion));
         revision.injured(match.events().stream().anyMatch(e -> e.who().equals(player.definition().id()) && (e.type() == Match.MatchEvent.Type.MinorInjury || e.type() == Match.MatchEvent.Type.SeriousInjury || e.type() == Match.MatchEvent.Type.VerySeriousInjury)));
-        revision.enterMinute(match.events().stream().filter(e -> e.who().equals(player.definition().id()) && e.type() == Match.MatchEvent.Type.SubstituteIn).map(Match.MatchEvent::minute).findFirst().orElse(null));
-        revision.exitMinute(match.events().stream().filter(e -> e.who().equals(player.definition().id()) && e.type() == Match.MatchEvent.Type.SubstituteOut).map(Match.MatchEvent::minute).findFirst().orElse(null));
+        revision.enterMinute(match.events().stream().filter(e -> e.type() == Substitution).filter(e -> e.who().equals(player.definition().id())).map(Match.MatchEvent::minute).findFirst().orElse(null));
+        revision.exitMinute(match.events().stream().filter(e -> e.type() == Substitution).filter(e -> e.secondaryWho().equals(player.definition().id())).map(Match.MatchEvent::minute).findFirst().orElse(null));
     }
 
     private List<Revision> postMatchTeamsRevisions(Match match) {

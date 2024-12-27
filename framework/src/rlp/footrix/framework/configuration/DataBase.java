@@ -1,8 +1,8 @@
 package rlp.footrix.framework.configuration;
 
 import rlp.footrix.framework.types.Competition;
-import rlp.footrix.framework.types.Player;
-import rlp.footrix.framework.types.Team;
+import rlp.footrix.framework.types.player.Player;
+import rlp.footrix.framework.types.team.Team;
 
 import java.util.List;
 

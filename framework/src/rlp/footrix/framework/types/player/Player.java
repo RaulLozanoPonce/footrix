@@ -1,5 +1,6 @@
-package rlp.footrix.framework.types;
+package rlp.footrix.framework.types.player;
 
+import rlp.footrix.framework.types.team_player.PlayerContract;
 import rlp.footrix.framework.types.definitions.PlayerDefinition;
 
 import java.time.Instant;

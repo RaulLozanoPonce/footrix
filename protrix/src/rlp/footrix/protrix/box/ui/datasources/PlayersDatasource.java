@@ -4,7 +4,7 @@ import io.intino.alexandria.ui.model.datasource.Filter;
 import io.intino.alexandria.ui.model.datasource.Group;
 import io.intino.alexandria.ui.model.datasource.PageDatasource;
 import io.intino.alexandria.ui.model.datasource.filters.GroupFilter;
-import rlp.footrix.framework.types.Position;
+import rlp.footrix.framework.types.player.Position;
 import rlp.footrix.protrix.box.ProtrixBox;
 import rlp.footrix.protrix.model.ProtrixPlayer;
 

@@ -1,16 +1,17 @@
-package rlp.footrix.protrix.simulator;
+package rlp.footrix.protrix.simulator.actions;
 
 import rlp.footrix.framework.types.Match;
 import rlp.footrix.protrix.model.ProtrixPlayer;
+import rlp.footrix.protrix.simulator.MatchState;
 
 import java.util.List;
 
-public abstract class MatchActionSimulator {
+public abstract class ActionSimulator {
 
     protected final MatchState state;
     protected final int minute;
 
-    public MatchActionSimulator(MatchState state, int minute) {
+    public ActionSimulator(MatchState state, int minute) {
         this.state = state;
         this.minute = minute;
     }

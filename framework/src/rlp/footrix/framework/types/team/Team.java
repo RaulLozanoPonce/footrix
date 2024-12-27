@@ -1,5 +1,8 @@
-package rlp.footrix.framework.types;
+package rlp.footrix.framework.types.team;
 
+import rlp.footrix.framework.types.player.Player;
+import rlp.footrix.framework.types.team_player.PlayerContract;
+import rlp.footrix.framework.types.team_player.PlayerRegistration;
 import rlp.footrix.framework.types.definitions.PlayerDefinition;
 import rlp.footrix.framework.types.definitions.TeamDefinition;
 

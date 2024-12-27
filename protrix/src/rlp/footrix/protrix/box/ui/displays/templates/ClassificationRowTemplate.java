@@ -1,6 +1,6 @@
 package rlp.footrix.protrix.box.ui.displays.templates;
 
-import rlp.footrix.framework.types.Team;
+import rlp.footrix.framework.types.team.Team;
 import rlp.footrix.framework.var.TeamResult;
 import rlp.footrix.protrix.box.ProtrixBox;
 

@@ -2,16 +2,16 @@ dsl konos
 
 use Theme
 
-Template(format=br, layout=Horizontal) matchesTemplate as Relative(width=100%, height=100%)
+Template(layout=Horizontal) matchesTemplate as Relative(width=100%, height=100%)
 	Block as Relative(width=50%, height=100%) > TemplateStamp(template = matchRowTemplate) matchRowStamp as Multiple
 	Block as Relative(width=50%, height=100%) > TemplateStamp(template = eventRowTemplate) eventRowStamp as Multiple
 
-Template(layout=Horizontal, format=by w100) matchRowTemplate as Absolute(height = 60px)
+Template(layout=Horizontal, format=w100) matchRowTemplate as Absolute(height = 60px)
 	Block as Relative(height=100%, width=35%) > Text localTeam
 	Block as Relative(height=100%, width=30%) > Link(title="") result
 	Block as Relative(height=100%, width=35%) > Text visitantTeam
 
-Template(layout=Horizontal, format=by w100) eventRowTemplate as Absolute(height = 40px)
+Template(layout=Horizontal, format=w100) eventRowTemplate as Absolute(height = 40px)
 	Block as Relative(height=100%, width=10%) > Text minute
 	Block as Relative(height=100%, width=30%) > Text type
 	Block as Relative(height=100%, width=30%) > Text localWho

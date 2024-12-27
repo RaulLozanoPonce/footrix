@@ -1,7 +1,7 @@
-package rlp.footrix.framework.helpers;
+package rlp.footrix.framework.generators;
 
-import rlp.footrix.framework.types.Player;
-import rlp.footrix.framework.types.PlayerContract;
+import rlp.footrix.framework.types.player.Player;
+import rlp.footrix.framework.types.team_player.PlayerContract;
 
 public class AbsoluteCacheGenerator {
 

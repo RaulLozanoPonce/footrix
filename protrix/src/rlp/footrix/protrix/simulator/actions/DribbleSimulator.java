@@ -1,13 +1,12 @@
 package rlp.footrix.protrix.simulator.actions;
 
 import rlp.footrix.framework.types.Match;
-import rlp.footrix.framework.types.Player;
-import rlp.footrix.framework.types.Position;
+import rlp.footrix.framework.types.player.Player;
+import rlp.footrix.framework.types.player.Position;
 import rlp.footrix.framework.types.definitions.PlayerDefinition;
 import rlp.footrix.protrix.model.ProtrixPlayer;
-import rlp.footrix.protrix.simulator.MatchActionSimulator;
 import rlp.footrix.protrix.simulator.MatchState;
-import rlp.footrix.protrix.simulator.PositionFactors;
+import rlp.footrix.protrix.simulator.helpers.PositionFactors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,13 +14,13 @@ import java.util.List;
 import static rlp.footrix.framework.types.Match.MatchEvent.Type.*;
 
 
-public class MatchDribbleSimulator extends MatchActionSimulator {
+public class DribbleSimulator extends ActionSimulator {
     private final ProtrixPlayer player;
     private final String team;
     private final String rivalTeam;
     private final ProtrixPlayer rival;
 
-    public MatchDribbleSimulator(MatchState state, int minute, Player rival) {
+    public DribbleSimulator(MatchState state, int minute, Player rival) {
         super(state, minute);
         this.player = (ProtrixPlayer) state.playerWithPossession();
         this.team = state.teamWithPossession();
@@ -43,7 +42,7 @@ public class MatchDribbleSimulator extends MatchActionSimulator {
                 if (isFault()) {
                     fault(events);
                 } else {
-                    state.init(rivalTeam, rival);
+                    state.setPossession(rivalTeam, rival);
                 }
             }
         }
@@ -62,7 +61,7 @@ public class MatchDribbleSimulator extends MatchActionSimulator {
         Position rivalPosition = state.positionOf(rival);
         if (rivalPosition == Position.PT) return false; //TODO SE DEBERÁN PODER COMETER
         if (state.events().stream().anyMatch(e -> e.type() == YellowCard && e.who().equals(rival.definition().id()))) {
-            if (Math.random() < 0.65) return false; //CON ESTO SE CONTROLA QUE NO HAYAN TANTAS EXPULSIONES. ES UN VALOR QUE SE DEBE MANTENER
+            if (Math.random() < 0.65) return false;
         }
         return Math.random() < PositionFactors.faultPercentOf(rivalPosition);
     }
@@ -75,10 +74,10 @@ public class MatchDribbleSimulator extends MatchActionSimulator {
         state.addFault(rival, player);
         cards(events);
         if (isInjury()) {
-            state.init(team, bestFreeKickPlayerOf(state.playersOf(team).stream().filter(p -> !p.definition().id().equals(player.definition().id())).toList()));
+            state.setPossession(team, bestFreeKickPlayerOf(state.playersOf(team).stream().filter(p -> !p.definition().id().equals(player.definition().id())).toList()));
             injury(events);
         } else {
-            state.init(team, bestFreeKickPlayerOf(state.playersOf(team)));
+            state.setPossession(team, bestFreeKickPlayerOf(state.playersOf(team)));
         }
     }
 
@@ -95,10 +94,10 @@ public class MatchDribbleSimulator extends MatchActionSimulator {
             if (state.events().stream().anyMatch(e -> e.type() == YellowCard && e.who().equals(rival.definition().id())))
                 state.addYellowExpulsion(rival);
             state.addYellowCard(rival);
-            events.add(new Match.MatchEvent(rivalTeam, YellowCard, minute, rival.definition().id()));
+            events.add(new Match.MatchEvent(rivalTeam, YellowCard, minute, rival.definition().id(), null));
         } else if (cardRandom < 0.42 + 0.016) {
             state.addRedCard(rival);
-            events.add(new Match.MatchEvent(rivalTeam, RedCard, minute, rival.definition().id()));
+            events.add(new Match.MatchEvent(rivalTeam, RedCard, minute, rival.definition().id(), null));
         }
     }
 
@@ -106,11 +105,11 @@ public class MatchDribbleSimulator extends MatchActionSimulator {
         state.addInjury();
         double type = Math.random();
         if (type < 0.4954) {
-            events.add(new Match.MatchEvent(team, MinorInjury, minute, player.definition().id()));
+            events.add(new Match.MatchEvent(team, MinorInjury, minute, player.definition().id(), null));
         } else if (type < 0.4954 + 0.4208) {
-            events.add(new Match.MatchEvent(team, SeriousInjury, minute, player.definition().id()));
+            events.add(new Match.MatchEvent(team, SeriousInjury, minute, player.definition().id(), null));
         } else {
-            events.add(new Match.MatchEvent(team, VerySeriousInjury, minute, player.definition().id()));
+            events.add(new Match.MatchEvent(team, VerySeriousInjury, minute, player.definition().id(), null));
         }
         player.energy(-1.0);    //TODO DEJO ESTE VALOR CON LAS LEVES?
     }

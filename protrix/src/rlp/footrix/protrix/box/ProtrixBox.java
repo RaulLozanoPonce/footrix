@@ -1,7 +1,7 @@
 package rlp.footrix.protrix.box;
 
+import rlp.footrix.framework.deprecated.PlayerClassification;
 import rlp.footrix.framework.types.Match;
-import rlp.footrix.framework.types.PlayerClassification;
 import rlp.footrix.protrix.ProtrixAppConfiguration;
 import rlp.footrix.protrix.ProtrixApplication;
 import rlp.footrix.protrix.simulator.ProtrixMatchSimulator;
@@ -30,9 +30,8 @@ public class ProtrixBox extends AbstractBox {
 	}
 
 	public void beforeStart() {
-		ProtrixVar var = new ProtrixVar();
-		ProtrixAppConfiguration config = new ProtrixAppConfiguration(var);
-		application = new ProtrixApplication(config, definition -> new ProtrixMatchSimulator(definition, var));
+		ProtrixAppConfiguration config = new ProtrixAppConfiguration();
+		application = new ProtrixApplication(config, ProtrixMatchSimulator::new);
 		application.start();
 	}
 
@@ -61,7 +60,7 @@ public class ProtrixBox extends AbstractBox {
 			}
 			Map<Integer, Integer> substitutions = new HashMap<>();
 			application.matchStore().get("ESP-1", "season1", 0, 0)
-					.forEach(m -> m.events().stream().filter(e -> e.type() == Match.MatchEvent.Type.SubstituteIn).forEach(e -> {
+					.forEach(m -> m.events().stream().filter(e -> e.type() == Match.MatchEvent.Type.Substitution).forEach(e -> {
 						substitutions.putIfAbsent(e.minute(), 0);
 						substitutions.put(e.minute(), substitutions.get(e.minute()) + 1);
 					}));

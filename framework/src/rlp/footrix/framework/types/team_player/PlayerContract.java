@@ -1,4 +1,4 @@
-package rlp.footrix.framework.types;
+package rlp.footrix.framework.types.team_player;
 
 import java.time.Instant;
 
