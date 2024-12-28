@@ -64,6 +64,11 @@ public class SpainFirstDivision implements CompetitionDefinition {
                     }
 
                     @Override
+                    public int rankingScore() {
+                        return 15;
+                    }
+
+                    @Override
                     public List<String> classify(List<TeamClassification> teams) {
                         return teams.stream().sorted((o1, o2) -> {
                             if (o1.points() > o2.points()) return -1;

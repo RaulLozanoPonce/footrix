@@ -9,6 +9,7 @@ Template playerTraceTemplate as Relative(height=100%, width=100%)
 		Text position as Labeled("Posicion Ideal:")
 		Text role as Labeled("Rol:")
 		Number stamina as Labeled("Resistencia:")
+		Text injuryResistance as Labeled("Resistencia lesiones:")
 	Block as Relative(width=100%, height=95%)
 		Table(itemClass="rlp.footrix.framework.var.PlayerMatchPerformance", pageSize=38, format=wh100) traceTable
 			noItemsMessage = "Este jugador no ha jugado partidos"

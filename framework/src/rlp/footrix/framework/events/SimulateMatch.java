@@ -62,6 +62,7 @@ public class SimulateMatch extends Event {
         reduceSanctions();
         registerCardsAndSanctions(match);
         registerInjuries(match);
+        adjustTeamRankingScores(match);
     }
 
     private void adjustMood(Match match) {
@@ -81,8 +82,8 @@ public class SimulateMatch extends Event {
 
     private double maxMinutesOf(Player player, Match match) {
         Match.MatchEvent outs = match.events().stream()
-                .filter(e -> e.who().equals(player.definition().id()))
                 .filter(e -> e.type() == Match.MatchEvent.Type.NeededSubstitution || e.type() == Match.MatchEvent.Type.Expulsion)
+                .filter(e -> e.who().equals(player.definition().id()))
                 .findFirst().orElse(null);
         if (outs == null) return match.duration();
         return outs.minute();
@@ -167,6 +168,15 @@ public class SimulateMatch extends Event {
                 .forEach(e -> configuration.playerManager().get(e.who()).addInjury(configuration.timeManager().future(250)));
     }
 
+    private void adjustTeamRankingScores(Match match) {
+        int localNewScore = configuration.teamRankingHandler()
+                .newScore(local, visitant, definition.competition() + "-" + definition.phase(), pointsOf(local.definition().id(), match), false); //TODO
+        int visitantNewScore = configuration.teamRankingHandler()
+                .newScore(visitant, local, definition.competition() + "-" + definition.phase(), pointsOf(visitant.definition().id(), match), false); //TODO
+        local.rankingScore(localNewScore);
+        visitant.rankingScore(visitantNewScore);
+    }
+
     private List<Player> availablePlayersOf(Team team) {
         return playersOf(team).stream()
                 .filter(p -> !p.isInjured())
@@ -227,6 +237,12 @@ public class SimulateMatch extends Event {
         revisions.add(new TeamResult(match.definition().date()).competitionId(match.definition().competition()).teamId(match.definition().local()).goalsFor(localGoals).goalsAgainst(visitantGoals).points(pointsOf(localGoals, visitantGoals)));
         revisions.add(new TeamResult(match.definition().date()).competitionId(match.definition().competition()).teamId(match.definition().visitant()).goalsFor(visitantGoals).goalsAgainst(localGoals).points(pointsOf(visitantGoals, localGoals)));
         return revisions;
+    }
+
+    private int pointsOf(String team, Match match) {
+        int goalsFor = (int) match.events().stream().filter(e -> e.type() == Goal).filter(e -> e.team().equals(team)).count();
+        int goalsAgainst = (int) match.events().stream().filter(e -> e.type() == Goal).filter(e -> !e.team().equals(team)).count();
+        return pointsOf(goalsFor, goalsAgainst);
     }
 
     private int pointsOf(int goalsFor, int goalsAgainst) {

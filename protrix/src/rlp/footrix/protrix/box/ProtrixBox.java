@@ -2,6 +2,7 @@ package rlp.footrix.protrix.box;
 
 import rlp.footrix.framework.deprecated.PlayerClassification;
 import rlp.footrix.framework.types.Match;
+import rlp.footrix.framework.types.team.Team;
 import rlp.footrix.protrix.ProtrixAppConfiguration;
 import rlp.footrix.protrix.ProtrixApplication;
 import rlp.footrix.protrix.simulator.ProtrixMatchSimulator;
@@ -58,7 +59,7 @@ public class ProtrixBox extends AbstractBox {
 			for (PlayerClassification classification : application.statisticTables().bestPlayer("season1", 10)) {
 				System.out.println(classification.id() + " - " + classification.name() + " - " + classification.score());
 			}
-			Map<Integer, Integer> substitutions = new HashMap<>();
+			/*Map<Integer, Integer> substitutions = new HashMap<>();
 			application.matchStore().get("ESP-1", "season1", 0, 0)
 					.forEach(m -> m.events().stream().filter(e -> e.type() == Match.MatchEvent.Type.Substitution).forEach(e -> {
 						substitutions.putIfAbsent(e.minute(), 0);
@@ -66,6 +67,10 @@ public class ProtrixBox extends AbstractBox {
 					}));
 			for (Integer minute : substitutions.keySet().stream().sorted().toList()) {
 				System.out.println(minute + "\t" + substitutions.get(minute));
+			}*/
+			System.out.println("-----------------------------------------------------------------------------------------");
+			for (Team team : application.teamManager().teams()) {
+				System.out.println(team.definition().name() + " -> " + team.rankingScore());
 			}
 	}
 

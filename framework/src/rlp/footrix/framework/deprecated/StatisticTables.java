@@ -1,7 +1,7 @@
 package rlp.footrix.framework.deprecated;
 
 import rlp.footrix.framework.managers.PlayerManager;
-import rlp.footrix.framework.stores.MatchMemoryStore;
+import rlp.footrix.framework.stores.match.MatchMemoryStore;
 import rlp.footrix.framework.types.Match;
 import rlp.footrix.framework.types.player.Player;
 import rlp.footrix.framework.types.player.Position;

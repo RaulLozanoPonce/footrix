@@ -10,7 +10,7 @@ Artifact("rlp.footrix", "1.0.0-SNAPSHOT") protrix
 		Compile("rlp.footrix", "framework", "1.0.0-SNAPSHOT")
 		Web("rlp.footrix", "protrix-ui", "1.0.0-SNAPSHOT")
 
-	Package(ModulesAndLibrariesLinkedByManifest) as Runnable("rlp.footrix.protrix.box.Main")
+	Package(ModulesAndLibrariesExtracted) as Runnable("rlp.footrix.protrix.box.Main")
 
 	Parameter("port")
 

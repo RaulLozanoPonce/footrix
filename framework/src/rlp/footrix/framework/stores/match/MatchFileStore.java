@@ -1,4 +1,4 @@
-package rlp.footrix.framework.stores;
+package rlp.footrix.framework.stores.match;
 
 import rlp.footrix.framework.utils.Json;
 import rlp.footrix.framework.types.Match;

@@ -3,7 +3,20 @@ dsl konos
 use Theme
 
 Template classificationTemplate as Relative(width=100%)
+	TemplateStamp(template = classificationHeaderTemplate)
 	TemplateStamp(template = classificationRowTemplate) classificationRowStamp as Multiple
+
+Template(format=w100, layout=Horizontal) classificationHeaderTemplate as Absolute(height=20px)
+	Block as Relative(height=100%, width=5%) > Text(value = "Posicion")
+	Block as Relative(height=100%, width=15%) > Text(value = "Equipo")
+	Block as Relative(height=100%, width=10%) > Text(value = "Partidos jugados")
+	Block as Relative(height=100%, width=10%) > Text(value = "Partidos ganados")
+	Block as Relative(height=100%, width=10%) > Text(value = "Partidos empatados")
+	Block as Relative(height=100%, width=10%) > Text(value = "Partidos perdidos")
+	Block as Relative(height=100%, width=10%) > Text(value = "Goles a favor")
+	Block as Relative(height=100%, width=10%) > Text(value = "Goles en contra")
+	Block as Relative(height=100%, width=10%) > Text(value = "Diferencia de goles")
+	Block as Relative(height=100%, width=10%) > Text(value = "Puntos")
 
 Template(format=w100, layout=Horizontal) classificationRowTemplate as Absolute(height=20px)
 	Block as Relative(height=100%, width=5%) > Number position

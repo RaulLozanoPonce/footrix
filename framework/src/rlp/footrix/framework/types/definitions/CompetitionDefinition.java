@@ -25,6 +25,7 @@ public interface CompetitionDefinition {
         String matchDayName(int number);
         LocalPolicy localPolicy();
         SecondLegPolicy secondLegPolicy();
+        int rankingScore();
         List<String> classify(List<TeamClassification> classification);
         Instant nextDate(int matchDay, Instant date);
 

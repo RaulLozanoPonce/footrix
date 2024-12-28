@@ -18,6 +18,7 @@ public abstract class Team {
     private final Map<String, PlayerRegistration> registrations = new HashMap<>();
     private final Lineup lineup;
     private Set<String> competitions = new HashSet<>();
+    private Integer rankingScore = 0;
 
     public Team(TeamDefinition definition, Lineup lineup) {
         this.definition = definition;
@@ -63,4 +64,13 @@ public abstract class Team {
     public abstract double attack();
     public abstract double midfield();
     public abstract double defense();
+
+    public Integer rankingScore() {
+        return rankingScore;
+    }
+
+    public Team rankingScore(Integer rankingScore) {
+        this.rankingScore = rankingScore;
+        return this;
+    }
 }

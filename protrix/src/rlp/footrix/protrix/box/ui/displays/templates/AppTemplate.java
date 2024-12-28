@@ -40,7 +40,6 @@ public class AppTemplate extends AbstractAppTemplate<ProtrixBox> {
 		row.roleMold.role.value(team == null ? "" : team.contractOf(player.definition().id()).role().name());
 		row.overallMold.overall.value(player.overall());
 		row.positionMold.position.value(player.mainPosition().name());
-		row.staminaMold.stamina.value(player.stamina());
 		row.happinessMold.happiness.value(Math.round(player.mood().gameTime() * 100.0) / 100.0);
 		row.minutesMold.minutes.value(registration == null ? null : registration.percentMinutes("ESP-1"));
 	}

@@ -23,10 +23,10 @@ Template(layout=Horizontal) appTemplate as Relative(height=100%, width=100%)
 			Item(height=20px, width=10%) idMold > Number id
 		Mold
 			Heading nameHeading > Text(value = "Nombre")
-			Item(height=20px, width=20%) nameMold > Link(title = "nombre") name
+			Item(height=20px, width=25%) nameMold > Link(title = "nombre") name
 		Mold
 			Heading teamHeading > Text(value = "Equipo")
-			Item(height=20px, width=10%) teamMold > Text team
+			Item(height=20px, width=15%) teamMold > Text team
 		Mold
 			Heading roleHeading > Text(value = "Rol")
 			Item(height=20px, width=10%) roleMold > Text role
@@ -36,9 +36,6 @@ Template(layout=Horizontal) appTemplate as Relative(height=100%, width=100%)
 		Mold
 			Heading positionHeading > Text(value = "Posicion")
 			Item(height=20px, width=10%) positionMold > Text position
-		Mold
-			Heading staminaHeading > Text(value = "Resistencia")
-			Item(height=20px, width=10%) staminaMold > Number stamina
 		Mold
 			Heading happinessHeading > Text(value = "Felicidad (TJ)")
 			Item(height=20px, width=10%) happinessMold > Number(countDecimals = 2) happiness

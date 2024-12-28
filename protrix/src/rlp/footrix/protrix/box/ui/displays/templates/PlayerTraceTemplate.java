@@ -30,6 +30,7 @@ public class PlayerTraceTemplate extends AbstractPlayerTraceTemplate<ProtrixBox>
 		position.value(player.mainPosition().name());
 		role.value(playerTeam.contractOf(player.definition().id()).role().name());
 		stamina.value(player.stamina());
+		injuryResistance.value(player.definition().injuryResistance().name());
 	}
 
 	private void initTable() {

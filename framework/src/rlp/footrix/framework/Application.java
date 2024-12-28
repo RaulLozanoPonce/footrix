@@ -4,7 +4,8 @@ import rlp.footrix.framework.configuration.TeamRule;
 import rlp.footrix.framework.deprecated.StatisticTables;
 import rlp.footrix.framework.events.EventConfiguration;
 import rlp.footrix.framework.managers.*;
-import rlp.footrix.framework.stores.MatchMemoryStore;
+import rlp.footrix.framework.stores.TeamRankingHandler;
+import rlp.footrix.framework.stores.match.MatchMemoryStore;
 import rlp.footrix.framework.types.definitions.CompetitionDefinition;
 import rlp.footrix.framework.types.definitions.MatchDefinition;
 import rlp.footrix.framework.utils.TriFunction;
@@ -23,6 +24,7 @@ public class Application {
     private final PlayerManager playerManager;
     private final RulesManager rulesManager;
     private final StatisticTables statisticTables;  //TODO DESAPARECERÁ
+    private final TeamRankingHandler teamRankingHandler;
     private final Var var;
 
     private TriFunction<MatchDefinition, CompetitionDefinition, Var, MatchSimulator> matchSimulator;
@@ -30,6 +32,7 @@ public class Application {
     public Application(FootrixConfiguration configuration) {
         this.game = new Game().date(configuration.initDate()).season(configuration.initSeason());
         this.matchStore = new MatchMemoryStore();
+        this.teamRankingHandler = new TeamRankingHandler();
 
         this.competitionManager = new CompetitionManager(this.game, configuration.initDatabase().competitions());
         this.teamManager = new TeamManager(configuration.initDatabase().teams());
@@ -44,6 +47,8 @@ public class Application {
 
         this.eventManager.add(configuration.initEvents());
         this.timeManager.set(configuration.initDate());
+        configuration.initDatabase().competitions().forEach(this.teamRankingHandler::addCompetition);
+        teamManager.teams().forEach(t -> t.rankingScore(100));
     }
 
     protected void add(String id, TeamRule rule) {
@@ -139,6 +144,11 @@ public class Application {
             @Override
             public Var var() {
                 return var;
+            }
+
+            @Override
+            public TeamRankingHandler teamRankingHandler() {
+                return teamRankingHandler;
             }
         };
     }
