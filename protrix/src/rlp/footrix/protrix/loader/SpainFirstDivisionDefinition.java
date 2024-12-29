@@ -6,7 +6,7 @@ import rlp.footrix.framework.types.definitions.CompetitionDefinition;
 import java.time.Instant;
 import java.util.List;
 
-public class SpainFirstDivision implements CompetitionDefinition {
+public class SpainFirstDivisionDefinition implements CompetitionDefinition {
 
     @Override
     public String id() {
@@ -89,12 +89,12 @@ public class SpainFirstDivision implements CompetitionDefinition {
                     }
 
                     @Override
-                    public List<String> classify(List<TeamClassification> teams) {
+                    public List<TeamClassification> classify(List<TeamClassification> teams) {
                         return teams.stream().sorted((o1, o2) -> {
                             if (o1.points() > o2.points()) return -1;
                             else if (o1.points() == o2.points()) return 0;
                             return 1;
-                        }).map(TeamClassification::teamId).toList();
+                        }).toList();
                     }
 
                     @Override

@@ -3,20 +3,23 @@ package rlp.footrix.protrix.var;
 import rlp.footrix.framework.var.Revision;
 import rlp.footrix.framework.var.Var;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ProtrixVar implements Var {
 
-    private Map<Class<? extends Revision>, List<Revision>> revisions = new HashMap<>();
+    private Map<Class<? extends Revision>, Map<String, Revision>> revisions = new HashMap<>();
 
     public void publish(Revision revision) {
-        this.revisions.putIfAbsent(revision.getClass(), new ArrayList<>());
-        this.revisions.get(revision.getClass()).add(revision);
+        this.revisions.putIfAbsent(revision.getClass(), new HashMap<>());
+        this.revisions.get(revision.getClass()).put(revision.key(), revision);
     }
 
     public <T extends Revision> List<T> revisions(Class<T> clazz) {
-        List<T> revisions = (List<T>) this.revisions.get(clazz);
+        Map<String, T> revisions = (Map<String, T>) this.revisions.get(clazz);
         if (revisions == null) return new ArrayList<>();
-        return revisions.stream().sorted(Comparator.comparingLong(e -> e.date().toEpochMilli())).toList();
+        return new ArrayList<>(revisions.values());
     }
 }

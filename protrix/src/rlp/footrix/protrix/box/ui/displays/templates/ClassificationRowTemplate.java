@@ -1,10 +1,8 @@
 package rlp.footrix.protrix.box.ui.displays.templates;
 
+import rlp.footrix.framework.types.definitions.CompetitionDefinition;
 import rlp.footrix.framework.types.team.Team;
-import rlp.footrix.framework.var.TeamResult;
 import rlp.footrix.protrix.box.ProtrixBox;
-
-import java.util.List;
 
 public class ClassificationRowTemplate extends AbstractClassificationRowTemplate<ProtrixBox> {
 
@@ -12,18 +10,18 @@ public class ClassificationRowTemplate extends AbstractClassificationRowTemplate
 		super(box);
 	}
 
-	public ClassificationRowTemplate results(int position, String teamId, List<TeamResult> results) {
-		Team team = box().application().teamManager().get(teamId);
+	public ClassificationRowTemplate results(int position, CompetitionDefinition.PhaseDefinition.TeamClassification classification) {
+		Team team = box().application().teamManager().get(classification.teamId());
 		this.position.value(position);
 		this.team.value(team.definition().name());
-		this.playedMatches.value(results.size());
-		this.winMatches.value(results.stream().filter(r -> r.points() == 3).count());
-		this.drawMatches.value(results.stream().filter(r -> r.points() == 1).count());
-		this.lostMatches.value(results.stream().filter(r -> r.points() == 0).count());
-		this.goalsFor.value(results.stream().mapToInt(TeamResult::goalsFor).sum());
-		this.goalsAgainst.value(results.stream().mapToInt(TeamResult::goalsAgainst).sum());
-		this.goalsDifference.value(results.stream().mapToInt(r -> r.goalsFor() - r.goalsAgainst()).sum());
-		this.points.value(results.stream().mapToInt(TeamResult::points).sum());
+		this.playedMatches.value(classification.wonMatches() + classification.drawMatches() + classification.lostMatches());
+		this.winMatches.value(classification.wonMatches());
+		this.drawMatches.value(classification.drawMatches());
+		this.lostMatches.value(classification.lostMatches());
+		this.goalsFor.value(classification.goalsFor());
+		this.goalsAgainst.value(classification.goalsAgainst());
+		this.goalsDifference.value(classification.goalsFor() - classification.goalsAgainst());
+		this.points.value(classification.points());
 		return this;
 	}
 }

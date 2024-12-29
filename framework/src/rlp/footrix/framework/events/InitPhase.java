@@ -4,6 +4,7 @@ import rlp.footrix.framework.configuration.TeamRule;
 import rlp.footrix.framework.types.Competition;
 import rlp.footrix.framework.types.Competition.Phase;
 import rlp.footrix.framework.types.Competition.Phase.Group;
+import rlp.footrix.framework.types.SeasonReference;
 import rlp.footrix.framework.types.team.Team;
 
 import java.time.Instant;
@@ -13,14 +14,13 @@ import java.util.List;
 import java.util.Set;
 
 public class InitPhase extends Event {
-
     private final String competitionId;
-    private final String season;
+    private final SeasonReference season;
     private final int nPhase;
     private final List<String> ruleIds;
     private final List<Team> teams;
 
-    public InitPhase(Instant ts, String competitionId, String season, int nPhase, List<Team> teams, List<String> ruleIds) {
+    public InitPhase(Instant ts, String competitionId, SeasonReference season, int nPhase, List<Team> teams, List<String> ruleIds) {
         super(ts);
         this.competitionId = competitionId;
         this.season = season;
@@ -29,18 +29,17 @@ public class InitPhase extends Event {
         this.ruleIds = ruleIds;
     }
 
-    public InitPhase(Instant ts, String competitionId, String season, int nPhase, List<String> ruleIds) {
+    public InitPhase(Instant ts, String competitionId, SeasonReference season, int nPhase, List<String> ruleIds) {
         this(ts, competitionId, season, nPhase, new ArrayList<>(), ruleIds);
     }
 
-    public InitPhase(Instant ts, String competitionId, String season, int nPhase, Set<Team> teams) {
-        //TODO
+    public InitPhase(Instant ts, String competitionId, SeasonReference season, int nPhase, Set<Team> teams) {
         this(ts, competitionId, season, nPhase, new ArrayList<>(teams), new ArrayList<>());
     }
 
     @Override
     public void execute() {
-        Competition competition = configuration.competitionManager().get(competitionId, season);
+        Competition competition = configuration.competitionManager().get(competitionId, configuration.game().season(season));
         Phase phase = competition.phase(nPhase);
         int maxTeams = phase.definition().nGroups() * phase.definition().groupDefinition().nTeams();
         List<Team> teams = (this.teams.isEmpty()) ? teams(rules(ruleIds), maxTeams) : this.teams;

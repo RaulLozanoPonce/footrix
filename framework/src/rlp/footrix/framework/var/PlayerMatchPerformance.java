@@ -6,7 +6,8 @@ import java.time.Instant;
 
 public class PlayerMatchPerformance implements Revision {
 
-    private final Instant date;
+    private final String key;
+    private Instant date;
     private String player;
     private String match;
     private Position position;
@@ -20,13 +21,22 @@ public class PlayerMatchPerformance implements Revision {
     private Integer exitMinute;
     private String note;
 
-    public PlayerMatchPerformance(Instant date) {
-        this.date = date;
+    public PlayerMatchPerformance(String key) {
+        this.key = key;
     }
 
     @Override
+    public String key() {
+        return key;
+    }
+
     public Instant date() {
         return date;
+    }
+
+    public PlayerMatchPerformance date(Instant date) {
+        this.date = date;
+        return this;
     }
 
     public String player() {

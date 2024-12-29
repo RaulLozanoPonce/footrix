@@ -6,16 +6,13 @@ import rlp.footrix.framework.types.definitions.MatchDefinition;
 import rlp.footrix.framework.types.player.Player;
 import rlp.footrix.framework.types.team.PlayersLineup;
 import rlp.footrix.framework.types.team.Team;
-import rlp.footrix.framework.types.team_player.PlayerRegistration;
 import rlp.footrix.framework.var.PlayerMatchPerformance;
 import rlp.footrix.framework.var.Revision;
-import rlp.footrix.framework.var.TeamResult;
+import rlp.footrix.framework.var.MatchResult;
+import rlp.footrix.framework.var.VarTerminal;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static rlp.footrix.framework.generators.LineupGenerator.playersLineup;
@@ -54,8 +51,8 @@ public class SimulateMatch extends Event {
         Match match = playMatch();
         configuration.matchStore().save(match);
         postMatch(match);
-        postMatchPlayersRevisions(revisions, match).forEach(r -> configuration.var().publish(r));
-        postMatchTeamsRevisions(match).forEach(r -> configuration.var().publish(r));
+        postMatchPlayersRevisions(revisions, match).forEach(VarTerminal::publish);
+        postMatchTeamsRevisions(match).forEach(VarTerminal::publish);
     }
 
     private Match playMatch() {
@@ -193,9 +190,9 @@ public class SimulateMatch extends Event {
 
     private void adjustTeamRankingScores(Match match) {
         int localNewScore = configuration.teamRankingHandler()
-                .newScore(local, visitant, definition.competition() + "-" + definition.phase(), pointsOf(local.definition().id(), match), false); //TODO
+                .newScore(local, visitant, definition.competition() + "-" + definition.phase(), pointsOf(local.definition().id(), match), phase.definition().withPenalties());
         int visitantNewScore = configuration.teamRankingHandler()
-                .newScore(visitant, local, definition.competition() + "-" + definition.phase(), pointsOf(visitant.definition().id(), match), false); //TODO
+                .newScore(visitant, local, definition.competition() + "-" + definition.phase(), pointsOf(visitant.definition().id(), match), phase.definition().withPenalties());
         local.rankingScore(localNewScore);
         visitant.rankingScore(visitantNewScore);
     }
@@ -215,13 +212,14 @@ public class SimulateMatch extends Event {
 
     private List<Revision> preMatchPlayersRevisions() {
         List<Revision> revisions = new ArrayList<>();
-        revisions.addAll(playersOf(local).stream().map(p -> revisionOf(p, local.registrationOf(p.definition().id()))).toList());
-        revisions.addAll(playersOf(visitant).stream().map(p -> revisionOf(p, visitant.registrationOf(p.definition().id()))).toList());
+        revisions.addAll(playersOf(local).stream().map(this::revisionOf).toList());
+        revisions.addAll(playersOf(visitant).stream().map(this::revisionOf).toList());
         return revisions;
     }
 
-    private Revision revisionOf(Player player, PlayerRegistration registration) {
-        return new PlayerMatchPerformance(ts)
+    private Revision revisionOf(Player player) {
+        return new PlayerMatchPerformance(UUID.randomUUID().toString())
+                .date(ts)
                 .player(player.definition().id())
                 .match(definition.local() + " - " + definition.visitant())
                 .preEnergy(player.energy())
@@ -257,9 +255,18 @@ public class SimulateMatch extends Event {
         List<Revision> revisions = new ArrayList<>();
         int localGoals = (int) match.events().stream().filter(e -> e.type() == Goal).filter(e -> e.team().equals(match.definition().local())).count();
         int visitantGoals = (int) match.events().stream().filter(e -> e.type() == Goal).filter(e -> e.team().equals(match.definition().visitant())).count();
-        revisions.add(new TeamResult(match.date()).competitionId(match.definition().competition()).teamId(match.definition().local()).goalsFor(localGoals).goalsAgainst(visitantGoals).points(pointsOf(localGoals, visitantGoals)));
-        revisions.add(new TeamResult(match.date()).competitionId(match.definition().competition()).teamId(match.definition().visitant()).goalsFor(visitantGoals).goalsAgainst(localGoals).points(pointsOf(visitantGoals, localGoals)));
+        revisions.add(new MatchResult(matchResultKey(match)).localGoals(localGoals).visitantGoals(visitantGoals));
         return revisions;
+    }
+
+    private static String matchResultKey(Match match) {
+        return match.definition().competition() + ";" +
+                match.definition().phase() + ";" +
+                match.definition().group() + ";" +
+                match.definition().matchDay() + ";" +
+                match.definition().season() + ";" +
+                match.definition().local() + ";" +
+                match.definition().visitant();
     }
 
     private int pointsOf(String team, Match match) {

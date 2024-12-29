@@ -4,6 +4,7 @@ import io.intino.alexandria.ui.model.datasource.Filter;
 import io.intino.alexandria.ui.model.datasource.Group;
 import io.intino.alexandria.ui.model.datasource.PageDatasource;
 import rlp.footrix.framework.var.PlayerMatchPerformance;
+import rlp.footrix.framework.var.VarTerminal;
 import rlp.footrix.protrix.box.ProtrixBox;
 
 import java.util.Collections;
@@ -16,7 +17,7 @@ public class PlayerTraceDatasource extends PageDatasource<PlayerMatchPerformance
     private final List<PlayerMatchPerformance> trace;
 
     public PlayerTraceDatasource(ProtrixBox box, String player) {
-        this.trace = box.application().var()
+        this.trace = VarTerminal
                 .revisions(PlayerMatchPerformance.class).stream().filter(r -> r.player().equals(player))
                 .sorted(Comparator.comparing(PlayerMatchPerformance::date))
                 .toList();

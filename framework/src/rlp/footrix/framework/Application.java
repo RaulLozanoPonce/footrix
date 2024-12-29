@@ -8,8 +8,8 @@ import rlp.footrix.framework.stores.TeamRankingHandler;
 import rlp.footrix.framework.stores.match.MatchMemoryStore;
 import rlp.footrix.framework.types.definitions.CompetitionDefinition.PhaseDefinition;
 import rlp.footrix.framework.types.definitions.MatchDefinition;
-import rlp.footrix.framework.utils.CuatriFunction;
-import rlp.footrix.framework.var.Var;
+import rlp.footrix.framework.utils.TriFunction;
+import rlp.footrix.framework.var.VarTerminal;
 
 import java.time.Instant;
 
@@ -25,12 +25,11 @@ public class Application {
     private final RulesManager rulesManager;
     private final StatisticTables statisticTables;  //TODO DESAPARECERÁ
     private final TeamRankingHandler teamRankingHandler;
-    private final Var var;
 
-    private CuatriFunction<MatchDefinition, PhaseDefinition, Instant, Var, MatchSimulator> matchSimulator;
+    private TriFunction<MatchDefinition, PhaseDefinition, Instant, MatchSimulator> matchSimulator;
 
     public Application(FootrixConfiguration configuration) {
-        this.game = new Game().date(configuration.initDate()).season(configuration.initSeason());
+        this.game = new Game().date(configuration.initDate()).initSeason(0).seasonProvider(configuration.seasonProvider());
         this.matchStore = new MatchMemoryStore();
         this.teamRankingHandler = new TeamRankingHandler();
 
@@ -39,11 +38,11 @@ public class Application {
         this.playerManager = new PlayerManager(configuration.initDatabase().players());
 
         this.eventManager = new EventManager();
-        this.timeManager = new TimeManager(this.game, this.eventManager, this.playerManager);
+        this.timeManager = new TimeManager(this.game, this.eventManager, this.playerManager, configuration.energyRecoveryProvider());
         this.rulesManager = new RulesManager();
 
         this.statisticTables = new StatisticTables(this.playerManager, this.matchStore);
-        this.var = configuration.var();
+        VarTerminal.var(configuration.var());
 
         this.eventManager.add(configuration.initEvents());
         this.timeManager.set(configuration.initDate());
@@ -55,7 +54,7 @@ public class Application {
         this.rulesManager.add(id, rule);
     }
 
-    protected void add(CuatriFunction<MatchDefinition, PhaseDefinition, Instant, Var, MatchSimulator> matchSimulator) {
+    protected void add(TriFunction<MatchDefinition, PhaseDefinition, Instant, MatchSimulator> matchSimulator) {
         this.matchSimulator = matchSimulator;
     }
 
@@ -95,12 +94,13 @@ public class Application {
         return statisticTables;
     }
 
-    public Var var() {
-        return var;
-    }
-
     private EventConfiguration eventConfiguration() {
         return new EventConfiguration() {
+            @Override
+            public Game game() {
+                return game;
+            }
+
             @Override
             public CompetitionManager competitionManager() {
                 return competitionManager;
@@ -113,7 +113,7 @@ public class Application {
 
             @Override
             public MatchSimulator matchSimulator(MatchDefinition definition, Instant date) {
-                return matchSimulator.apply(definition, competitionManager.get(definition.competition(), definition.season()).phase(definition.phase()).definition(), date, var);
+                return matchSimulator.apply(definition, competitionManager.get(definition.competition(), definition.season()).phase(definition.phase()).definition(), date);
             }
 
             @Override
@@ -139,11 +139,6 @@ public class Application {
             @Override
             public TimeManager timeManager() {
                 return timeManager;
-            }
-
-            @Override
-            public Var var() {
-                return var;
             }
 
             @Override

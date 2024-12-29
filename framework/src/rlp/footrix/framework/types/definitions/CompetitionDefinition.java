@@ -28,7 +28,7 @@ public interface CompetitionDefinition {
         int substitutesNumber();
         int substitutionsNumber();
         int rankingScore();
-        List<String> classify(List<TeamClassification> classification);
+        List<TeamClassification> classify(List<TeamClassification> classification);
         Instant nextDate(int matchDay, Instant date);
 
         interface GroupDefinition {
@@ -40,6 +40,6 @@ public interface CompetitionDefinition {
             Underdog, Favorite, Neutral, Keep
         }
 
-        record TeamClassification(String teamId, int points, int goalsFor, int goalsAgainst) {}
+        record TeamClassification(String teamId, int points, int wonMatches, int drawMatches, int lostMatches, int goalsFor, int goalsAgainst) {}
     }
 }

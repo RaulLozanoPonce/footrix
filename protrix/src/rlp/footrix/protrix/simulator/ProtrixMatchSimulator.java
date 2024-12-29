@@ -1,23 +1,24 @@
 package rlp.footrix.protrix.simulator;
 
 import rlp.footrix.framework.MatchSimulator;
-import rlp.footrix.framework.types.*;
+import rlp.footrix.framework.types.Match;
 import rlp.footrix.framework.types.definitions.CompetitionDefinition;
 import rlp.footrix.framework.types.definitions.MatchDefinition;
 import rlp.footrix.framework.types.player.Player;
 import rlp.footrix.framework.types.player.Position;
 import rlp.footrix.framework.types.team.PlayersLineup;
-import rlp.footrix.framework.var.Var;
 import rlp.footrix.protrix.simulator.actions.*;
 import rlp.footrix.protrix.simulator.helpers.TeamsHandle;
 
 import java.time.Instant;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static rlp.footrix.framework.types.Match.MatchEvent.Type.Expulsion;
 import static rlp.footrix.framework.types.Match.MatchEvent.Type.Goal;
-import static rlp.footrix.protrix.simulator.helpers.PositionFactors.*;
+import static rlp.footrix.protrix.simulator.helpers.PositionFactors.passProbabilityOf;
+import static rlp.footrix.protrix.simulator.helpers.PositionFactors.shotProbabilityOf;
 
 public class ProtrixMatchSimulator implements MatchSimulator {
 
@@ -30,11 +31,11 @@ public class ProtrixMatchSimulator implements MatchSimulator {
     private final TeamsHandle teamsHandle;
     private int duration = 0;
 
-    public ProtrixMatchSimulator(MatchDefinition definition, CompetitionDefinition.PhaseDefinition phase, Instant date, Var var) {
+    public ProtrixMatchSimulator(MatchDefinition definition, CompetitionDefinition.PhaseDefinition phase, Instant date) {
         this.definition = definition;
         this.phase = phase;
         this.date = date;
-        this.state = new MatchState(definition.local(), definition.visitant(), var, phase.substitutionsNumber(), framesPerMinute * 90);
+        this.state = new MatchState(definition.local(), definition.visitant(), phase.substitutionsNumber(), framesPerMinute * 90);
         this.teamsHandle = new TeamsHandle(this.state);
     }
 

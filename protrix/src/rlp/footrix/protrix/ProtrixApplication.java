@@ -7,14 +7,13 @@ import rlp.footrix.framework.MatchSimulator;
 import rlp.footrix.framework.configuration.TeamRule;
 import rlp.footrix.framework.types.definitions.CompetitionDefinition.PhaseDefinition;
 import rlp.footrix.framework.types.definitions.MatchDefinition;
-import rlp.footrix.framework.utils.CuatriFunction;
-import rlp.footrix.framework.var.Var;
+import rlp.footrix.framework.utils.TriFunction;
 
 import java.time.Instant;
 
 public class ProtrixApplication extends Application {
 
-    public ProtrixApplication(FootrixConfiguration configuration, CuatriFunction<MatchDefinition, PhaseDefinition, Instant, Var, MatchSimulator> matchSimulator) {
+    public ProtrixApplication(FootrixConfiguration configuration, TriFunction<MatchDefinition, PhaseDefinition, Instant, MatchSimulator> matchSimulator) {
         super(configuration);
         addRules();
         add(matchSimulator);

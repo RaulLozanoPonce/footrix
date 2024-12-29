@@ -7,16 +7,16 @@ import java.time.Instant;
 
 public class YellowExpulsionRevision implements Revision {
 
-    private final Instant date;
+    private final String key;
     private Position position;
 
-    public YellowExpulsionRevision(Instant date) {
-        this.date = date;
+    public YellowExpulsionRevision() {
+        this.key = java.util.UUID.randomUUID().toString();
     }
 
     @Override
-    public Instant date() {
-        return date;
+    public String key() {
+        return key;
     }
 
     public Position position() {

@@ -1,6 +1,7 @@
 package rlp.footrix.framework.events;
 
 import rlp.footrix.framework.types.Competition;
+import rlp.footrix.framework.types.SeasonReference;
 import rlp.footrix.framework.types.definitions.MatchDefinition;
 import rlp.footrix.framework.types.team.Team;
 
@@ -12,11 +13,11 @@ import java.util.List;
 public class SetPhaseCalendar extends Event {
 
     private final String competition;
-    private final String season;
+    private final SeasonReference season;
     private final int phaseId;
     private Competition.Phase phase;
 
-    public SetPhaseCalendar(Instant ts, String competition, String season, int phaseId) {
+    public SetPhaseCalendar(Instant ts, String competition, SeasonReference season, int phaseId) {
         super(ts);
         this.competition = competition;
         this.season = season;
@@ -25,7 +26,7 @@ public class SetPhaseCalendar extends Event {
 
     @Override
     public boolean preconditions() {
-        this.phase = configuration.competitionManager().get(competition, season).phase(phaseId);
+        this.phase = configuration.competitionManager().get(competition, configuration.game().season(season)).phase(phaseId);
         if (this.phase.groups().stream().anyMatch(g -> g.teams().size() % 2 == 1)) return false; //TODO POR AHORA
         return true;
     }
@@ -72,7 +73,7 @@ public class SetPhaseCalendar extends Event {
     }
 
     private MatchDefinition matchOf(Team[] teams, int groupId, String matchDay) {
-        return new MatchDefinition(teams[0].definition().id(), teams[1].definition().id(), competition, season, phaseId, groupId, matchDay);
+        return new MatchDefinition(teams[0].definition().id(), teams[1].definition().id(), competition, configuration.game().season(season), phaseId, groupId, matchDay);
     }
 
     private List<List<Team[]>> reverse(List<List<Team[]>> matchDays) {

@@ -5,14 +5,16 @@ import rlp.footrix.framework.configuration.DataBase;
 import rlp.footrix.framework.events.Event;
 import rlp.footrix.framework.events.InitPhase;
 import rlp.footrix.framework.events.SetPhaseCalendar;
-import rlp.footrix.framework.types.*;
+import rlp.footrix.framework.types.Competition;
+import rlp.footrix.framework.types.Country;
+import rlp.footrix.framework.types.SeasonReference;
 import rlp.footrix.framework.types.definitions.TeamDefinition;
 import rlp.footrix.framework.types.player.Player;
 import rlp.footrix.framework.types.team.Team;
 import rlp.footrix.framework.types.team_player.PlayerContract;
 import rlp.footrix.framework.var.Var;
 import rlp.footrix.protrix.loader.PlayerLoader;
-import rlp.footrix.protrix.loader.SpainFirstDivision;
+import rlp.footrix.protrix.loader.SpainFirstDivisionDefinition;
 import rlp.footrix.protrix.model.ProtrixTeam;
 import rlp.footrix.protrix.model.helpers.InitialContractGenerator;
 import rlp.footrix.protrix.var.ProtrixVar;
@@ -21,10 +23,11 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import static rlp.footrix.framework.types.Country.Spain;
 
-public class ProtrixAppConfiguration implements FootrixConfiguration {
+public class ProtrixAppConfiguration implements FootrixConfiguration.SimpleFootrixConfiguration {
 
     private static final Map<String, Map<Player, String>> players = PlayerLoader.players();
     private final ProtrixVar var;
@@ -39,8 +42,13 @@ public class ProtrixAppConfiguration implements FootrixConfiguration {
     }
 
     @Override
-    public String initSeason() {
-        return "season1";
+    public Function<Integer, String> seasonProvider() {
+        return new Function<Integer, String>() {
+            @Override
+            public String apply(Integer integer) {
+                return "season1";
+            }
+        };
     }
 
     @Override
@@ -48,7 +56,7 @@ public class ProtrixAppConfiguration implements FootrixConfiguration {
         return new DataBase() {
             @Override
             public List<Competition> competitions() {
-                return List.of(new Competition(new SpainFirstDivision(), initSeason()));
+                return List.of(new Competition(new SpainFirstDivisionDefinition()));    //TODO. QUIZAS DEBERÍA CREARSE EN EL FRAMEWORK Y SOLO PASARLE LAS DEFINICIONES
             }
 
             @Override
@@ -92,8 +100,8 @@ public class ProtrixAppConfiguration implements FootrixConfiguration {
     @Override
     public List<Event> initEvents() {
         return List.of(
-                new InitPhase(Instant.parse("2024-08-02T00:00:00Z"), "ESP-1", initSeason(), 0, new HashSet<>(initDatabase().teams())),
-                new SetPhaseCalendar(Instant.parse("2024-08-04T00:00:00Z"), "ESP-1", initSeason(), 0)
+                new InitPhase(Instant.parse("2024-08-02T00:00:00Z"), "ESP-1", SeasonReference.Current, 0, new HashSet<>(initDatabase().teams())),
+                new SetPhaseCalendar(Instant.parse("2024-08-04T00:00:00Z"), "ESP-1", SeasonReference.Current, 0)
         );
     }
 

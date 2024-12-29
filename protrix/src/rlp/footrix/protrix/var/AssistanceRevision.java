@@ -3,20 +3,18 @@ package rlp.footrix.protrix.var;
 import rlp.footrix.framework.types.player.Position;
 import rlp.footrix.framework.var.Revision;
 
-import java.time.Instant;
-
 public class AssistanceRevision implements Revision {
 
-    private final Instant date;
+    private final String key;
     private Position position;
 
-    public AssistanceRevision(Instant date) {
-        this.date = date;
+    public AssistanceRevision() {
+        this.key = java.util.UUID.randomUUID().toString();
     }
 
     @Override
-    public Instant date() {
-        return date;
+    public String key() {
+        return key;
     }
 
     public Position position() {

@@ -10,12 +10,10 @@ import java.util.List;
 public class Competition {
 
     private final CompetitionDefinition definition;
-    private final String season;
     private final List<Phase> phases;
 
-    public Competition(CompetitionDefinition definition, String season) {
+    public Competition(CompetitionDefinition definition) {
         this.definition = definition;
-        this.season = season;
         this.phases = definition.phases().stream().map(Phase::new).toList();
     }
 

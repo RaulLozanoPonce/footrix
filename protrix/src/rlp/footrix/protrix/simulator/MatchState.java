@@ -4,11 +4,10 @@ import rlp.footrix.framework.types.Match;
 import rlp.footrix.framework.types.player.Player;
 import rlp.footrix.framework.types.player.Position;
 import rlp.footrix.framework.types.team.PlayersLineup;
-import rlp.footrix.framework.var.Var;
+import rlp.footrix.framework.var.VarTerminal;
 import rlp.footrix.protrix.model.ProtrixPlayer;
 import rlp.footrix.protrix.var.*;
 
-import java.time.Instant;
 import java.util.*;
 
 import static rlp.footrix.protrix.simulator.helpers.PositionFactors.*;
@@ -19,7 +18,6 @@ public class MatchState {
     private final List<Match.MatchEvent> events = new ArrayList<>();
     private final Map<String, Match.PlayerStatistics> playerStatistics = new HashMap<>();
     private final Map<String, Integer> restSubstitutions = new HashMap<>();
-    private final Var var;
     private final double matchFrames;
 
     private PlayersLineup localPlayers;
@@ -27,12 +25,11 @@ public class MatchState {
     private String teamWithPossession;
     private Player[] playerWithPossession = new Player[2];
 
-    public MatchState(String local, String visitant, Var var, int maxSubstitutions, double matchFrames) {
+    public MatchState(String local, String visitant, int maxSubstitutions, double matchFrames) {
         this.local = local;
         this.visitant = visitant;
         this.restSubstitutions.put(local, maxSubstitutions);
         this.restSubstitutions.put(visitant, maxSubstitutions);
-        this.var = var;
         this.matchFrames = matchFrames;
     }
 
@@ -160,69 +157,69 @@ public class MatchState {
 
     public void addSuccessfulDribble(Player dribbler, Player haggled) {
         playerStatisticsOf(dribbler.definition().id()).addScore(successfulDribbleOf(positionOf(dribbler)));
-        var.publish(new SuccessfulDribbleRevision(Instant.now()).position(positionOf(dribbler)));
+        VarTerminal.publish(new SuccessfulDribbleRevision().position(positionOf(dribbler)));
     }
 
     public void addUnsuccessfulDribble(Player dribbler, Player haggled) {
         playerStatisticsOf(dribbler.definition().id()).addScore(unsuccessfulDribbleOf(positionOf(dribbler)));
-        var.publish(new UnsuccessfulDribbleRevision(Instant.now()).position(positionOf(dribbler)));
+        VarTerminal.publish(new UnsuccessfulDribbleRevision().position(positionOf(dribbler)));
     }
 
     public void addSuccessfulPass(Player passer, Player cutter) {
         playerStatisticsOf(passer.definition().id()).addScore(successfulPassOf(positionOf(passer)));
-        var.publish(new SuccessfulPassRevision(Instant.now()).position(positionOf(passer)));
+        VarTerminal.publish(new SuccessfulPassRevision().position(positionOf(passer)));
     }
 
     public void addUnsuccessfulPass(Player passer, Player cutter) {
         playerStatisticsOf(passer.definition().id()).addScore(unsuccessfulPassOf(positionOf(passer)));
-        var.publish(new UnsuccessfulPassRevision(Instant.now()).position(positionOf(passer)));
+        VarTerminal.publish(new UnsuccessfulPassRevision().position(positionOf(passer)));
     }
 
     public void addShootOffTarget(Player shooter) {
         playerStatisticsOf(shooter.definition().id()).addScore(shootOffTargetOf(positionOf(shooter)));
-        var.publish(new ShootOffTargetRevision(Instant.now()).position(positionOf(shooter)));
+        VarTerminal.publish(new ShootOffTargetRevision().position(positionOf(shooter)));
     }
 
     public void addShootInTargetSaved(Player shooter, Player goalkeeper) {
         playerStatisticsOf(shooter.definition().id()).addScore(addShootInTargetSavedOf(positionOf(shooter)));
         playerStatisticsOf(goalkeeper.definition().id()).addScore(addShootInTargetSavedOf(positionOf(goalkeeper)));
-        var.publish(new ShootInTargetRevision(Instant.now()).position(positionOf(shooter)));
+        VarTerminal.publish(new ShootInTargetRevision().position(positionOf(shooter)));
     }
 
     public void addGoal(Player scorer, Player goalkeeper) {
         playerStatisticsOf(goalkeeper.definition().id()).addGoalAgainst();
         playerStatisticsOf(scorer.definition().id()).addScore(goalOf(positionOf(scorer)));
         playerStatisticsOf(goalkeeper.definition().id()).addScore(goalOf(positionOf(goalkeeper)));
-        var.publish(new ScoredGoalRevision(Instant.now()).position(positionOf(scorer)));
+        VarTerminal.publish(new ScoredGoalRevision().position(positionOf(scorer)));
     }
 
     public void addAssistance(Player assistant) {
         playerStatisticsOf(assistant.definition().id()).addScore(assistanceOf(positionOf(assistant)));
-        var.publish(new AssistanceRevision(Instant.now()).position(positionOf(assistant)));
+        VarTerminal.publish(new AssistanceRevision().position(positionOf(assistant)));
     }
 
     public void addFault(Player fouler, Player fouled) {
         playerStatisticsOf(fouler.definition().id()).addScore(faultCommitedOf(positionOf(fouler)));
         playerStatisticsOf(fouled.definition().id()).addScore(foulsReceivedOf(positionOf(fouled)));
-        var.publish(new FaultCommitedRevision(Instant.now()).position(positionOf(fouler)));
+        VarTerminal.publish(new FaultCommitedRevision().position(positionOf(fouler)));
     }
 
     public void addYellowCard(Player fouler) {
         playerStatisticsOf(fouler.definition().id()).addScore(yellowCardOf(positionOf(fouler)));
-        var.publish(new YellowCardRevision(Instant.now()).position(positionOf(fouler)));
+        VarTerminal.publish(new YellowCardRevision().position(positionOf(fouler)));
     }
 
     public void addYellowExpulsion(Player fouler) {
-        var.publish(new YellowExpulsionRevision(Instant.now()).position(positionOf(fouler)));
+        VarTerminal.publish(new YellowExpulsionRevision().position(positionOf(fouler)));
     }
 
     public void addRedCard(Player fouler) {
         playerStatisticsOf(fouler.definition().id()).addScore(redCardOf(positionOf(fouler)));
-        var.publish(new RedCardRevision(Instant.now()).position(positionOf(fouler)));
+        VarTerminal.publish(new RedCardRevision().position(positionOf(fouler)));
     }
 
     public void addInjury() {
-        var.publish(new InjuryRevision(Instant.now()));
+        VarTerminal.publish(new InjuryRevision());
     }
 
     private Position positionOf(PlayersLineup playersLineup, Integer[] position) {

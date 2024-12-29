@@ -7,16 +7,16 @@ import java.time.Instant;
 
 public class ShootOffTargetRevision implements Revision {
 
-    private final Instant date;
+    private final String key;
     private Position position;
 
-    public ShootOffTargetRevision(Instant date) {
-        this.date = date;
+    public ShootOffTargetRevision() {
+        this.key = java.util.UUID.randomUUID().toString();
     }
 
     @Override
-    public Instant date() {
-        return date;
+    public String key() {
+        return key;
     }
 
     public Position position() {

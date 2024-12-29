@@ -7,16 +7,16 @@ import java.time.Instant;
 
 public class ScoredGoalRevision implements Revision {
 
-    private final Instant date;
+    private final String key;
     private Position position;
 
-    public ScoredGoalRevision(Instant date) {
-        this.date = date;
+    public ScoredGoalRevision() {
+        this.key = java.util.UUID.randomUUID().toString();
     }
 
     @Override
-    public Instant date() {
-        return date;
+    public String key() {
+        return key;
     }
 
     public Position position() {
