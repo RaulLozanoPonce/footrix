@@ -15,8 +15,6 @@ public interface CompetitionDefinition {
     int doubleYellowCardSanction();
     int accumulatedYellowCardSanction();
     int accumulatedYellowCardNumber();
-    int substitutesNumber();
-    int substitutionsNumber();
 
     interface PhaseDefinition {
         String name();
@@ -25,6 +23,10 @@ public interface CompetitionDefinition {
         String matchDayName(int number);
         LocalPolicy localPolicy();
         SecondLegPolicy secondLegPolicy();
+        boolean withExtension();
+        boolean withPenalties();
+        int substitutesNumber();
+        int substitutionsNumber();
         int rankingScore();
         List<String> classify(List<TeamClassification> classification);
         Instant nextDate(int matchDay, Instant date);

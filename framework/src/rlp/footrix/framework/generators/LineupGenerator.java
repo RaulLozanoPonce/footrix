@@ -16,10 +16,10 @@ public class LineupGenerator {
     private static final double GameTimeFactor = 0.20;
     private static final double IndividualFactor = 0.15;
 
-    public static PlayersLineup playersLineup(Competition competition, Lineup lineup, List<Player> players) {
+    public static PlayersLineup playersLineup(Competition.Phase phase, Lineup lineup, List<Player> players) {
         Map<Player, Integer[]> playersMap = starters(entries(lineup, players));
-        List<Player> substitutes = substitutes(competition, entries(lineup, players.stream().filter(p -> !playersMap.containsKey(p)).toList()));
-        substitutes.addAll(reserves(competition, entries(lineup, players.stream().filter(p -> !playersMap.containsKey(p) && !substitutes.contains(p)).toList())));
+        List<Player> substitutes = substitutes(phase, entries(lineup, players.stream().filter(p -> !playersMap.containsKey(p)).toList()));
+        substitutes.addAll(reserves(phase, entries(lineup, players.stream().filter(p -> !playersMap.containsKey(p) && !substitutes.contains(p)).toList())));
         return new PlayersLineup(lineup, playersMap, substitutes);
     }
 
@@ -37,14 +37,14 @@ public class LineupGenerator {
         return players(entries, 11, true);
     }
 
-    private static List<Player> substitutes(Competition competition, List<LineupEntry> entries) {
-        Map<Player, Integer[]> playersMap = players(entries, Math.min(11, competition.definition().substitutesNumber()), false);
+    private static List<Player> substitutes(Competition.Phase phase, List<LineupEntry> entries) {
+        Map<Player, Integer[]> playersMap = players(entries, Math.min(11, phase.definition().substitutesNumber()), false);
         return new ArrayList<>(playersMap.keySet());
     }
 
-    private static List<Player> reserves(Competition competition, List<LineupEntry> entries) {
-        if (competition.definition().substitutesNumber() - 11 <= 0) return new ArrayList<>();
-        Map<Player, Integer[]> playersMap = players(entries, competition.definition().substitutesNumber() - 11, false);
+    private static List<Player> reserves(Competition.Phase phase, List<LineupEntry> entries) {
+        if (phase.definition().substitutesNumber() - 11 <= 0) return new ArrayList<>();
+        Map<Player, Integer[]> playersMap = players(entries, phase.definition().substitutesNumber() - 11, false);
         return new ArrayList<>(playersMap.keySet());
     }
 

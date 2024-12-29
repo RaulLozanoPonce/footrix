@@ -244,8 +244,24 @@ public class MatchState {
     }
 
     public void out(String team, String playerId) {
-        Player player = playersOf(team).stream().filter(p -> p.definition().id().equals(playerId)).findFirst().orElse(null);
+        Player player = playerOf(playerId, team);
         if (team.equals(local)) localPlayers.positions().remove(player);
         else visitantPlayers.positions().remove(player);
+    }
+
+    public Player playerOf(String player, String team) {
+        return playersOf(team).stream().filter(p -> p.definition().id().equals(player)).findFirst().orElse(null);
+    }
+
+    public void change(String team, String p1, String p2) {
+        if (team.equals(local)) change(localPlayers, p1, p2);
+        else change(visitantPlayers, p1, p2);
+    }
+
+    private void change(PlayersLineup players, String p1, String p2) {
+        Integer[] p1Location = players.locationOf(p1);
+        Integer[] p2Location = players.locationOf(p2);
+        players.setLocation(p1, p2Location);
+        players.setLocation(p2, p1Location);
     }
 }

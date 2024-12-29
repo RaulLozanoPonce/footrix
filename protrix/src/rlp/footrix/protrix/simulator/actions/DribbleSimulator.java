@@ -59,7 +59,6 @@ public class DribbleSimulator extends ActionSimulator {
 
     private boolean isFault() {
         Position rivalPosition = state.positionOf(rival);
-        if (rivalPosition == Position.PT) return false; //TODO SE DEBERÁN PODER COMETER
         if (state.events().stream().anyMatch(e -> e.type() == YellowCard && e.who().equals(rival.definition().id()))) {
             if (Math.random() < 0.65) return false;
         }
@@ -111,6 +110,7 @@ public class DribbleSimulator extends ActionSimulator {
         } else {
             events.add(new Match.MatchEvent(team, VerySeriousInjury, minute, player.definition().id(), null));
         }
+        events.add(new Match.MatchEvent(team, PendingSubstitution, minute, player.definition().id(), null));
         player.energy(-1.0);    //TODO DEJO ESTE VALOR CON LAS LEVES?
     }
 

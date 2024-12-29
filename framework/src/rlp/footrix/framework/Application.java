@@ -6,7 +6,7 @@ import rlp.footrix.framework.events.EventConfiguration;
 import rlp.footrix.framework.managers.*;
 import rlp.footrix.framework.stores.TeamRankingHandler;
 import rlp.footrix.framework.stores.match.MatchMemoryStore;
-import rlp.footrix.framework.types.definitions.CompetitionDefinition;
+import rlp.footrix.framework.types.definitions.CompetitionDefinition.PhaseDefinition;
 import rlp.footrix.framework.types.definitions.MatchDefinition;
 import rlp.footrix.framework.utils.TriFunction;
 import rlp.footrix.framework.var.Var;
@@ -27,7 +27,7 @@ public class Application {
     private final TeamRankingHandler teamRankingHandler;
     private final Var var;
 
-    private TriFunction<MatchDefinition, CompetitionDefinition, Var, MatchSimulator> matchSimulator;
+    private TriFunction<MatchDefinition, PhaseDefinition, Var, MatchSimulator> matchSimulator;
 
     public Application(FootrixConfiguration configuration) {
         this.game = new Game().date(configuration.initDate()).season(configuration.initSeason());
@@ -55,7 +55,7 @@ public class Application {
         this.rulesManager.add(id, rule);
     }
 
-    protected void add(TriFunction<MatchDefinition, CompetitionDefinition, Var, MatchSimulator> matchSimulator) {
+    protected void add(TriFunction<MatchDefinition, PhaseDefinition, Var, MatchSimulator> matchSimulator) {
         this.matchSimulator = matchSimulator;
     }
 
@@ -113,7 +113,7 @@ public class Application {
 
             @Override
             public MatchSimulator matchSimulator(MatchDefinition definition) {
-                return matchSimulator.apply(definition, competitionManager.get(definition.competition(), definition.season()).definition(), var);
+                return matchSimulator.apply(definition, competitionManager.get(definition.competition(), definition.season()).phase(definition.phase()).definition(), var);
             }
 
             @Override

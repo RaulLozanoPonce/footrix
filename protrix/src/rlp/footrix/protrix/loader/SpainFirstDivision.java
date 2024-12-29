@@ -64,6 +64,26 @@ public class SpainFirstDivision implements CompetitionDefinition {
                     }
 
                     @Override
+                    public boolean withExtension() {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean withPenalties() {
+                        return false;
+                    }
+
+                    @Override
+                    public int substitutesNumber() {
+                        return 12;
+                    }
+
+                    @Override
+                    public int substitutionsNumber() {
+                        return 5;
+                    }
+
+                    @Override
                     public int rankingScore() {
                         return 15;
                     }
@@ -107,16 +127,6 @@ public class SpainFirstDivision implements CompetitionDefinition {
 
     @Override
     public int accumulatedYellowCardNumber() {
-        return 5;
-    }
-
-    @Override
-    public int substitutesNumber() {
-        return 12;
-    }
-
-    @Override
-    public int substitutionsNumber() {
         return 5;
     }
 }

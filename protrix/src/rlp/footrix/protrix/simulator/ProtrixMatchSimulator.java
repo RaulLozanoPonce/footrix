@@ -23,12 +23,15 @@ public class ProtrixMatchSimulator implements MatchSimulator {
     private static final int framesPerMinute = 5;
 
     private final MatchDefinition definition;
+    private final CompetitionDefinition.PhaseDefinition phase;
     private final MatchState state;
     private final TeamsHandle teamsHandle;
+    private int duration = 0;
 
-    public ProtrixMatchSimulator(MatchDefinition definition, CompetitionDefinition competition, Var var) {
+    public ProtrixMatchSimulator(MatchDefinition definition, CompetitionDefinition.PhaseDefinition phase, Var var) {
         this.definition = definition;
-        this.state = new MatchState(definition.local(), definition.visitant(), var, competition.substitutionsNumber(), framesPerMinute * 90);
+        this.phase = phase;
+        this.state = new MatchState(definition.local(), definition.visitant(), var, phase.substitutionsNumber(), framesPerMinute * 90);
         this.teamsHandle = new TeamsHandle(this.state);
     }
 
@@ -36,20 +39,38 @@ public class ProtrixMatchSimulator implements MatchSimulator {
     public Match simulate(PlayersLineup localPlayersLineup, PlayersLineup visitantPlayersLineup) {
         this.state.localPlayers(localPlayersLineup).visitantPlayers(visitantPlayersLineup);
         simulateMatch();
-        return new Match(definition, state.playerStatistics(), state.events(), state.mvp(), 90);    //TODO DURACION (TENER EN CUENTA PRORROGAS O INCLUSO SI TERMINA UN PARTIDO ANTES)
+        return new Match(definition, state.playerStatistics(), state.events(), state.mvp(), duration);
     }
 
     private void simulateMatch() {
-        state.setPossession(state.local(), state.localPlayers().getFirst());
-        boolean continueMatch = simulateMatch(1, 45);
+        boolean continueMatch = simulateRegularMatch();
         if (!continueMatch) return;
-        state.setPossession(state.visitant(), state.visitantPlayers().getFirst());
-        simulateMatch(46, 90);
+        if (!phase.withExtension() || !isDraw()) return;
+        simulateExtension();
     }
 
-    private boolean simulateMatch(int from, int to) {
+    private boolean simulateRegularMatch() {
+        state.setPossession(state.local(), state.localPlayers().getFirst());
+        boolean continueMatch = simulatePart(1, 45);
+        if (!continueMatch) return false;
+        state.setPossession(state.visitant(), state.visitantPlayers().getFirst());
+        simulatePart(46, 90);
+        return true;
+    }
+
+    private boolean simulateExtension() {
+        state.setPossession(state.local(), state.localPlayers().getFirst());
+        boolean continueMatch = simulatePart(91, 105);
+        if (!continueMatch) return false;
+        state.setPossession(state.visitant(), state.visitantPlayers().getFirst());
+        simulatePart(106, 120);
+        return true;
+    }
+
+    private boolean simulatePart(int from, int to) {
         for (int i = from; i <= to; i++) {
             for (int j = 0; j < framesPerMinute; j++) {
+                duration = i;
                 boolean continueMatch = simulateSubMinute(i);
                 if (!continueMatch) return false;
             }
@@ -90,5 +111,11 @@ public class ProtrixMatchSimulator implements MatchSimulator {
                 return new DribbleSimulator(state, minute, rival).simulate();
             }
         }
+    }
+
+    private boolean isDraw() {
+        int localGoals = (int) state.events().stream().filter(e -> e.type() == Goal).filter(e -> e.team().equals(state.local())).count();
+        int visitantGoals = (int) state.events().stream().filter(e -> e.type() == Goal).filter(e -> e.team().equals(state.visitant())).count();
+        return localGoals == visitantGoals;
     }
 }

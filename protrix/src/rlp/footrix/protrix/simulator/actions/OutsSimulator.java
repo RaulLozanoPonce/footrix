@@ -1,12 +1,16 @@
 package rlp.footrix.protrix.simulator.actions;
 
+import rlp.footrix.framework.generators.LineupGenerator;
 import rlp.footrix.framework.types.Match;
+import rlp.footrix.framework.types.player.Player;
+import rlp.footrix.framework.types.player.Position;
 import rlp.footrix.protrix.simulator.MatchState;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 
 import static rlp.footrix.framework.types.Match.MatchEvent.Type.*;
@@ -32,6 +36,11 @@ public class OutsSimulator extends ActionSimulator {
         outPlayers.addAll(doubleYellowCardPlayers(team, expulsedPlayers));
         for (String player : outPlayers) {
             events.add(new Match.MatchEvent(team, Expulsion, minute, player, null));
+            if (state.positionOf(state.playerOf(player, team)) == Position.PT) {
+                Player worstPlayer = worstPlayerOf(team, player);
+                state.change(team, player, worstPlayer.definition().id());
+                events.add(new Match.MatchEvent(team, PendingSubstitution, minute, worstPlayer.definition().id(), null));
+            }
             state.out(team, player);
         }
         return events;
@@ -66,5 +75,16 @@ public class OutsSimulator extends ActionSimulator {
                 .map(Match.MatchEvent::who)
                 .distinct()
                 .toList();
+    }
+
+    private Player worstPlayerOf(String team, String player) {
+        return state.playersOf(team).stream()
+                .filter(p -> !p.definition().id().equals(player))
+                .reduce((p1, p2) -> {
+                    double p1Score = LineupGenerator.scoreOfMatch(p1, state.positionOf(p1));
+                    double p2Score = LineupGenerator.scoreOfMatch(p2, state.positionOf(p2));
+                    if (p1Score > p2Score) return p2;
+                    return p1;
+                }).orElse(null);
     }
 }

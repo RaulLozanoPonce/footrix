@@ -21,6 +21,7 @@ public class SimulateMatch extends Event {
 
     private final MatchDefinition definition;
     private Competition competition;
+    private Competition.Phase phase;
     private Team local;
     private Team visitant;
     private List<Player> localPlayers;
@@ -34,6 +35,7 @@ public class SimulateMatch extends Event {
     @Override
     public Event setup() {
         this.competition = configuration.competitionManager().get(definition.competition(), definition.season());
+        this.phase = this.competition.phase(definition.phase());
         this.local = configuration.teamManager().get(definition.local());
         this.visitant = configuration.teamManager().get(definition.visitant());
         this.localPlayers = availablePlayersOf(local);
@@ -52,8 +54,8 @@ public class SimulateMatch extends Event {
     }
 
     private Match playMatch() {
-        PlayersLineup localLineup = playersLineup(competition, local.lineup(), localPlayers);
-        PlayersLineup visitantLineup = playersLineup(competition, visitant.lineup(), visitantPlayers);
+        PlayersLineup localLineup = playersLineup(phase, local.lineup(), localPlayers);
+        PlayersLineup visitantLineup = playersLineup(phase, visitant.lineup(), visitantPlayers);
         return configuration.matchSimulator(definition).simulate(localLineup, visitantLineup);
     }
 

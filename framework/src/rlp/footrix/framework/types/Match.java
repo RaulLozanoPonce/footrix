@@ -43,6 +43,6 @@ public record Match(MatchDefinition definition, Map<String, PlayerStatistics> pl
     }
 
     public record MatchEvent(String team, Type type, int minute, String who, String secondaryWho) {
-        public enum Type {Goal, RedCard, YellowCard, Substitution, MinorInjury, SeriousInjury, VerySeriousInjury, NeededSubstitution, Expulsion}
+        public enum Type {Goal, RedCard, YellowCard, Substitution, MinorInjury, SeriousInjury, VerySeriousInjury, NeededSubstitution, Expulsion, PendingSubstitution}
     }
 }

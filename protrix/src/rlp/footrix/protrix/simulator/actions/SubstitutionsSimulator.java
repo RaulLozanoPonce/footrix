@@ -34,9 +34,10 @@ public class SubstitutionsSimulator extends ActionSimulator {
 
     private Set<String> neededSubstitutions(String team) {
         return state.events().stream()
-                .filter(e -> e.type() == MinorInjury || e.type() == SeriousInjury || e.type() == VerySeriousInjury)
+                .filter(e -> e.type() == PendingSubstitution)
                 .filter(e -> e.team().equals(team))
                 .map(Match.MatchEvent::who)
+                .filter(p -> state.playerOf(p, team) != null)
                 .filter(id -> !state.playerWithPossession().definition().id().equals(id))
                 .limit(state.restSubstitutions(team))
                 .collect(Collectors.toSet());
@@ -77,23 +78,22 @@ public class SubstitutionsSimulator extends ActionSimulator {
     }
 
     private List<Match.MatchEvent> substitute(String team, Set<String> necessarySubstitutions, Set<String> tacticSubstitutions) {
-        List<Match.MatchEvent> substitutions = new ArrayList<>();
-        //TODO OPTIMIZAR
-        for (String playerId : necessarySubstitutions) {
-            Player playerToSubstitute = state.playersOf(team).stream().filter(p -> p.definition().id().equals(playerId)).findFirst().orElse(null);
+        List<Match.MatchEvent> events = new ArrayList<>();
+        for (String playerId : merge(necessarySubstitutions, tacticSubstitutions)) {
+            Player playerToSubstitute = state.playerOf(playerId, team);
             if (playerToSubstitute == null) continue;
             Player successful = state.substitute(team, playerToSubstitute);
             if (successful == null) continue;
-            substitutions.add(new Match.MatchEvent(team, Substitution, minute, successful.definition().id(), playerToSubstitute.definition().id()));
-            substitutions.add(new Match.MatchEvent(team, NeededSubstitution, minute, playerToSubstitute.definition().id(), null));
+            events.add(new Match.MatchEvent(team, Substitution, minute, successful.definition().id(), playerToSubstitute.definition().id()));
+            if (necessarySubstitutions.contains(playerId)) events.add(new Match.MatchEvent(team, NeededSubstitution, minute, playerToSubstitute.definition().id(), null));
         }
-        for (String playerId : tacticSubstitutions) {
-            Player playerToSubstitute = state.playersOf(team).stream().filter(p -> p.definition().id().equals(playerId)).findFirst().orElse(null);
-            if (playerToSubstitute == null) continue;
-            Player successful = state.substitute(team, playerToSubstitute);
-            if (successful == null) continue;
-            substitutions.add(new Match.MatchEvent(team, Substitution, minute, successful.definition().id(), playerToSubstitute.definition().id()));
-        }
+        return events;
+    }
+
+    private Set<String> merge(Set<String> necessarySubstitutions, Set<String> tacticSubstitutions) {
+        Set<String> substitutions = new HashSet<>();
+        substitutions.addAll(necessarySubstitutions);
+        substitutions.addAll(tacticSubstitutions);
         return substitutions;
     }
 }

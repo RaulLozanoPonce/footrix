@@ -168,7 +168,7 @@ public class PositionFactors {
     }};
 
     private static final Map<Position, Double> faultPercent = new HashMap<>() {{
-        put(Position.PT, 1.0);
+        put(Position.PT, 0.0);  //TODO
         put(Position.CT, 1.0);
         put(Position.CAR, 1.0);
         put(Position.LAT, 1.0);
