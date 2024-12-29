@@ -59,11 +59,6 @@ public class SpainFirstDivision implements CompetitionDefinition {
                     }
 
                     @Override
-                    public SecondLegPolicy secondLegPolicy() {
-                        return SecondLegPolicy.Ordered;
-                    }
-
-                    @Override
                     public boolean withExtension() {
                         return false;
                     }
@@ -71,6 +66,11 @@ public class SpainFirstDivision implements CompetitionDefinition {
                     @Override
                     public boolean withPenalties() {
                         return false;
+                    }
+
+                    @Override
+                    public boolean hasSecondLeg() {
+                        return true;
                     }
 
                     @Override

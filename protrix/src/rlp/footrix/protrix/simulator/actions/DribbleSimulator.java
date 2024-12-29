@@ -50,7 +50,7 @@ public class DribbleSimulator extends ActionSimulator {
     }
 
     private boolean isSuccessfulDribble() {
-        double playerOverall = 1.5 * localFactor(team) * dribbleOf(player) * percentOf(player.overall())/100.0;
+        double playerOverall = 1.4 * localFactor(team) * dribbleOf(player) * percentOf(player.overall())/100.0;
         double rivalOverall = localFactor(rivalTeam) * defenseOf(rival) * percentOf(rival.overall())/100.0;
         double total = playerOverall + rivalOverall;
         double random = Math.random() * total;

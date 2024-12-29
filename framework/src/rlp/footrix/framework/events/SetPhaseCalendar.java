@@ -1,15 +1,13 @@
 package rlp.footrix.framework.events;
 
 import rlp.footrix.framework.types.Competition;
-import rlp.footrix.framework.types.team.Team;
 import rlp.footrix.framework.types.definitions.MatchDefinition;
+import rlp.footrix.framework.types.team.Team;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static rlp.footrix.framework.types.definitions.CompetitionDefinition.PhaseDefinition.SecondLegPolicy.*;
 
 public class SetPhaseCalendar extends Event {
 
@@ -41,18 +39,13 @@ public class SetPhaseCalendar extends Event {
 
     private void setCalendar(Competition.Phase.Group group, int groupId) {
         List<List<Team[]>> matchDays = matchDays(group);
-
-        if (phase.definition().secondLegPolicy() != OnlyOneLeg) {
-            if (phase.definition().secondLegPolicy() == Ordered) matchDays.addAll(reverse(matchDays));
-            if (phase.definition().secondLegPolicy() == Unordered) matchDays.addAll(matchDays(group));
-        }
-
+        if (phase.definition().hasSecondLeg()) matchDays.addAll(reverse(matchDays));
         Instant date = ts;
         for (int i = 0; i < matchDays.size(); i++) {
             String matchDayName = phase.definition().matchDayName(i);
             Instant finalDate = phase.definition().nextDate(i, date);
-            matchDays.get(i).stream().map(m -> matchOf(m, finalDate, groupId, matchDayName))
-                    .forEach(m -> configuration.eventManager().add(new SimulateMatch(m)));
+            matchDays.get(i).stream().map(m -> matchOf(m, groupId, matchDayName))
+                    .forEach(m -> configuration.eventManager().add(new SimulateMatch(finalDate, m)));
             date = finalDate;
         }
     }
@@ -78,8 +71,8 @@ public class SetPhaseCalendar extends Event {
         return matchDays;
     }
 
-    private MatchDefinition matchOf(Team[] teams, Instant date, int groupId, String matchDay) {
-        return new MatchDefinition(date, teams[0].definition().id(), teams[1].definition().id(), competition, season, phaseId, groupId, matchDay);
+    private MatchDefinition matchOf(Team[] teams, int groupId, String matchDay) {
+        return new MatchDefinition(teams[0].definition().id(), teams[1].definition().id(), competition, season, phaseId, groupId, matchDay);
     }
 
     private List<List<Team[]>> reverse(List<List<Team[]>> matchDays) {

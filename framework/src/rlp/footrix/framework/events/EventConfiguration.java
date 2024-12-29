@@ -7,10 +7,12 @@ import rlp.footrix.framework.stores.match.MatchMemoryStore;
 import rlp.footrix.framework.types.definitions.MatchDefinition;
 import rlp.footrix.framework.var.Var;
 
+import java.time.Instant;
+
 public interface EventConfiguration {
     CompetitionManager competitionManager();
     RulesManager rulesManager();
-    MatchSimulator matchSimulator(MatchDefinition definition);
+    MatchSimulator matchSimulator(MatchDefinition definition, Instant date);
     EventManager eventManager();
     MatchMemoryStore matchStore();
     TeamManager teamManager();

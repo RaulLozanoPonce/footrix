@@ -70,7 +70,7 @@ public abstract class Team {
     }
 
     public Team rankingScore(Integer rankingScore) {
-        this.rankingScore = rankingScore;
+        this.rankingScore = Math.max(0, rankingScore);
         return this;
     }
 }

@@ -21,7 +21,6 @@ public class MatchAdapter extends TypeAdapter<Match> {
 
     private JsonObject write(MatchDefinition definition) {
         JsonObject json = new JsonObject();
-        json.addProperty("date", definition.date().toString());
         json.addProperty("local", definition.local());
         json.addProperty("visitant", definition.visitant());
         json.addProperty("competition", definition.competition());

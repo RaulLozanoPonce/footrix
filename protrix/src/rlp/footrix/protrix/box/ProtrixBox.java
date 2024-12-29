@@ -2,6 +2,7 @@ package rlp.footrix.protrix.box;
 
 import rlp.footrix.framework.deprecated.PlayerClassification;
 import rlp.footrix.framework.types.Match;
+import rlp.footrix.framework.types.player.Position;
 import rlp.footrix.framework.types.team.Team;
 import rlp.footrix.protrix.ProtrixAppConfiguration;
 import rlp.footrix.protrix.ProtrixApplication;
@@ -42,6 +43,7 @@ public class ProtrixBox extends AbstractBox {
 			printGoals();
 			printPasses();
 			printFaults();
+			printFaultsByPosition();
 
 			System.out.println("-----------------------------------------------------------------------------------------");
 			for (PlayerClassification classification : application.statisticTables().scorersOf("ESP-1", "season1", 10)) {
@@ -104,6 +106,13 @@ public class ProtrixBox extends AbstractBox {
 		double redCards = application.var().revisions(RedCardRevision.class).size() / 380.0;
 		double injuries = application.var().revisions(InjuryRevision.class).size() / 380.0;
 		System.out.println("Faltas cometidas: " + faultCommited + " - Tarjetas amarillas: " + yellowCard + " - Expulsiones por amarilla: " + yellowExpulsion + "- Tarjetas Rojas: " + redCards + " - Lesiones: " + injuries);
+	}
+
+	private void printFaultsByPosition() {
+		for (Position position : Position.values()) {
+			System.out.print(position.name() + ": " + application.var().revisions(FaultCommitedRevision.class).stream().filter(e -> e.position() == position).count()/380.0 + " - ");
+		}
+		System.out.println("\n");
 	}
 
 	public void beforeStop() {

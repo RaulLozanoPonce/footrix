@@ -8,7 +8,7 @@ import rlp.footrix.framework.stores.TeamRankingHandler;
 import rlp.footrix.framework.stores.match.MatchMemoryStore;
 import rlp.footrix.framework.types.definitions.CompetitionDefinition.PhaseDefinition;
 import rlp.footrix.framework.types.definitions.MatchDefinition;
-import rlp.footrix.framework.utils.TriFunction;
+import rlp.footrix.framework.utils.CuatriFunction;
 import rlp.footrix.framework.var.Var;
 
 import java.time.Instant;
@@ -27,7 +27,7 @@ public class Application {
     private final TeamRankingHandler teamRankingHandler;
     private final Var var;
 
-    private TriFunction<MatchDefinition, PhaseDefinition, Var, MatchSimulator> matchSimulator;
+    private CuatriFunction<MatchDefinition, PhaseDefinition, Instant, Var, MatchSimulator> matchSimulator;
 
     public Application(FootrixConfiguration configuration) {
         this.game = new Game().date(configuration.initDate()).season(configuration.initSeason());
@@ -55,7 +55,7 @@ public class Application {
         this.rulesManager.add(id, rule);
     }
 
-    protected void add(TriFunction<MatchDefinition, PhaseDefinition, Var, MatchSimulator> matchSimulator) {
+    protected void add(CuatriFunction<MatchDefinition, PhaseDefinition, Instant, Var, MatchSimulator> matchSimulator) {
         this.matchSimulator = matchSimulator;
     }
 
@@ -112,8 +112,8 @@ public class Application {
             }
 
             @Override
-            public MatchSimulator matchSimulator(MatchDefinition definition) {
-                return matchSimulator.apply(definition, competitionManager.get(definition.competition(), definition.season()).phase(definition.phase()).definition(), var);
+            public MatchSimulator matchSimulator(MatchDefinition definition, Instant date) {
+                return matchSimulator.apply(definition, competitionManager.get(definition.competition(), definition.season()).phase(definition.phase()).definition(), date, var);
             }
 
             @Override

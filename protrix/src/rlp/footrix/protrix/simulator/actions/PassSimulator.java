@@ -29,7 +29,7 @@ public class PassSimulator extends ActionSimulator {
     @Override
     public List<Match.MatchEvent> simulate() {
         if (rival == null) return successfulPass();
-        double playerOverall = 5 * localFactor(team) * passOf(player) * percentOf(player.overall())/100.0;
+        double playerOverall = 4 * localFactor(team) * passOf(player) * percentOf(player.overall())/100.0;
         double rivalOverall = localFactor(rivalTeam) * defenseOf(rival) * percentOf(rival.overall())/100.0;
         double total = playerOverall + rivalOverall;
         double random = Math.random() * total;

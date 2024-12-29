@@ -3,11 +3,12 @@ package rlp.footrix.framework.types;
 import rlp.footrix.framework.types.definitions.MatchDefinition;
 import rlp.footrix.framework.types.player.Position;
 
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public record Match(MatchDefinition definition, Map<String, PlayerStatistics> playerStatistics, List<MatchEvent> events, String mvp, int duration) {
+public record Match(MatchDefinition definition, Instant date, Map<String, PlayerStatistics> playerStatistics, List<MatchEvent> events, String mvp, int duration) {
 
     public static class PlayerStatistics {
         private final Map<Position, Double> minutes = new HashMap<>();

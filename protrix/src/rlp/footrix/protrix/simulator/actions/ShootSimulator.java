@@ -27,7 +27,7 @@ public class ShootSimulator extends ActionSimulator {
     @Override
     public List<Match.MatchEvent> simulate() {
         double playerOverall = localFactor(team) * shootOf(player) * percentOf(player.overall())/100.0;
-        double failOverall = percentOf(76);
+        double failOverall = percentOf(78);
         double random = Math.random() * (playerOverall + failOverall);
         List<Match.MatchEvent> events = random < playerOverall ? successfulShot() : unsuccessfulShot();
         this.state.setPossession(rivalTeam, state.playersOf(rivalTeam).getFirst());
@@ -37,8 +37,8 @@ public class ShootSimulator extends ActionSimulator {
     private List<Match.MatchEvent> successfulShot() {
         ProtrixPlayer goalKeeper = state.playersOf(rivalTeam).stream().filter(p -> state.positionOf(p) == PT).map(p -> (ProtrixPlayer) p).toList().getFirst();
         double rivalOverall = localFactor(rivalTeam) * goalkeeperOf(goalKeeper) * percentOf(goalKeeper.overall())/100.0;
-        double goalOverall = percentOf(67);
-        double random = Math.random() * (rivalOverall + goalOverall) * Math.pow(2.72, -0.2 * state.goalsFor(team));
+        double goalOverall = percentOf(75);
+        double random = Math.random() * (rivalOverall + goalOverall) * Math.pow(2.72, -0.3 * state.goalsFor(team));
         return random < rivalOverall ? save(goalKeeper) : goal(goalKeeper);
     }
 

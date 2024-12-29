@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Instant;
 
 public class PlayMatch extends Event {
 
@@ -16,8 +17,8 @@ public class PlayMatch extends Event {
     private final String matchFilePath;
     private Match match;
 
-    public PlayMatch(MatchDefinition definition, File matchFilePath) {
-        super(definition.date());
+    public PlayMatch(Instant date, MatchDefinition definition, File matchFilePath) {
+        super(date);
         this.definition = definition;
         this.matchFilePath = matchFilePath.getAbsolutePath();
     }

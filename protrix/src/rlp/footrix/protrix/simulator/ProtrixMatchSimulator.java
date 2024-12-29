@@ -11,6 +11,7 @@ import rlp.footrix.framework.var.Var;
 import rlp.footrix.protrix.simulator.actions.*;
 import rlp.footrix.protrix.simulator.helpers.TeamsHandle;
 
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -24,13 +25,15 @@ public class ProtrixMatchSimulator implements MatchSimulator {
 
     private final MatchDefinition definition;
     private final CompetitionDefinition.PhaseDefinition phase;
+    private final Instant date;
     private final MatchState state;
     private final TeamsHandle teamsHandle;
     private int duration = 0;
 
-    public ProtrixMatchSimulator(MatchDefinition definition, CompetitionDefinition.PhaseDefinition phase, Var var) {
+    public ProtrixMatchSimulator(MatchDefinition definition, CompetitionDefinition.PhaseDefinition phase, Instant date, Var var) {
         this.definition = definition;
         this.phase = phase;
+        this.date = date;
         this.state = new MatchState(definition.local(), definition.visitant(), var, phase.substitutionsNumber(), framesPerMinute * 90);
         this.teamsHandle = new TeamsHandle(this.state);
     }
@@ -39,7 +42,7 @@ public class ProtrixMatchSimulator implements MatchSimulator {
     public Match simulate(PlayersLineup localPlayersLineup, PlayersLineup visitantPlayersLineup) {
         this.state.localPlayers(localPlayersLineup).visitantPlayers(visitantPlayersLineup);
         simulateMatch();
-        return new Match(definition, state.playerStatistics(), state.events(), state.mvp(), duration);
+        return new Match(definition, date, state.playerStatistics(), state.events(), state.mvp(), duration);
     }
 
     private void simulateMatch() {

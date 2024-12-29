@@ -22,9 +22,9 @@ public interface CompetitionDefinition {
         int nGroups();
         String matchDayName(int number);
         LocalPolicy localPolicy();
-        SecondLegPolicy secondLegPolicy();
         boolean withExtension();
         boolean withPenalties();
+        boolean hasSecondLeg();
         int substitutesNumber();
         int substitutionsNumber();
         int rankingScore();
@@ -38,10 +38,6 @@ public interface CompetitionDefinition {
 
         enum LocalPolicy {
             Underdog, Favorite, Neutral, Keep
-        }
-
-        enum SecondLegPolicy {
-            OnlyOneLeg, Ordered, Unordered
         }
 
         record TeamClassification(String teamId, int points, int goalsFor, int goalsAgainst) {}

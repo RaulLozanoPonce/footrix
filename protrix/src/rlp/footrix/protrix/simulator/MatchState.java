@@ -2,8 +2,8 @@ package rlp.footrix.protrix.simulator;
 
 import rlp.footrix.framework.types.Match;
 import rlp.footrix.framework.types.player.Player;
-import rlp.footrix.framework.types.team.PlayersLineup;
 import rlp.footrix.framework.types.player.Position;
+import rlp.footrix.framework.types.team.PlayersLineup;
 import rlp.footrix.framework.var.Var;
 import rlp.footrix.protrix.model.ProtrixPlayer;
 import rlp.footrix.protrix.var.*;
@@ -75,6 +75,14 @@ public class MatchState {
 
     public List<Player> visitantPlayers() {
         return visitantPlayers.positions().keySet().stream().toList();
+    }
+
+    public PlayersLineup localPlayersLineup() {
+        return localPlayers;
+    }
+
+    public PlayersLineup visitantPlayersLineup() {
+        return visitantPlayers;
     }
 
     public List<Player> playersOf(String team) {
@@ -230,13 +238,8 @@ public class MatchState {
         return playerStatistics.get(player);
     }
 
-    public Player substitute(String team, Player playerToSubstitute) {
-        PlayersLineup lineup;
-        if (team.equals(local)) lineup = localPlayers;
-        else lineup = visitantPlayers;
-        Player successful = lineup.substitute(playerToSubstitute);
-        if (successful != null) restSubstitutions.put(team, restSubstitutions.get(team) - 1);
-        return successful;
+    public Map<String, Integer> restSubstitutions() {
+        return restSubstitutions;
     }
 
     public int restSubstitutions(String team) {
