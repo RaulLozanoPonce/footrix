@@ -12,6 +12,10 @@ public class Lineup {
         this.distribution = distribution;
     }
 
+    public String name() {
+        return name;
+    }
+
     public Position[][] distribution() {
         return distribution;
     }

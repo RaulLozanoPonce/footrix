@@ -157,69 +157,69 @@ public class MatchState {
 
     public void addSuccessfulDribble(Player dribbler, Player haggled) {
         playerStatisticsOf(dribbler.definition().id()).addScore(successfulDribbleOf(positionOf(dribbler)));
-        VarTerminal.publish(new SuccessfulDribbleRevision().position(positionOf(dribbler)));
+        VarTerminal.publish(new SuccessfulDribbleRevision(positionOf(dribbler).name()));
     }
 
     public void addUnsuccessfulDribble(Player dribbler, Player haggled) {
         playerStatisticsOf(dribbler.definition().id()).addScore(unsuccessfulDribbleOf(positionOf(dribbler)));
-        VarTerminal.publish(new UnsuccessfulDribbleRevision().position(positionOf(dribbler)));
+        VarTerminal.publish(new UnsuccessfulDribbleRevision(positionOf(dribbler).name()));
     }
 
     public void addSuccessfulPass(Player passer, Player cutter) {
         playerStatisticsOf(passer.definition().id()).addScore(successfulPassOf(positionOf(passer)));
-        VarTerminal.publish(new SuccessfulPassRevision().position(positionOf(passer)));
+        VarTerminal.publish(new SuccessfulPassRevision(positionOf(passer).name()));
     }
 
     public void addUnsuccessfulPass(Player passer, Player cutter) {
         playerStatisticsOf(passer.definition().id()).addScore(unsuccessfulPassOf(positionOf(passer)));
-        VarTerminal.publish(new UnsuccessfulPassRevision().position(positionOf(passer)));
+        VarTerminal.publish(new UnsuccessfulPassRevision(positionOf(passer).name()));
     }
 
     public void addShootOffTarget(Player shooter) {
         playerStatisticsOf(shooter.definition().id()).addScore(shootOffTargetOf(positionOf(shooter)));
-        VarTerminal.publish(new ShootOffTargetRevision().position(positionOf(shooter)));
+        VarTerminal.publish(new ShootOffTargetRevision(positionOf(shooter).name()));
     }
 
     public void addShootInTargetSaved(Player shooter, Player goalkeeper) {
         playerStatisticsOf(shooter.definition().id()).addScore(addShootInTargetSavedOf(positionOf(shooter)));
         playerStatisticsOf(goalkeeper.definition().id()).addScore(addShootInTargetSavedOf(positionOf(goalkeeper)));
-        VarTerminal.publish(new ShootInTargetRevision().position(positionOf(shooter)));
+        VarTerminal.publish(new ShootInTargetRevision(positionOf(shooter).name()));
     }
 
     public void addGoal(Player scorer, Player goalkeeper) {
         playerStatisticsOf(goalkeeper.definition().id()).addGoalAgainst();
         playerStatisticsOf(scorer.definition().id()).addScore(goalOf(positionOf(scorer)));
         playerStatisticsOf(goalkeeper.definition().id()).addScore(goalOf(positionOf(goalkeeper)));
-        VarTerminal.publish(new ScoredGoalRevision().position(positionOf(scorer)));
+        VarTerminal.publish(new ScoredGoalRevision(positionOf(scorer).name()));
     }
 
     public void addAssistance(Player assistant) {
         playerStatisticsOf(assistant.definition().id()).addScore(assistanceOf(positionOf(assistant)));
-        VarTerminal.publish(new AssistanceRevision().position(positionOf(assistant)));
+        VarTerminal.publish(new AssistanceRevision(positionOf(assistant).name()));
     }
 
     public void addFault(Player fouler, Player fouled) {
         playerStatisticsOf(fouler.definition().id()).addScore(faultCommitedOf(positionOf(fouler)));
         playerStatisticsOf(fouled.definition().id()).addScore(foulsReceivedOf(positionOf(fouled)));
-        VarTerminal.publish(new FaultCommitedRevision().position(positionOf(fouler)));
+        VarTerminal.publish(new FaultCommitedRevision(positionOf(fouler).name()));
     }
 
     public void addYellowCard(Player fouler) {
         playerStatisticsOf(fouler.definition().id()).addScore(yellowCardOf(positionOf(fouler)));
-        VarTerminal.publish(new YellowCardRevision().position(positionOf(fouler)));
+        VarTerminal.publish(new YellowCardRevision(positionOf(fouler).name()));
     }
 
     public void addYellowExpulsion(Player fouler) {
-        VarTerminal.publish(new YellowExpulsionRevision().position(positionOf(fouler)));
+        VarTerminal.publish(new YellowExpulsionRevision(positionOf(fouler).name()));
     }
 
     public void addRedCard(Player fouler) {
         playerStatisticsOf(fouler.definition().id()).addScore(redCardOf(positionOf(fouler)));
-        VarTerminal.publish(new RedCardRevision().position(positionOf(fouler)));
+        VarTerminal.publish(new RedCardRevision(positionOf(fouler).name()));
     }
 
-    public void addInjury() {
-        VarTerminal.publish(new InjuryRevision());
+    public void addInjury(Player player) {
+        VarTerminal.publish(new InjuryRevision(positionOf(player).name()));
     }
 
     private Position positionOf(PlayersLineup playersLineup, Integer[] position) {

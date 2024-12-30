@@ -8,6 +8,7 @@ import rlp.footrix.framework.stores.TeamRankingHandler;
 import rlp.footrix.framework.stores.match.MatchMemoryStore;
 import rlp.footrix.framework.types.definitions.CompetitionDefinition.PhaseDefinition;
 import rlp.footrix.framework.types.definitions.MatchDefinition;
+import rlp.footrix.framework.types.team.Lineup;
 import rlp.footrix.framework.utils.TriFunction;
 import rlp.footrix.framework.var.VarTerminal;
 
@@ -20,6 +21,7 @@ public class Application {
     private final EventManager eventManager;
     private final TimeManager timeManager;
     private final CompetitionManager competitionManager;
+    private final LineupsManager lineupsManager;
     private final TeamManager teamManager;
     private final PlayerManager playerManager;
     private final RulesManager rulesManager;
@@ -34,6 +36,7 @@ public class Application {
         this.teamRankingHandler = new TeamRankingHandler();
 
         this.competitionManager = new CompetitionManager(this.game, configuration.initDatabase().competitions());
+        this.lineupsManager = new LineupsManager();
         this.teamManager = new TeamManager(configuration.initDatabase().teams());
         this.playerManager = new PlayerManager(configuration.initDatabase().players());
 
@@ -47,7 +50,10 @@ public class Application {
         this.eventManager.add(configuration.initEvents());
         this.timeManager.set(configuration.initDate());
         configuration.initDatabase().competitions().forEach(this.teamRankingHandler::addCompetition);
-        teamManager.teams().forEach(t -> t.rankingScore(100));
+    }
+
+    protected void add(Lineup lineup) {
+        this.lineupsManager.add(lineup);
     }
 
     protected void add(String id, TeamRule rule) {
@@ -144,6 +150,11 @@ public class Application {
             @Override
             public TeamRankingHandler teamRankingHandler() {
                 return teamRankingHandler;
+            }
+
+            @Override
+            public LineupsManager lineupsManager() {
+                return lineupsManager;
             }
         };
     }

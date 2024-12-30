@@ -6,16 +6,14 @@ import rlp.footrix.framework.events.Event;
 import rlp.footrix.framework.events.InitPhase;
 import rlp.footrix.framework.events.SetPhaseCalendar;
 import rlp.footrix.framework.types.Competition;
-import rlp.footrix.framework.types.Country;
 import rlp.footrix.framework.types.SeasonReference;
-import rlp.footrix.framework.types.definitions.TeamDefinition;
 import rlp.footrix.framework.types.player.Player;
 import rlp.footrix.framework.types.team.Team;
 import rlp.footrix.framework.types.team_player.PlayerContract;
 import rlp.footrix.framework.var.Var;
 import rlp.footrix.protrix.loader.PlayerLoader;
-import rlp.footrix.protrix.loader.SpainFirstDivisionDefinition;
-import rlp.footrix.protrix.model.ProtrixTeam;
+import rlp.footrix.protrix.loader.TeamLoader;
+import rlp.footrix.protrix.loader.competitions.SpainFirstDivisionDefinition;
 import rlp.footrix.protrix.model.helpers.InitialContractGenerator;
 import rlp.footrix.protrix.var.ProtrixVar;
 
@@ -25,11 +23,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import static rlp.footrix.framework.types.Country.Spain;
-
 public class ProtrixAppConfiguration implements FootrixConfiguration.SimpleFootrixConfiguration {
 
     private static final Map<String, Map<Player, String>> players = PlayerLoader.players();
+    private static final List<Team> teams = TeamLoader.teams();
     private final ProtrixVar var;
 
     public ProtrixAppConfiguration() {
@@ -43,12 +40,7 @@ public class ProtrixAppConfiguration implements FootrixConfiguration.SimpleFootr
 
     @Override
     public Function<Integer, String> seasonProvider() {
-        return new Function<Integer, String>() {
-            @Override
-            public String apply(Integer integer) {
-                return "season1";
-            }
-        };
+        return number -> "season1";
     }
 
     @Override
@@ -61,7 +53,7 @@ public class ProtrixAppConfiguration implements FootrixConfiguration.SimpleFootr
 
             @Override
             public List<Team> teams() {
-                return players.keySet().stream().map(teamName -> teamOf(teamName)).toList();
+                return teams.stream().map(t -> teamOf(t)).toList();
             }
 
             @Override
@@ -71,30 +63,10 @@ public class ProtrixAppConfiguration implements FootrixConfiguration.SimpleFootr
         };
     }
 
-    private Team teamOf(String teamName) {
-        ProtrixTeam team = new ProtrixTeam(teamDefinitionOf(teamName));
-        Map<Player, PlayerContract> teamPlayers = InitialContractGenerator.generate(players.get(teamName));
+    private Team teamOf(Team team) {
+        Map<Player, PlayerContract> teamPlayers = InitialContractGenerator.generate(players.get(team.definition().name()));
         teamPlayers.forEach(team::setPlayer);
         return team;
-    }
-
-    private TeamDefinition teamDefinitionOf(String teamName) {
-        return new TeamDefinition() {
-            @Override
-            public String id() {
-                return teamName;
-            }
-
-            @Override
-            public String name() {
-                return teamName;
-            }
-
-            @Override
-            public Country country() {
-                return Spain;
-            }
-        };
     }
 
     @Override

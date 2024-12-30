@@ -56,8 +56,8 @@ public class SimulateMatch extends Event {
     }
 
     private Match playMatch() {
-        PlayersLineup localLineup = playersLineup(phase, local.lineup(), localPlayers);
-        PlayersLineup visitantLineup = playersLineup(phase, visitant.lineup(), visitantPlayers);
+        PlayersLineup localLineup = playersLineup(phase, configuration.lineupsManager().get(local.lineup()), localPlayers);
+        PlayersLineup visitantLineup = playersLineup(phase, configuration.lineupsManager().get(visitant.lineup()), visitantPlayers);
         return configuration.matchSimulator(definition, ts).simulate(localLineup, visitantLineup);
     }
 
@@ -193,8 +193,8 @@ public class SimulateMatch extends Event {
                 .newScore(local, visitant, definition.competition() + "-" + definition.phase(), pointsOf(local.definition().id(), match), phase.definition().withPenalties());
         int visitantNewScore = configuration.teamRankingHandler()
                 .newScore(visitant, local, definition.competition() + "-" + definition.phase(), pointsOf(visitant.definition().id(), match), phase.definition().withPenalties());
-        local.rankingScore(localNewScore);
-        visitant.rankingScore(visitantNewScore);
+        local.elo(localNewScore);
+        visitant.elo(visitantNewScore);
     }
 
     private List<Player> availablePlayersOf(Team team) {

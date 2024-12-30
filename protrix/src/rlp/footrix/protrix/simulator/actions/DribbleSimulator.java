@@ -58,15 +58,11 @@ public class DribbleSimulator extends ActionSimulator {
     }
 
     private boolean isFault() {
-        Position rivalPosition = state.positionOf(rival);
-        if (state.events().stream().anyMatch(e -> e.type() == YellowCard && e.who().equals(rival.definition().id()))) {
-            if (Math.random() < 0.65) return false;
-        }
-        return Math.random() < PositionFactors.faultPercentOf(rivalPosition);
+        return Math.random() < PositionFactors.faultPercentOf(state.positionOf(rival));
     }
 
     private boolean isInjury() {
-        return Math.random() < injuryFactor(player) * resistanceFactor(player) * 0.1;
+        return Math.random() < injuryFactor(player) * resistanceFactor(player) * 0.08;
     }
 
     private void fault(List<Match.MatchEvent> events) {
@@ -89,19 +85,22 @@ public class DribbleSimulator extends ActionSimulator {
 
     private void cards(List<Match.MatchEvent> events) {
         double cardRandom = Math.random();
-        if (cardRandom < 0.42) {
+        if (cardRandom < 0.39) {
+            if (state.events().stream().anyMatch(e -> e.type() == YellowCard && e.who().equals(rival.definition().id()))) {
+                if (Math.random() < 0.67) return;
+            }
             if (state.events().stream().anyMatch(e -> e.type() == YellowCard && e.who().equals(rival.definition().id())))
                 state.addYellowExpulsion(rival);
             state.addYellowCard(rival);
             events.add(new Match.MatchEvent(rivalTeam, YellowCard, minute, rival.definition().id(), null));
-        } else if (cardRandom < 0.42 + 0.016) {
+        } else if (cardRandom < 0.39 + 0.013) {
             state.addRedCard(rival);
             events.add(new Match.MatchEvent(rivalTeam, RedCard, minute, rival.definition().id(), null));
         }
     }
 
     private void injury(List<Match.MatchEvent> events) {
-        state.addInjury();
+        state.addInjury(player);
         double type = Math.random();
         if (type < 0.4954) {
             events.add(new Match.MatchEvent(team, MinorInjury, minute, player.definition().id(), null));

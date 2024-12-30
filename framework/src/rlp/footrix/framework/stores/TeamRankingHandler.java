@@ -18,7 +18,7 @@ public class TeamRankingHandler {
 
     public int newScore(Team team, Team rival, String competition, int result, boolean withPenalties) {
         double deltaScore = importance(competition) * (result(result, withPenalties) - expectedResult(team, rival));
-        return team.rankingScore() + (int) Math.round(deltaScore);
+        return team.elo() + (int) Math.round(deltaScore);
     }
 
     private double importance(String competition) {
@@ -37,6 +37,6 @@ public class TeamRankingHandler {
     }
 
     private double expectedResult(Team team, Team rival) {
-        return 1 / (Math.pow(10, - (team.rankingScore() - rival.rankingScore())/600.0) + 1.0);
+        return 1 / (Math.pow(10, - (team.elo() - rival.elo())/600.0) + 1.0);
     }
 }

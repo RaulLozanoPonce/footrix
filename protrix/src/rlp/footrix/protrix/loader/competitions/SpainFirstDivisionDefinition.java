@@ -1,4 +1,4 @@
-package rlp.footrix.protrix.loader;
+package rlp.footrix.protrix.loader.competitions;
 
 import rlp.footrix.framework.types.Country;
 import rlp.footrix.framework.types.definitions.CompetitionDefinition;

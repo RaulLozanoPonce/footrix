@@ -21,4 +21,5 @@ public interface EventConfiguration {
     PlayerManager playerManager();
     TimeManager timeManager();
     TeamRankingHandler teamRankingHandler();
+    LineupsManager lineupsManager();
 }

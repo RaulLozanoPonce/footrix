@@ -14,12 +14,22 @@ public class ProtrixVar implements Var {
 
     public void publish(Revision revision) {
         this.revisions.putIfAbsent(revision.getClass(), new HashMap<>());
-        this.revisions.get(revision.getClass()).put(revision.key(), revision);
+        if (revision instanceof MatchMetricRevision matchMetricRevision) publish(matchMetricRevision);
+        else this.revisions.get(revision.getClass()).put(revision.key(), revision);
     }
 
     public <T extends Revision> List<T> revisions(Class<T> clazz) {
         Map<String, T> revisions = (Map<String, T>) this.revisions.get(clazz);
         if (revisions == null) return new ArrayList<>();
         return new ArrayList<>(revisions.values());
+    }
+
+    public void publish(MatchMetricRevision revision) {
+        Map<String, Revision> revisions = this.revisions.get(revision.getClass());
+        if (revisions.containsKey(revision.key())) {
+            ((MatchMetricRevision) revisions.get(revision.key())).sum();
+        } else {
+            revisions.put(revision.key(), revision);
+        }
     }
 }

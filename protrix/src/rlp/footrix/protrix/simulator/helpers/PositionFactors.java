@@ -168,35 +168,35 @@ public class PositionFactors {
     }};
 
     private static final Map<Position, Double> faultPercent = new HashMap<>() {{
-        put(Position.PT, 0.17);  //TODO
+        put(Position.PT, 0.15);
         put(Position.CT, 1.0);
         put(Position.CAR, 1.0);
         put(Position.LAT, 1.0);
         put(Position.CCD, 1.0);
-        put(Position.CC, 0.494);
-        put(Position.MP, 1.0);
+        put(Position.CC, 1.0);
+        put(Position.MP, 0.7);
         put(Position.VOL, 1.0);
-        put(Position.EXT, 0.138);
+        put(Position.EXT, 0.35);
         put(Position.SS, 1.0);
-        put(Position.DL, 0.171);
+        put(Position.DL, 0.15);
     }};
 
     //successfulDribbleOf, unsuccessfulDribbleOf, successfulDribbleCutOf, unsuccessfulDribbleCutOf, successfulPassOf, unsuccessfulPassOf,
     //successfulPassCutOf, unsuccessfulPassCutOf, shootOffTargetOf, addShootInTargetSavedOf, goalOf, assistanceOf, faultCommitedOf
     //foulsReceivedOf, yellowCardOf, redCardOf
-    private static final Map<Position, Double[]> points = Map.of(
-            Position.PT, new Double[] {0.3, -0.2, 0.5, -0.1, 0.05, -0.1, 0.3, -0.1, null, 0.5, -1.0, 2.0, -0.3, 0.1, -0.5, -2.0},
-            Position.CT, new Double[] {0.3, -0.2, 0.4, -0.2, 0.05, -0.1, 0.4, -0.2, -0.05, 0.2, 2.0, 1.5, -0.3, 0.1, -0.5, -2.0},
-            Position.LAT, new Double[] {0.3, -0.2, 0.4, -0.2, 0.05, -0.1, 0.5, -0.1, -0.05, 0.2, 2.0, 1.5, -0.3, 0.1, -0.5, -2.0},
-            Position.CAR, new Double[] {0.3, -0.2, 0.4, -0.2, 0.05, -0.1, 0.5, -0.1, -0.05, 0.2, 2.0, 1.5, -0.3, 0.1, -0.5, -2.0},
-            Position.CCD, new Double[] {0.3, -0.2, 0.3, -0.2, 0.1, -0.2, 0.4, -0.1, -0.1, 0.3, 1.5, 2.0, -0.2, 0.2, -0.5, -2.0},
-            Position.CC, new Double[] {0.3, -0.2, 0.3, -0.2, 0.1, -0.2, 0.4, -0.1, -0.1, 0.3, 1.5, 2.0, -0.2, 0.2, -0.5, -2.0},
-            Position.MP, new Double[] {0.3, -0.2, 0.3, -0.2, 0.1, -0.2, 0.4, -0.1, -0.1, 0.3, 1.5, 2.0, -0.2, 0.2, -0.5, -2.0},
-            Position.VOL, new Double[] {0.3, -0.2, 0.3, -0.2, 0.1, -0.2, 0.4, -0.1, -0.1, 0.3, 1.5, 2.0, -0.2, 0.2, -0.5, -2.0},
-            Position.EXT, new Double[] {0.4, -0.3, 0.2, -0.1, 0.05, -0.2, 0.3, -0.1, -0.3, 0.5, 2.5, 1.5, -0.3, 0.3, -0.5, -2.0},
-            //Position.SS, new Double[] {0.4, -0.3, 0.2, -0.1, 0.05, -0.2, 0.3, -0.1, -0.3, 0.5, 2.5, 1.5, -0.3, 0.3, -0.5, -2.0},  //TODO
-            Position.DL, new Double[] {0.4, -0.3, 0.2, -0.1, 0.05, -0.2, 0.3, -0.1, -0.3, 0.5, 2.5, 1.5, -0.3, 0.3, -0.5, -2.0}
-    );
+    private static final Map<Position, Double[]> points = new HashMap<>() {{
+            put(Position.PT, new Double[] {0.3, -0.2, 0.5, -0.1, 0.05, -0.1, 0.3, -0.1, null, 0.5, -1.0, 2.0, -0.3, 0.1, -0.5, -2.0});
+            put(Position.CT, new Double[] {0.3, -0.2, 0.4, -0.2, 0.05, -0.1, 0.4, -0.2, -0.05, 0.2, 2.0, 1.5, -0.3, 0.1, -0.5, -2.0});
+            put(Position.LAT, new Double[] {0.3, -0.2, 0.4, -0.2, 0.05, -0.1, 0.5, -0.1, -0.05, 0.2, 2.0, 1.5, -0.3, 0.1, -0.5, -2.0});
+            put(Position.CAR, new Double[] {0.3, -0.2, 0.4, -0.2, 0.05, -0.1, 0.5, -0.1, -0.05, 0.2, 2.0, 1.5, -0.3, 0.1, -0.5, -2.0});
+            put(Position.CCD, new Double[] {0.3, -0.2, 0.3, -0.2, 0.1, -0.2, 0.4, -0.1, -0.1, 0.3, 1.5, 2.0, -0.2, 0.2, -0.5, -2.0});
+            put(Position.CC, new Double[] {0.3, -0.2, 0.3, -0.2, 0.1, -0.2, 0.4, -0.1, -0.1, 0.3, 1.5, 2.0, -0.2, 0.2, -0.5, -2.0});
+            put(Position.MP, new Double[] {0.3, -0.2, 0.3, -0.2, 0.1, -0.2, 0.4, -0.1, -0.1, 0.3, 1.5, 2.0, -0.2, 0.2, -0.5, -2.0});
+            put(Position.VOL, new Double[] {0.3, -0.2, 0.3, -0.2, 0.1, -0.2, 0.4, -0.1, -0.1, 0.3, 1.5, 2.0, -0.2, 0.2, -0.5, -2.0});
+            put(Position.EXT, new Double[] {0.4, -0.3, 0.2, -0.1, 0.05, -0.2, 0.3, -0.1, -0.3, 0.5, 2.5, 1.5, -0.3, 0.3, -0.5, -2.0});
+            put(Position.SS, new Double[] {0.4, -0.3, 0.2, -0.1, 0.05, -0.2, 0.3, -0.1, -0.3, 0.5, 2.5, 1.5, -0.3, 0.3, -0.5, -2.0});
+            put(Position.DL, new Double[] {0.4, -0.3, 0.2, -0.1, 0.05, -0.2, 0.3, -0.1, -0.3, 0.5, 2.5, 1.5, -0.3, 0.3, -0.5, -2.0});
+    }};
 
     private static Map<Position, Double> fatigueFactor = new HashMap<>() {{
         put(Position.PT, 0.417);

@@ -73,45 +73,45 @@ public class ProtrixBox extends AbstractBox {
 			}*/
 			System.out.println("-----------------------------------------------------------------------------------------");
 			for (Team team : application.teamManager().teams()) {
-				System.out.println(team.definition().name() + " -> " + team.rankingScore());
+				System.out.println(team.definition().name() + "\t" + team.elo());
 			}
 	}
 
 	private void printDribbles() {
-		double successfulDribbles = VarTerminal.revisions(SuccessfulDribbleRevision.class).size() / 380.0;
-		double unsuccessfulDribbles = VarTerminal.revisions(UnsuccessfulDribbleRevision.class).size() / 380.0;
+		double successfulDribbles = VarTerminal.revisions(SuccessfulDribbleRevision.class).stream().mapToInt(MatchMetricRevision::value).sum() / 380.0;
+		double unsuccessfulDribbles = VarTerminal.revisions(UnsuccessfulDribbleRevision.class).stream().mapToInt(MatchMetricRevision::value).sum() / 380.0;
 		double totalDribbles = successfulDribbles + unsuccessfulDribbles;
 		System.out.println("Regates exitosos: " + successfulDribbles + " - Regates fallidos: " + unsuccessfulDribbles + " - Regates totales: " + totalDribbles);
 	}
 
 	private void printGoals() {
-		double shootOffTarget = VarTerminal.revisions(ShootOffTargetRevision.class).size() / 380.0;
-		double shootInTarget = VarTerminal.revisions(ShootInTargetRevision.class).size() / 380.0;
-		double goals = VarTerminal.revisions(ScoredGoalRevision.class).size() / 380.0;
-		double assistance = VarTerminal.revisions(AssistanceRevision.class).size() / 380.0;
+		double shootOffTarget = VarTerminal.revisions(ShootOffTargetRevision.class).stream().mapToInt(MatchMetricRevision::value).sum() / 380.0;
+		double shootInTarget = VarTerminal.revisions(ShootInTargetRevision.class).stream().mapToInt(MatchMetricRevision::value).sum() / 380.0;
+		double goals = VarTerminal.revisions(ScoredGoalRevision.class).stream().mapToInt(MatchMetricRevision::value).sum() / 380.0;
+		double assistance = VarTerminal.revisions(AssistanceRevision.class).stream().mapToInt(MatchMetricRevision::value).sum() / 380.0;
 		double totalShoots = shootOffTarget + shootInTarget + goals;
 		System.out.println("Tiros fuera: " + shootOffTarget + " - Tiros parados: " + shootInTarget + " - Goles: " + goals + " - Asistencias: " + assistance + " - Tiros totales: " + totalShoots);
 	}
 
 	private void printPasses() {
-		double successfulPasses = VarTerminal.revisions(SuccessfulPassRevision.class).size() / 380.0;
-		double unsuccessfulPasses = VarTerminal.revisions(UnsuccessfulPassRevision.class).size() / 380.0;
+		double successfulPasses = VarTerminal.revisions(SuccessfulPassRevision.class).stream().mapToInt(MatchMetricRevision::value).sum() / 380.0;
+		double unsuccessfulPasses = VarTerminal.revisions(UnsuccessfulPassRevision.class).stream().mapToInt(MatchMetricRevision::value).sum() / 380.0;
 		double totalPasses = successfulPasses + unsuccessfulPasses;
 		System.out.println("Pases exitosos: " + successfulPasses + " - Pases fallidos: " + unsuccessfulPasses + " - Pases totales: " + totalPasses);
 	}
 
 	private void printFaults() {
-		double faultCommited = VarTerminal.revisions(FaultCommitedRevision.class).size() / 380.0;
-		double yellowCard = VarTerminal.revisions(YellowCardRevision.class).size() / 380.0;
-		double yellowExpulsion = VarTerminal.revisions(YellowExpulsionRevision.class).size() / 380.0;
-		double redCards = VarTerminal.revisions(RedCardRevision.class).size() / 380.0;
-		double injuries = VarTerminal.revisions(InjuryRevision.class).size() / 380.0;
+		double faultCommited = VarTerminal.revisions(FaultCommitedRevision.class).stream().mapToInt(MatchMetricRevision::value).sum() / 380.0;
+		double yellowCard = VarTerminal.revisions(YellowCardRevision.class).stream().mapToInt(MatchMetricRevision::value).sum() / 380.0;
+		double yellowExpulsion = VarTerminal.revisions(YellowExpulsionRevision.class).stream().mapToInt(MatchMetricRevision::value).sum() / 380.0;
+		double redCards = VarTerminal.revisions(RedCardRevision.class).stream().mapToInt(MatchMetricRevision::value).sum() / 380.0;
+		double injuries = VarTerminal.revisions(InjuryRevision.class).stream().mapToInt(MatchMetricRevision::value).sum() / 380.0;
 		System.out.println("Faltas cometidas: " + faultCommited + " - Tarjetas amarillas: " + yellowCard + " - Expulsiones por amarilla: " + yellowExpulsion + "- Tarjetas Rojas: " + redCards + " - Lesiones: " + injuries);
 	}
 
 	private void printFaultsByPosition() {
 		for (Position position : Position.values()) {
-			System.out.print(position.name() + ": " + VarTerminal.revisions(FaultCommitedRevision.class).stream().filter(e -> e.position() == position).count()/380.0 + " - ");
+			System.out.print(position.name() + ": " + VarTerminal.revisions(FaultCommitedRevision.class).stream().filter(e -> e.position() == position).mapToInt(MatchMetricRevision::value).sum()/380.0 + " - ");
 		}
 		System.out.println("\n");
 	}
