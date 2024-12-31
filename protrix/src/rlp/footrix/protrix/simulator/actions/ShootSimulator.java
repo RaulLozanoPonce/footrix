@@ -38,7 +38,7 @@ public class ShootSimulator extends ActionSimulator {
         ProtrixPlayer goalKeeper = state.playersOf(rivalTeam).stream().filter(p -> state.positionOf(p) == PT).map(p -> (ProtrixPlayer) p).toList().getFirst();
         double rivalOverall = localFactor(rivalTeam) * goalkeeperOf(goalKeeper) * percentOf(goalKeeper.overall())/100.0;
         double goalOverall = percentOf(75);
-        double random = Math.random() * (rivalOverall + goalOverall) * Math.pow(2.72, -0.3 * state.goalsFor(team));
+        double random = Math.random() * (rivalOverall + goalOverall) * Math.pow(2.72, -0.4 * state.goalsFor(team));
         return random < rivalOverall ? save(goalKeeper) : goal(goalKeeper);
     }
 

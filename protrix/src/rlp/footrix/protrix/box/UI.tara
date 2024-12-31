@@ -20,7 +20,7 @@ Template(layout=Horizontal) appTemplate as Relative(height=100%, width=100%)
 		noItemsFoundMessage = "Ningún jugador encontrado para los criterios establecidos"
 		Mold
 			Heading idHeading > Text(value = "Id")
-			Item(height=20px, width=10%) idMold > Number id
+			Item(height=20px, width=5%) idMold > Number id
 		Mold
 			Heading nameHeading > Text(value = "Nombre")
 			Item(height=20px, width=25%) nameMold > Link(title = "nombre") name
@@ -42,3 +42,6 @@ Template(layout=Horizontal) appTemplate as Relative(height=100%, width=100%)
 		Mold
 			Heading minutesHeading > Text(value = "Minutos jugados (%)")
 			Item(height=20px, width=10%) minutesMold > Number(countDecimals = 2) minutes
+		Mold
+			Heading cacheHeading > Text(value = "Cache (%)")
+			Item(height=20px, width=10%) cacheMold > Number(countDecimals = 2) cache

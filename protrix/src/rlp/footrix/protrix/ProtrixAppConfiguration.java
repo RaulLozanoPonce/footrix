@@ -64,9 +64,24 @@ public class ProtrixAppConfiguration implements FootrixConfiguration.SimpleFootr
     }
 
     private Team teamOf(Team team) {
+        double eloPosition = team.elo() / teams.stream().mapToDouble(Team::elo).max().orElse(0.0);
         Map<Player, PlayerContract> teamPlayers = InitialContractGenerator.generate(players.get(team.definition().name()));
-        teamPlayers.forEach(team::setPlayer);
+        teamPlayers.forEach((p, c) -> {
+            team.setPlayer(p, c);
+            p.absoluteCache(eloPosition * initialCacheFactorOf(c.role()));
+        });
         return team;
+    }
+
+    private double initialCacheFactorOf(PlayerContract.Role role) {
+        return switch (role) {
+            case Undisputed -> 1;
+            case Regular -> 0.8;
+            case Rotation -> 0.5;
+            case Substitute -> 0.3;
+            case Reserve -> 0.15;
+            case Young -> 0.2;
+        };
     }
 
     @Override

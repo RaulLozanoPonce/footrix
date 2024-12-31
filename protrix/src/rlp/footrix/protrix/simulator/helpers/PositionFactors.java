@@ -18,7 +18,8 @@ public class PositionFactors {
         put(Position.VOL, new Double[]{0.8751, 0.0793, 0.0456});
         put(Position.EXT, new Double[]{0.8112, 0.0976, 0.0912});
         put(Position.SS, new Double[]{0.8144, 0.0488, 0.1368});
-        put(Position.DL, new Double[]{0.7806, 0.0427, 0.1767});
+        //put(Position.DL, new Double[]{0.7806, 0.0427, 0.1767});
+        put(Position.DL, new Double[]{0.8073, 0.0427, 0.15});
     }};
 
     private static final Map<Position, Map<Position, Double>> passProbability = new HashMap<>() {{

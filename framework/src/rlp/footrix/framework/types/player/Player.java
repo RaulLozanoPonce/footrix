@@ -17,7 +17,7 @@ public abstract class Player {
     protected final Map<Position, Double> otherPositions = new HashMap<>();
     private double energy = 1.0;
     private final Mood mood = new Mood();
-    private double absoluteCache = 0.5;
+    private double absoluteCache;
     private String team;
     private PlayerContract.Role role;
     private final Map<String, Integer> yellowCards = new HashMap<>();
@@ -59,13 +59,18 @@ public abstract class Player {
         return mood;
     }
 
+    public Player absoluteCache(double absoluteCache) {
+        this.absoluteCache = absoluteCache;
+        return this;
+    }
+
     public double relativeCache() {
         return relativeCache(mainPosition());
     }
 
     public double relativeCache(Position position) {
         double overall = overall(position);
-        return Math.max(0, Math.min(1, ((overall - 40) / (85 - 40)) * absoluteCache));
+        return Math.max(0, Math.min(1, ((overall - 40) / (99 - 40)) * absoluteCache));
     }
 
     public String team() {

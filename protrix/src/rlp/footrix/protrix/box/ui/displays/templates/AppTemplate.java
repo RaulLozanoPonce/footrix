@@ -42,5 +42,6 @@ public class AppTemplate extends AbstractAppTemplate<ProtrixBox> {
 		row.positionMold.position.value(player.mainPosition().name());
 		row.happinessMold.happiness.value(Math.round(player.mood().gameTime() * 100.0) / 100.0);
 		row.minutesMold.minutes.value(registration == null ? null : registration.percentMinutes("ESP-1"));
+		row.cacheMold.cache.value(player.relativeCache());
 	}
 }

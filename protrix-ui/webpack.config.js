@@ -34,9 +34,9 @@ module.exports = {
 	},
 	entry : {
 		'matchesTemplate' : './gen/apps/MatchesTemplate.js',
-		'classificationTemplate' : './gen/apps/ClassificationTemplate.js',
+		'appTemplate' : './gen/apps/AppTemplate.js',
 		'playerTraceTemplate' : './gen/apps/PlayerTraceTemplate.js',
-		'appTemplate' : './gen/apps/AppTemplate.js'
+		'classificationTemplate' : './gen/apps/ClassificationTemplate.js'
 	},
 	output: {
 		path: "/Users/raull/IdeaProjects/footrix/out/production/protrix-ui/www/protrix-ui",
@@ -69,9 +69,9 @@ module.exports = {
 		new HtmlWebPackPlugin({
 			hash: true,
 			title: "Test UI",
-			chunks: ['classificationTemplate'],
-			template: "./src/classificationTemplate.html",
-			filename: "./classificationTemplate.html"
+			chunks: ['appTemplate'],
+			template: "./src/appTemplate.html",
+			filename: "./appTemplate.html"
 		}),
 		new HtmlWebPackPlugin({
 			hash: true,
@@ -83,9 +83,9 @@ module.exports = {
 		new HtmlWebPackPlugin({
 			hash: true,
 			title: "Test UI",
-			chunks: ['appTemplate'],
-			template: "./src/appTemplate.html",
-			filename: "./appTemplate.html"
+			chunks: ['classificationTemplate'],
+			template: "./src/classificationTemplate.html",
+			filename: "./classificationTemplate.html"
 		})
 	]
 };
