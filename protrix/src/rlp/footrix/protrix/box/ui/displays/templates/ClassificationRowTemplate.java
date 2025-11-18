@@ -1,7 +1,6 @@
 package rlp.footrix.protrix.box.ui.displays.templates;
 
-import rlp.footrix.framework.types.definitions.CompetitionDefinition;
-import rlp.footrix.framework.types.team.Team;
+import rlp.footrix.framework.types.entities.team.Team;
 import rlp.footrix.protrix.box.ProtrixBox;
 
 public class ClassificationRowTemplate extends AbstractClassificationRowTemplate<ProtrixBox> {
@@ -10,18 +9,20 @@ public class ClassificationRowTemplate extends AbstractClassificationRowTemplate
 		super(box);
 	}
 
-	public ClassificationRowTemplate results(int position, CompetitionDefinition.PhaseDefinition.TeamClassification classification) {
-		Team team = box().application().teamManager().get(classification.teamId());
+	public ClassificationRowTemplate results(int position, TeamMatchRecordRow record) {
+		Team team = box().application().teamManager().get(record.team());
 		this.position.value(position);
 		this.team.value(team.definition().name());
-		this.playedMatches.value(classification.wonMatches() + classification.drawMatches() + classification.lostMatches());
-		this.winMatches.value(classification.wonMatches());
-		this.drawMatches.value(classification.drawMatches());
-		this.lostMatches.value(classification.lostMatches());
-		this.goalsFor.value(classification.goalsFor());
-		this.goalsAgainst.value(classification.goalsAgainst());
-		this.goalsDifference.value(classification.goalsFor() - classification.goalsAgainst());
-		this.points.value(classification.points());
+		this.playedMatches.value(record.wins() + record.draws() + record.lost());
+		this.winMatches.value(record.wins());
+		this.drawMatches.value(record.draws());
+		this.lostMatches.value(record.lost());
+		this.goalsFor.value(record.goalsFor());
+		this.goalsAgainst.value(record.goalsAgainst());
+		this.goalsDifference.value(record.goalsFor() - record.goalsAgainst());
+		this.points.value(record.points());
 		return this;
 	}
+
+    public record TeamMatchRecordRow(String team, int wins, int draws, int lost, int goalsFor, int goalsAgainst, int points) {}
 }

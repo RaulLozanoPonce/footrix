@@ -1,12 +1,11 @@
 package rlp.footrix.framework;
 
-import rlp.footrix.framework.types.SeasonReference;
+import rlp.footrix.framework.types.entities.SeasonReference;
 
 import java.time.Instant;
 import java.util.function.Function;
 
 public class Game {
-
     private Instant date;
     private int season;
     private Function<Integer, String> seasonProvider;
@@ -32,7 +31,7 @@ public class Game {
         return season;
     }
 
-    private Integer seasonNumber(SeasonReference reference) {
+    public int seasonNumber(SeasonReference reference) {
         if (reference == SeasonReference.Last) return season - 1;
         if (reference == SeasonReference.Next) return season + 1;
         return season;

@@ -1,8 +1,8 @@
 package rlp.footrix.protrix.box.ui.displays.templates;
 
 import io.intino.alexandria.ui.displays.events.AddCollectionItemEvent;
-import rlp.footrix.framework.types.team.Team;
-import rlp.footrix.framework.var.PlayerMatchPerformance;
+import rlp.footrix.framework.types.entities.team.Team;
+import rlp.footrix.framework.types.records.PlayerMatchRecord;
 import rlp.footrix.protrix.box.ProtrixBox;
 import rlp.footrix.protrix.box.ui.datasources.PlayerTraceDatasource;
 import rlp.footrix.protrix.box.ui.displays.rows.TraceTableRow;
@@ -24,10 +24,10 @@ public class PlayerTraceTemplate extends AbstractPlayerTraceTemplate<ProtrixBox>
 	}
 
 	private void initHeader() {
-		Team playerTeam = box().application().teamManager().get(player.team());
+		Team playerTeam = box().application().teamManager().get(player.team().definition().id());
 		name.value(player.definition().name());
 		team.value(playerTeam.definition().name());
-		position.value(player.mainPosition().name());
+		position.value(player.mainPosition().id());
 		role.value(playerTeam.contractOf(player.definition().id()).role().name());
 		stamina.value(player.stamina());
 		injuryResistance.value(player.definition().injuryResistance().name());
@@ -39,19 +39,20 @@ public class PlayerTraceTemplate extends AbstractPlayerTraceTemplate<ProtrixBox>
 	}
 
 	private void renderTableItem(AddCollectionItemEvent event) {
-		PlayerMatchPerformance performance = event.item();
+		PlayerMatchRecord record = event.item();
 		TraceTableRow row = event.component();
-		row.matchTraceMold.matchTrace.value(performance.match());
-		row.dateTraceMold.dateTrace.value(performance.date());
-		row.positionTraceMold.positionTrace.value(performance.position() == null ? "" : performance.position().name());
-		row.preEnergyTraceMold.preEnergyTrace.value(performance.preEnergy());
-		row.postEnergyTraceMold.postEnergyTrace.value(performance.postEnergy());
-		row.preHappinessTraceMold.preHappinessTrace.value(performance.preHappiness());
-		row.postHappinessTraceMold.postHappinessTrace.value(performance.postHappiness());
-		row.expelledTraceMold.expelledTrace.value(performance.expelled() ? "Sí" : "");
-		row.injuredTraceMold.injuredTrace.value(performance.injured() ? "Sí" : "");
-		row.enterMinuteTraceMold.enterMinuteTrace.value(performance.enterMinute() == null ? "" : String.valueOf(performance.enterMinute()));
-		row.exitMinuteTraceMold.exitMinuteTrace.value(performance.exitMinute() == null ? "" : String.valueOf(performance.exitMinute()));
-		row.noteTraceMold.noteTrace.value(performance.note());
+        //TODO
+		/*row.matchTraceMold.matchTrace.value(record.match());
+		row.dateTraceMold.dateTrace.value(record.date());
+		row.positionTraceMold.positionTrace.value(record.position() == null ? "" : record.position().id());
+		row.preEnergyTraceMold.preEnergyTrace.value(record.preEnergy());
+		row.postEnergyTraceMold.postEnergyTrace.value(record.postEnergy());
+		row.preHappinessTraceMold.preHappinessTrace.value(record.preHappiness());
+		row.postHappinessTraceMold.postHappinessTrace.value(record.postHappiness());
+		row.expelledTraceMold.expelledTrace.value(record.expelled() ? "Sí" : "");
+		row.injuredTraceMold.injuredTrace.value(record.injured() ? "Sí" : "");
+		row.enterMinuteTraceMold.enterMinuteTrace.value(record.enterMinute() == null ? "" : String.valueOf(record.enterMinute()));
+		row.exitMinuteTraceMold.exitMinuteTrace.value(record.exitMinute() == null ? "" : String.valueOf(record.exitMinute()));
+		row.noteTraceMold.noteTrace.value(record.note());*/
 	}
 }

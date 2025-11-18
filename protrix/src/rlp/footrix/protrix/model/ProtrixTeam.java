@@ -1,8 +1,8 @@
 package rlp.footrix.protrix.model;
 
-import rlp.footrix.framework.types.definitions.TeamDefinition;
-import rlp.footrix.framework.types.team.Lineup;
-import rlp.footrix.framework.types.team.Team;
+import rlp.footrix.framework.types.entities.definitions.TeamDefinition;
+import rlp.footrix.framework.types.entities.team.Lineup;
+import rlp.footrix.framework.types.entities.team.Team;
 
 public class ProtrixTeam extends Team {
 

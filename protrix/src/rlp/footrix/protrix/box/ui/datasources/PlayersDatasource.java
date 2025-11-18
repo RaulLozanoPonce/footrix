@@ -4,11 +4,12 @@ import io.intino.alexandria.ui.model.datasource.Filter;
 import io.intino.alexandria.ui.model.datasource.Group;
 import io.intino.alexandria.ui.model.datasource.PageDatasource;
 import io.intino.alexandria.ui.model.datasource.filters.GroupFilter;
-import rlp.footrix.framework.types.player.Position;
+import rlp.footrix.framework.types.entities.definitions.TeamDefinition;
+import rlp.footrix.framework.types.entities.team.Team;
 import rlp.footrix.protrix.box.ProtrixBox;
+import rlp.footrix.protrix.model.Positions;
 import rlp.footrix.protrix.model.ProtrixPlayer;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -42,9 +43,9 @@ public class PlayersDatasource extends PageDatasource<ProtrixPlayer> {
     @Override
     public List<Group> groups(String key) {
         if (key.equalsIgnoreCase(TeamGroup))
-            return box.application().teamManager().teams().stream().map(t -> new Group().label(t.definition().name()).name(t.definition().name())).toList();
+            return box.application().teamManager().teamDefinitions().stream().map(t -> new Group().label(t.name()).name(t.name())).toList();
         if (key.equalsIgnoreCase(PositionGroup))
-            return Arrays.stream(Position.values()).map(p -> new Group().name(p.name()).label(p.name())).toList();
+            return Positions.values().stream().map(p -> new Group().name(p.id()).label(p.id())).toList();
         return Collections.emptyList();
     }
 
@@ -55,13 +56,13 @@ public class PlayersDatasource extends PageDatasource<ProtrixPlayer> {
     }
 
     private boolean filterPlayer(ProtrixPlayer player, List<Filter> filters) {
-        String teamId = player.team();
-        if (teamId == null) return false;
-        String teamName = box.application().teamManager().get(teamId).definition().name();
+        Team team = player.team();
+        if (team == null) return false;
+        String teamName = team.definition().name();
         for (Filter filter : filters) {
             if (filter.grouping().equalsIgnoreCase(TeamGroup) && !((GroupFilter)filter).groups().contains(teamName))
                 return false;
-            if (filter.grouping().equalsIgnoreCase(PositionGroup) && !((GroupFilter)filter).groups().contains(player.mainPosition().name()))
+            if (filter.grouping().equalsIgnoreCase(PositionGroup) && !((GroupFilter)filter).groups().contains(player.mainPosition().id()))
                 return false;
         }
         return true;

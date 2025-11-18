@@ -11,7 +11,7 @@ Template playerTraceTemplate as Relative(height=100%, width=100%)
 		Number stamina as Labeled("Resistencia:")
 		Text injuryResistance as Labeled("Resistencia lesiones:")
 	Block as Relative(width=100%, height=95%)
-		Table(itemClass="rlp.footrix.framework.var.PlayerMatchPerformance", pageSize=38, format=wh100) traceTable
+		Table(itemClass="rlp.footrix.framework.types.records.PlayerMatchRecord", pageSize=38, format=wh100) traceTable
 			noItemsMessage = "Este jugador no ha jugado partidos"
 			noItemsFoundMessage = "Este jugador no ha jugado partidos con los criterios establecidos"
 			Mold

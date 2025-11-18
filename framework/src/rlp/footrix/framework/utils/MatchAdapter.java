@@ -4,8 +4,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import rlp.footrix.framework.types.Match;
-import rlp.footrix.framework.types.definitions.MatchDefinition;
+import rlp.footrix.framework.types.entities.Match;
+import rlp.footrix.framework.types.entities.definitions.MatchDefinition;
 
 import java.io.IOException;
 

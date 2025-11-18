@@ -1,9 +1,9 @@
 package rlp.footrix.protrix.loader;
 
-import rlp.footrix.framework.types.Country;
-import rlp.footrix.framework.types.player.Player;
-import rlp.footrix.framework.types.player.Position;
-import rlp.footrix.framework.types.definitions.PlayerDefinition;
+import rlp.footrix.framework.types.entities.definitions.PlayerDefinition;
+import rlp.footrix.framework.types.entities.player.Player;
+import rlp.footrix.framework.types.entities.player.Position;
+import rlp.footrix.protrix.model.Positions;
 import rlp.footrix.protrix.model.ProtrixPlayer;
 
 import java.io.File;
@@ -27,21 +27,21 @@ public class PlayerLoader {
                 players.putIfAbsent(player[8], new HashMap<>());
                 players.get(player[8]).put(playerOf(player, i), player[9]);
             }
-        } catch (IOException e) {
+        } catch (Throwable e) {
             throw new RuntimeException(e);
         }
         return players;
     }
 
     private static Player playerOf(String[] raw, Integer id) {
-        return new ProtrixPlayer(playerDefinitionOf(raw, id), positionOf(raw[6]), positionsOf(raw[7]), Integer.parseInt(raw[10]),
+        return new ProtrixPlayer(playerDefinitionOf(raw, id), positionOf(raw[6]), positionsOf(raw[7]),
                 Integer.parseInt(raw[11]), Integer.parseInt(raw[12]), Integer.parseInt(raw[13]), Integer.parseInt(raw[14]),
                 Integer.parseInt(raw[15]), Integer.parseInt(raw[16]), Integer.parseInt(raw[17]), Integer.parseInt(raw[18]),
                 Integer.parseInt(raw[19]), Integer.parseInt(raw[20]), Integer.parseInt(raw[21]), Integer.parseInt(raw[22]),
                 Integer.parseInt(raw[23]), Integer.parseInt(raw[24]), Integer.parseInt(raw[25]), Integer.parseInt(raw[26]),
                 Integer.parseInt(raw[27]), Integer.parseInt(raw[28]), Integer.parseInt(raw[29]), Integer.parseInt(raw[30]),
                 Integer.parseInt(raw[31]), Integer.parseInt(raw[32]), Integer.parseInt(raw[33]), Integer.parseInt(raw[34]),
-                Integer.parseInt(raw[35])
+                Integer.parseInt(raw[35]), Integer.parseInt(raw[36])
         );
     }
 
@@ -64,8 +64,8 @@ public class PlayerLoader {
             }
 
             @Override
-            public Country country() {
-                return null;
+            public String country() {
+                return raw[10];
             }
 
             @Override
@@ -108,17 +108,17 @@ public class PlayerLoader {
 
     private static Position positionOf(String position) {
         return switch (position) {
-            case "GK" -> Position.PT;
-            case "CBT" -> Position.CT;
-            case "SB" -> Position.CAR;
-            case "WB" -> Position.LAT;
-            case "DM" -> Position.CCD;
-            case "CM" -> Position.CC;
-            case "AM" -> Position.MP;
-            case "SM" -> Position.VOL;
-            case "WF" -> Position.EXT;
-            case "SS" -> Position.SS;
-            case "CF" -> Position.DL;
+            case "GK" -> Positions.PT;
+            case "CBT" -> Positions.CT;
+            case "SB" -> Positions.CAR;
+            case "WB" -> Positions.LAT;
+            case "DM" -> Positions.CCD;
+            case "CM" -> Positions.CC;
+            case "AM" -> Positions.MP;
+            case "SM" -> Positions.VOL;
+            case "WF" -> Positions.EXT;
+            case "SS" -> Positions.SS;
+            case "CF" -> Positions.DL;
             default -> throw new RuntimeException("No existe la posicion");
         };
     }

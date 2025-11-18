@@ -1,125 +1,62 @@
 package rlp.footrix.protrix.simulator;
 
-import rlp.footrix.framework.MatchSimulator;
-import rlp.footrix.framework.types.Match;
-import rlp.footrix.framework.types.definitions.CompetitionDefinition;
-import rlp.footrix.framework.types.definitions.MatchDefinition;
-import rlp.footrix.framework.types.player.Player;
-import rlp.footrix.framework.types.player.Position;
-import rlp.footrix.framework.types.team.PlayersLineup;
-import rlp.footrix.protrix.simulator.actions.*;
-import rlp.footrix.protrix.simulator.helpers.TeamsHandle;
+import rlp.footrix.framework.ai.MatchSimulator;
+import rlp.footrix.framework.types.entities.Match;
+import rlp.footrix.framework.types.entities.definitions.MatchDefinition;
+import rlp.footrix.framework.types.entities.player.Player;
+import rlp.footrix.framework.types.entities.team.PlayersLineup;
+import rlp.footrix.protrix.simulator.types.*;
+import rlp.footrix.protrix.simulator.weights.PlayerValue;
 
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-
-import static rlp.footrix.framework.types.Match.MatchEvent.Type.Expulsion;
-import static rlp.footrix.framework.types.Match.MatchEvent.Type.Goal;
-import static rlp.footrix.protrix.simulator.helpers.PositionFactors.passProbabilityOf;
-import static rlp.footrix.protrix.simulator.helpers.PositionFactors.shotProbabilityOf;
 
 public class ProtrixMatchSimulator implements MatchSimulator {
-
-    private static final int framesPerMinute = 5;
-
-    private final MatchDefinition definition;
-    private final CompetitionDefinition.PhaseDefinition phase;
-    private final Instant date;
-    private final MatchState state;
-    private final TeamsHandle teamsHandle;
-    private int duration = 0;
-
-    public ProtrixMatchSimulator(MatchDefinition definition, CompetitionDefinition.PhaseDefinition phase, Instant date) {
-        this.definition = definition;
-        this.phase = phase;
-        this.date = date;
-        this.state = new MatchState(definition.local(), definition.visitant(), phase.substitutionsNumber(), framesPerMinute * 90);
-        this.teamsHandle = new TeamsHandle(this.state);
-    }
+    private final Map<String, Match.PlayerStatistics> playerStatistics = new HashMap<>();
 
     @Override
-    public Match simulate(PlayersLineup localPlayersLineup, PlayersLineup visitantPlayersLineup) {
-        this.state.localPlayers(localPlayersLineup).visitantPlayers(visitantPlayersLineup);
-        simulateMatch();
-        return new Match(definition, date, state.playerStatistics(), state.events(), state.mvp(), duration);
-    }
+    public Match simulate(MatchDefinition definition, Instant date, PlayersLineup localLineup, PlayersLineup visitantLineup) {
+        MatchState state = new MatchState(definition.local(), definition.visitant(), localLineup, visitantLineup);
+        PlayerValue playerValue = new PlayerValue(state);
 
-    private void simulateMatch() {
-        boolean continueMatch = simulateRegularMatch();
-        if (!continueMatch) return;
-        if (!phase.withExtension() || !isDraw()) return;
-        simulateExtension();
-    }
+        GoalEventSimulator goalSimulator = new GoalEventSimulator(state, playerValue);
+        CardEventSimulator cardSimulator = new CardEventSimulator(state, playerValue);
+        InjuryEventSimulator injurySimulator = new InjuryEventSimulator(state, playerValue);
+        SubstitutionEventSimulator substitutionSimulator = new SubstitutionEventSimulator(definition, state, playerValue);
+        FatigueSimulator fatigueSimulator = new FatigueSimulator(state, playerValue);
 
-    private boolean simulateRegularMatch() {
-        state.setPossession(state.local(), state.localPlayers().getFirst());
-        boolean continueMatch = simulatePart(1, 45);
-        if (!continueMatch) return false;
-        state.setPossession(state.visitant(), state.visitantPlayers().getFirst());
-        simulatePart(46, 90);
-        return true;
-    }
-
-    private boolean simulateExtension() {
-        state.setPossession(state.local(), state.localPlayers().getFirst());
-        boolean continueMatch = simulatePart(91, 105);
-        if (!continueMatch) return false;
-        state.setPossession(state.visitant(), state.visitantPlayers().getFirst());
-        simulatePart(106, 120);
-        return true;
-    }
-
-    private boolean simulatePart(int from, int to) {
-        for (int i = from; i <= to; i++) {
-            for (int j = 0; j < framesPerMinute; j++) {
-                duration = i;
-                boolean continueMatch = simulateSubMinute(i);
-                if (!continueMatch) return false;
+        for (int i = 1; i <= 90; i++) {
+            state.minuteEvents().addAll(goalSimulator.simulate(i));
+            state.minuteEvents().addAll(cardSimulator.simulate(i));
+            state.minuteEvents().addAll(injurySimulator.simulate(i));
+            state.minuteEvents().addAll(substitutionSimulator.simulate(i));
+            state.events().addAll(state.minuteEvents());
+            fatigueSimulator.simulate(i);
+            for (Player player : state.localLineup().fieldPlayers()) {
+                this.playerStatistics.putIfAbsent(player.definition().id(), new Match.PlayerStatistics());
+                this.playerStatistics.get(player.definition().id()).addScore(0.1).addMinute();
             }
-            state.addMinutes();
-            state.events().addAll(new SubstitutionsSimulator(state, i).simulate());
-        }
-        return true;
-    }
-
-    private boolean simulateSubMinute(int minute) {
-        state.events().addAll(eventsOfAction(minute));
-        state.events().addAll(new OutsSimulator(state, minute).simulate());
-        state.addFatigue();
-        Map<String, List<Match.MatchEvent>> outs = state.events().stream().filter(e -> e.type() == Expulsion).collect(Collectors.groupingBy(Match.MatchEvent::team));
-        for (Map.Entry<String, List<Match.MatchEvent>> entry : outs.entrySet()) {
-            if (entry.getValue().size() >= 5) {
-                state.events(state.events().stream().filter(e -> e.type() != Goal).toList());
-                String team = state.rivalOf(entry.getKey());
-                state.events().add(new Match.MatchEvent(team, Goal, minute, null, null));
-                state.events().add(new Match.MatchEvent(team, Goal, minute, null, null));
-                state.events().add(new Match.MatchEvent(team, Goal, minute, null, null));
-                return false;
+            for (Player player : state.visitantLineup().fieldPlayers()) {
+                this.playerStatistics.putIfAbsent(player.definition().id(), new Match.PlayerStatistics());
+                this.playerStatistics.get(player.definition().id()).addScore(0.1).addMinute();
             }
+            handle(state.minuteEvents(), state);
+            state.minuteEvents().clear();
         }
-        return true;
+
+        return new Match(definition, date, playerStatistics, state.events(), "", 90, null);
     }
 
-    private List<Match.MatchEvent> eventsOfAction(int minute) {
-        Position position = state.positionOf(state.playerWithPossession());
-        double actionValue = Math.random();
-        if (actionValue < shotProbabilityOf(position)) {
-            return new ShootSimulator(state, minute).simulate();
-        } else {
-            Player rival = teamsHandle.mostProbablyRivalTo(state.teamWithPossession(), state.playerWithPossession());
-            if (actionValue < shotProbabilityOf(position) + passProbabilityOf(position)) {
-                return new PassSimulator(state, minute, rival).simulate();
+    private void handle(List<Match.MatchEvent> events, MatchState state) {
+        for (Match.MatchEvent event : events) {
+            if (event.type() != Match.MatchEvent.Type.Substitution) continue;
+            if (event.team().equals(state.local())) {
+                state.substitute(state.local(), event.who(), event.secondaryWho());
             } else {
-                return new DribbleSimulator(state, minute, rival).simulate();
+                state.substitute(state.visitant(), event.who(), event.secondaryWho());
             }
         }
-    }
-
-    private boolean isDraw() {
-        int localGoals = (int) state.events().stream().filter(e -> e.type() == Goal).filter(e -> e.team().equals(state.local())).count();
-        int visitantGoals = (int) state.events().stream().filter(e -> e.type() == Goal).filter(e -> e.team().equals(state.visitant())).count();
-        return localGoals == visitantGoals;
     }
 }

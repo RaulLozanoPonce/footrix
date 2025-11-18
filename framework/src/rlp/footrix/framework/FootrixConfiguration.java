@@ -1,9 +1,12 @@
 package rlp.footrix.framework;
 
+import rlp.footrix.framework.ai.ModelCloudAccessor;
 import rlp.footrix.framework.configuration.DataBase;
-import rlp.footrix.framework.events.Event;
-import rlp.footrix.framework.types.player.Player;
-import rlp.footrix.framework.var.Var;
+import rlp.footrix.framework.stores.EntityStore;
+import rlp.footrix.framework.stores.RecordStore;
+import rlp.footrix.framework.stores.TableStore;
+import rlp.footrix.framework.tasks.Task;
+import rlp.footrix.framework.types.entities.player.Player;
 
 import java.time.Instant;
 import java.util.List;
@@ -12,10 +15,14 @@ import java.util.function.Function;
 public interface FootrixConfiguration {
     Instant initDate();
     Function<Integer, String> seasonProvider();
-    DataBase initDatabase();
-    List<Event> initEvents();
-    Var var();
+    DataBase initDatabase(Application application);
+    List<Task> initTasks(Application application);
     Function<Player, Double> energyRecoveryProvider();
+    ModelCloudAccessor models();
+    EntityStore entityStore();
+    RecordStore recordStore();
+    TableStore tableStore();
+    double averageMatchPlayer();
 
     public interface SimpleFootrixConfiguration extends FootrixConfiguration {
         @Override

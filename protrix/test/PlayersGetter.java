@@ -17,9 +17,11 @@ public class PlayersGetter {
 
     public static void main(String[] args) throws IOException, InterruptedException {
         File file = new File("./temp/players.tsv");
-        if (file.exists()) Files.delete(file.toPath());
-        Files.writeString(file.toPath(), header(), CREATE, WRITE, APPEND);
-        List<Integer> leagues = leagues();
+        //if (file.exists()) Files.delete(file.toPath());
+        //Files.writeString(file.toPath(), header(), CREATE, WRITE, APPEND);
+        //List<Integer> leagues = leagues();
+        //List<Integer> leagues = List.of(10, 13, 16, 19, 31, 53, 68, 308);
+        List<Integer> leagues = List.of(350);
         for (Integer league : leagues) {
             boolean state1;
             do {
@@ -80,6 +82,7 @@ public class PlayersGetter {
         sb.append(player.get("positions").getAsJsonArray()).append("\t");
         sb.append(player.get("fifa_team").getAsString()).append("\t");
         sb.append(player.get("contract_valid_until").getAsString()).append("\t");
+        sb.append(player.get("nationality").getAsString()).append("\t");
         sb.append(player.get("attack").getAsString()).append("\t");
         sb.append(player.get("defence").getAsString()).append("\t");
         sb.append(player.get("balance").getAsString()).append("\t");
@@ -110,7 +113,6 @@ public class PlayersGetter {
     }
 
     private static String header() {
-        return "name\tage\theight\tweight\tfoot\tinjury tolerance\tposition_prefered_team\tpositions\tfifa_team\tcontract_valid_until\tattack\tdefence\tbalance\tstamina\tspeed\tacceleration\tresponse\tagility\tdribble accuracy\tdribble speed\tshort pass accuracy\tshort pass speed\tlong pass accuracy\tlong pass speed\tshot accuracy\tshot power\tshot technique\tfree kick accuracy\tswerve\theading\tjump\ttechnique\taggression\tmentality\tgk skills\tteam work";
+        return "name\tage\theight\tweight\tfoot\tinjury tolerance\tposition_prefered_team\tpositions\tfifa_team\tcontract_valid_until\tnationality\tattack\tdefence\tbalance\tstamina\tspeed\tacceleration\tresponse\tagility\tdribble accuracy\tdribble speed\tshort pass accuracy\tshort pass speed\tlong pass accuracy\tlong pass speed\tshot accuracy\tshot power\tshot technique\tfree kick accuracy\tswerve\theading\tjump\ttechnique\taggression\tmentality\tgk skills\tteam work";
     }
 }
-//body_type":"Normal (170-185)","condition":6,"consistency":5,"contract_valid_until":2025,"dribbling style":3,"drop kick style":1,"face_type":0, foot":"R","free kick style":1"height":179,"imageUrl":"https://cdn.sofifa.net/players/199/823/25_120.png","injury tolerance":"B","national_team":null,"national_team_overall":null,"nationality":"Spain","number_classic":0,"number_national_team":null,"number_team":8,"penalty style":1,"positions":["CM","SM"],"preset_face":1,"side":"L","skin_color":1,"soFifaId":"199823","special abilities":["Dribbling"],"":85,"weak foot accuracy":5,"weak foot frequency":5,"weight":70,"wristband":"N","wristband1":"None"}

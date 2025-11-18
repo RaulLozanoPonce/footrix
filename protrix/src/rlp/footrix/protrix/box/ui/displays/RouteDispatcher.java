@@ -18,8 +18,8 @@ public class RouteDispatcher extends AbstractRouteDispatcher {
     }
 
     @Override
-    public void dispatchClassification(Soul soul, String competitionId) {
-        soul.display(ClassificationTemplate.class).setCompetition(competitionId);
+    public void dispatchClassification(Soul soul, String competitionId, String season) {
+        soul.display(ClassificationTemplate.class).setParameters(competitionId, Integer.parseInt(season));
     }
 
     @Override

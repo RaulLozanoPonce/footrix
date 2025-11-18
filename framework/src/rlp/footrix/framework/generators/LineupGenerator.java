@@ -1,16 +1,15 @@
 package rlp.footrix.framework.generators;
 
-import rlp.footrix.framework.types.*;
-import rlp.footrix.framework.types.player.Player;
-import rlp.footrix.framework.types.player.Position;
-import rlp.footrix.framework.types.team.Lineup;
-import rlp.footrix.framework.types.team.PlayersLineup;
-import rlp.footrix.framework.types.team_player.PlayerContract;
+import rlp.footrix.framework.types.entities.Competition;
+import rlp.footrix.framework.types.entities.player.Player;
+import rlp.footrix.framework.types.entities.player.Position;
+import rlp.footrix.framework.types.entities.team.Lineup;
+import rlp.footrix.framework.types.entities.team.PlayersLineup;
+import rlp.footrix.framework.types.entities.team_player.PlayerContract;
 
 import java.util.*;
 
 public class LineupGenerator {
-
     private static final double EnergyFactor = 0.40;
     private static final double RoleFactor = 0.25;
     private static final double GameTimeFactor = 0.20;
@@ -20,14 +19,14 @@ public class LineupGenerator {
         Map<Player, Integer[]> playersMap = starters(entries(lineup, players));
         List<Player> substitutes = substitutes(phase, entries(lineup, players.stream().filter(p -> !playersMap.containsKey(p)).toList()));
         substitutes.addAll(reserves(phase, entries(lineup, players.stream().filter(p -> !playersMap.containsKey(p) && !substitutes.contains(p)).toList())));
-        return new PlayersLineup(lineup, playersMap, substitutes);
+        return new PlayersLineup(lineup, playersMap, substitutes, new ArrayList<>());
     }
 
     public static double scoreOfMatch(Player player, Position position) {
-        return player.relativeCache(position) *
+        return player.cache().relativeCache(position) *
                 (
                         EnergyFactor * fix(player.energy()) +
-                        RoleFactor * (player.role().expectedPlayingTime() / PlayerContract.Role.Undisputed.expectedPlayingTime()) +
+                        RoleFactor * (player.contract().role().expectedPlayingTime() / PlayerContract.Role.Undisputed.expectedPlayingTime()) +
                         GameTimeFactor * (1 - player.mood().gameTime()) +
                         IndividualFactor * player.mood().individualPerformance()
                 );

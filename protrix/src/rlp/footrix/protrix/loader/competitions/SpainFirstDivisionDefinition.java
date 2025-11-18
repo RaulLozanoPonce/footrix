@@ -1,7 +1,6 @@
 package rlp.footrix.protrix.loader.competitions;
 
-import rlp.footrix.framework.types.Country;
-import rlp.footrix.framework.types.definitions.CompetitionDefinition;
+import rlp.footrix.framework.types.entities.definitions.CompetitionDefinition;
 
 import java.time.Instant;
 import java.util.List;
@@ -19,8 +18,8 @@ public class SpainFirstDivisionDefinition implements CompetitionDefinition {
     }
 
     @Override
-    public Country country() {
-        return Country.Spain;
+    public String country() {
+        return "Spain";
     }
 
     @Override

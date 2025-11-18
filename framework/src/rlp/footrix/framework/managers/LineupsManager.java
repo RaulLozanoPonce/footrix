@@ -1,12 +1,11 @@
 package rlp.footrix.framework.managers;
 
-import rlp.footrix.framework.types.team.Lineup;
+import rlp.footrix.framework.types.entities.team.Lineup;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class LineupsManager {
-
     private final Map<String, Lineup> lineups = new HashMap<>();
 
     public Lineup get(String id) {

@@ -1,55 +1,91 @@
 package rlp.footrix.framework;
 
+import rlp.footrix.framework.ai.ModelCloudAccessor;
+import rlp.footrix.framework.calculators.CacheCalculator;
+import rlp.footrix.framework.calculators.MoodCalculator;
+import rlp.footrix.framework.calculators.InjuryCalculator;
 import rlp.footrix.framework.configuration.TeamRule;
-import rlp.footrix.framework.deprecated.StatisticTables;
-import rlp.footrix.framework.events.EventConfiguration;
+import rlp.footrix.framework.events.EventHub;
+import rlp.footrix.framework.events.subscribers.InitPhaseSubscriber;
+import rlp.footrix.framework.events.subscribers.NewDaySubscriber;
+import rlp.footrix.framework.events.subscribers.SetPhaseCalendarSubscriber;
+import rlp.footrix.framework.events.subscribers.SimulateMatchSubscriber;
+import rlp.footrix.framework.events.types.InitPhaseEvent;
+import rlp.footrix.framework.events.types.NewDayEvent;
+import rlp.footrix.framework.events.types.SetPhaseCalendarEvent;
+import rlp.footrix.framework.events.types.SimulateMatchEvent;
 import rlp.footrix.framework.managers.*;
-import rlp.footrix.framework.stores.TeamRankingHandler;
-import rlp.footrix.framework.stores.match.MatchMemoryStore;
-import rlp.footrix.framework.types.definitions.CompetitionDefinition.PhaseDefinition;
-import rlp.footrix.framework.types.definitions.MatchDefinition;
-import rlp.footrix.framework.types.team.Lineup;
-import rlp.footrix.framework.utils.TriFunction;
-import rlp.footrix.framework.var.VarTerminal;
+import rlp.footrix.framework.stores.EntityStore;
+import rlp.footrix.framework.stores.RecordStore;
+import rlp.footrix.framework.stores.TableStore;
+import rlp.footrix.framework.tasks.TaskHub;
+import rlp.footrix.framework.types.entities.Country;
+import rlp.footrix.framework.types.entities.player.Player;
+import rlp.footrix.framework.types.entities.team.Lineup;
 
 import java.time.Instant;
+import java.util.function.Function;
 
 public class Application {
-
+    private final FootrixConfiguration configuration;
     private final Game game;
-    private final MatchMemoryStore matchStore;
-    private final EventManager eventManager;
+    private final EntityStore entityStore;
+    private final RecordStore recordStore;
+    private final TableStore tableStore;
+    private final EventHub eventHub;
+    private final TaskHub taskHub;
     private final TimeManager timeManager;
+    private final CountryManager countryManager;
     private final CompetitionManager competitionManager;
     private final LineupsManager lineupsManager;
     private final TeamManager teamManager;
     private final PlayerManager playerManager;
     private final RulesManager rulesManager;
-    private final StatisticTables statisticTables;  //TODO DESAPARECERÁ
-    private final TeamRankingHandler teamRankingHandler;
-
-    private TriFunction<MatchDefinition, PhaseDefinition, Instant, MatchSimulator> matchSimulator;
+    private final EloManager eloManager;
+    private final ModelCloudAccessor models;
+    private final CacheCalculator cacheCalculator;
+    private final MoodCalculator moodCalculator;
+    private final InjuryCalculator injuryCalculator;
 
     public Application(FootrixConfiguration configuration) {
-        this.game = new Game().date(configuration.initDate()).initSeason(0).seasonProvider(configuration.seasonProvider());
-        this.matchStore = new MatchMemoryStore();
-        this.teamRankingHandler = new TeamRankingHandler();
+        this.configuration = configuration;
 
-        this.competitionManager = new CompetitionManager(this.game, configuration.initDatabase().competitions());
-        this.lineupsManager = new LineupsManager();
-        this.teamManager = new TeamManager(configuration.initDatabase().teams());
-        this.playerManager = new PlayerManager(configuration.initDatabase().players());
+        this.game = new Game().date(configuration.initDate()).seasonProvider(configuration.seasonProvider());
+        this.entityStore = configuration.entityStore();
+        this.recordStore = configuration.recordStore();
+        this.tableStore = configuration.tableStore();
+        this.models = configuration.models();
 
-        this.eventManager = new EventManager();
-        this.timeManager = new TimeManager(this.game, this.eventManager, this.playerManager, configuration.energyRecoveryProvider());
+        this.eventHub = new EventHub();
+        this.taskHub = new TaskHub();
+
+        this.timeManager = new TimeManager(this.game, this.eventHub);
         this.rulesManager = new RulesManager();
+        this.countryManager = new CountryManager();
+        this.competitionManager = new CompetitionManager(this.game, this.entityStore);
+        this.teamManager = new TeamManager(this.game, this.entityStore);
+        this.playerManager = new PlayerManager(this.game, this.entityStore);
+        this.lineupsManager = new LineupsManager();
+        this.eloManager = new EloManager();
 
-        this.statisticTables = new StatisticTables(this.playerManager, this.matchStore);
-        VarTerminal.var(configuration.var());
+        this.cacheCalculator = new CacheCalculator(this);
+        this.moodCalculator = new MoodCalculator(this);
+        this.injuryCalculator = new InjuryCalculator(this);
 
-        this.eventManager.add(configuration.initEvents());
-        this.timeManager.set(configuration.initDate());
-        configuration.initDatabase().competitions().forEach(this.teamRankingHandler::addCompetition);
+        //TODO SOLO CUANDO ESTÉ INICIALIZADO
+        this.taskHub.add(configuration.initTasks(this));
+        this.tableStore.setup(configuration.initDatabase(this).elos());
+        configuration.initDatabase(this).competitions().forEach(c -> {
+            this.competitionManager.setup(c);
+            this.eloManager.addCompetition(c);
+        });
+        configuration.initDatabase(this).teams().forEach(this.teamManager::add);
+        configuration.initDatabase(this).players().forEach(this.playerManager::add);
+        this.competitionManager.setupNewSeason();
+    }
+
+    protected void add(Country country) {
+        this.countryManager.add(country);
     }
 
     protected void add(Lineup lineup) {
@@ -60,28 +96,23 @@ public class Application {
         this.rulesManager.add(id, rule);
     }
 
-    protected void add(TriFunction<MatchDefinition, PhaseDefinition, Instant, MatchSimulator> matchSimulator) {
-        this.matchSimulator = matchSimulator;
-    }
-
     public void start() {
-        this.eventManager.with(eventConfiguration());
+        this.eventHub.subscribe(InitPhaseEvent.class, new InitPhaseSubscriber(this));
+        this.eventHub.subscribe(NewDayEvent.class, new NewDaySubscriber(this));
+        this.eventHub.subscribe(SetPhaseCalendarEvent.class, new SetPhaseCalendarSubscriber(this));
+        this.eventHub.subscribe(SimulateMatchEvent.class, new SimulateMatchSubscriber(this));
     }
 
     public Instant getDate() {
-        return this.timeManager.get();
+        return this.game.date();
     }
 
     public void setDate(Instant to) {
-        Instant currentDate = this.timeManager.get();
-        while (currentDate.isBefore(to)) {
-            currentDate = Instant.ofEpochMilli(currentDate.toEpochMilli() + 24 * 60 * 60 * 1000);
-            this.timeManager.update(currentDate);
-        }
+        this.timeManager.update(to);
     }
 
-    public MatchMemoryStore matchStore() {
-        return matchStore;
+    public CountryManager countryManager() {
+        return countryManager;
     }
 
     public PlayerManager playerManager() {
@@ -96,66 +127,67 @@ public class Application {
         return competitionManager;
     }
 
-    public StatisticTables statisticTables() {
-        return statisticTables;
+    public Game game() {
+        return game;
     }
 
-    private EventConfiguration eventConfiguration() {
-        return new EventConfiguration() {
-            @Override
-            public Game game() {
-                return game;
-            }
+    public RulesManager rulesManager() {
+        return rulesManager;
+    }
 
-            @Override
-            public CompetitionManager competitionManager() {
-                return competitionManager;
-            }
+    public TaskHub taskHub() {
+        return taskHub;
+    }
 
-            @Override
-            public RulesManager rulesManager() {
-                return rulesManager;
-            }
+    public EventHub eventHub() {
+        return eventHub;
+    }
 
-            @Override
-            public MatchSimulator matchSimulator(MatchDefinition definition, Instant date) {
-                return matchSimulator.apply(definition, competitionManager.get(definition.competition(), definition.season()).phase(definition.phase()).definition(), date);
-            }
+    public ModelCloudAccessor models() {
+        return models;
+    }
 
-            @Override
-            public EventManager eventManager() {
-                return eventManager;
-            }
+    public LineupsManager lineupsManager() {
+        return lineupsManager;
+    }
 
-            @Override
-            public MatchMemoryStore matchStore() {
-                return matchStore;
-            }
+    public TimeManager timeManager() {
+        return timeManager;
+    }
 
-            @Override
-            public TeamManager teamManager() {
-                return teamManager;
-            }
+    public EloManager eloManager() {
+        return eloManager;
+    }
 
-            @Override
-            public PlayerManager playerManager() {
-                return playerManager;
-            }
+    public EntityStore entityStore() {
+        return entityStore;
+    }
 
-            @Override
-            public TimeManager timeManager() {
-                return timeManager;
-            }
+    public RecordStore recordStore() {
+        return recordStore;
+    }
 
-            @Override
-            public TeamRankingHandler teamRankingHandler() {
-                return teamRankingHandler;
-            }
+    public TableStore tableStore() {
+        return tableStore;
+    }
 
-            @Override
-            public LineupsManager lineupsManager() {
-                return lineupsManager;
-            }
-        };
+    public Function<Player, Double> energyRecoveryProvider() {
+        return configuration.energyRecoveryProvider();
+    }
+
+    public double averageMatchPlayer() {
+        return configuration.averageMatchPlayer();
+    }
+
+    public CacheCalculator cacheCalculator() {
+        return cacheCalculator;
+    }
+
+    public MoodCalculator moodCalculator() {
+        return moodCalculator;
+    }
+
+    public InjuryCalculator injuryCalculator() {
+        return injuryCalculator;
     }
 }

@@ -1,14 +1,11 @@
 package rlp.footrix.protrix.loader;
 
-import rlp.footrix.framework.types.Country;
-import rlp.footrix.framework.types.definitions.TeamDefinition;
-import rlp.footrix.framework.types.team.Team;
+import rlp.footrix.framework.types.entities.definitions.TeamDefinition;
+import rlp.footrix.framework.types.entities.team.Team;
 import rlp.footrix.protrix.model.ProtrixTeam;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,10 +30,8 @@ public class TeamLoader {
     private static Team teamOf(String[] team) {
         String id = team[0];
         String name = team[1];
-        Country country = Country.valueOf(team[2]);
         String lineupId = team[3];
-        int elo = Integer.parseInt(team[4]);
-        TeamDefinition definition = new TeamDefinition.Simple(id, name, country);
-        return new ProtrixTeam(definition).lineup(lineupId).elo(elo);
+        TeamDefinition definition = new TeamDefinition.Simple(id, name, team[2]);
+        return new ProtrixTeam(definition).lineup(lineupId);
     }
 }

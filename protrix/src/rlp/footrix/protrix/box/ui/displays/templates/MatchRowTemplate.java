@@ -1,6 +1,6 @@
 package rlp.footrix.protrix.box.ui.displays.templates;
 
-import rlp.footrix.framework.types.Match;
+import rlp.footrix.framework.types.entities.Match;
 import rlp.footrix.protrix.box.ProtrixBox;
 
 import java.util.List;

@@ -1,9 +1,9 @@
 package rlp.footrix.protrix.loader.lineups;
 
-import rlp.footrix.framework.types.player.Position;
-import rlp.footrix.framework.types.team.Lineup;
+import rlp.footrix.framework.types.entities.player.Position;
+import rlp.footrix.framework.types.entities.team.Lineup;
 
-import static rlp.footrix.framework.types.player.Position.*;
+import static rlp.footrix.protrix.model.Positions.*;
 
 public class L5212 extends Lineup {
 

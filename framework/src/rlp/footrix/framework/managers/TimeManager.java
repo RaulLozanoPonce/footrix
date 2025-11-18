@@ -1,40 +1,26 @@
 package rlp.footrix.framework.managers;
 
 import rlp.footrix.framework.Game;
-import rlp.footrix.framework.types.player.Player;
+import rlp.footrix.framework.events.EventHub;
+import rlp.footrix.framework.events.types.NewDayEvent;
 
 import java.time.Instant;
-import java.util.function.Function;
 
 public class TimeManager {
-
     private final Game game;
-    private final EventManager eventManager;
-    private final PlayerManager playerManager;
-    private final Function<Player, Double> energyRecoveryProvider;
+    private final EventHub eventHub;
 
-    public TimeManager(Game game, EventManager eventManager, PlayerManager playerManager, Function<Player, Double> energyRecoveryProvider) {
+    public TimeManager(Game game, EventHub eventHub) {
         this.game = game;
-        this.eventManager = eventManager;
-        this.playerManager = playerManager;
-        this.energyRecoveryProvider = energyRecoveryProvider;
-    }
-
-    public Instant get() {
-        return game.date();
-    }
-
-    public void set(Instant date) {
-        game.date(date);
+        this.eventHub = eventHub;
     }
 
     public void update(Instant date) {
-        game.date(date);
-        playerManager.players().forEach(p -> {
-            if (p.isInjured() && !p.recoveryDate().isAfter(date)) p.recovery();
-            p.energy(energyRecoveryProvider.apply(p));
-        });
-        eventManager.execute(date);
+        Instant currentDate = this.game.date();
+        while (currentDate.isBefore(date)) {
+            currentDate = Instant.ofEpochMilli(currentDate.toEpochMilli() + 24 * 60 * 60 * 1000);
+            eventHub.publish(new NewDayEvent().date(currentDate));
+        }
     }
 
     public Instant future(int days) {

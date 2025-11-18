@@ -1,8 +1,8 @@
 package rlp.footrix.protrix.model;
 
-import rlp.footrix.framework.types.definitions.PlayerDefinition;
-import rlp.footrix.framework.types.player.Player;
-import rlp.footrix.framework.types.player.Position;
+import rlp.footrix.framework.types.entities.definitions.PlayerDefinition;
+import rlp.footrix.framework.types.entities.player.Player;
+import rlp.footrix.framework.types.entities.player.Position;
 import rlp.footrix.protrix.model.helpers.OverallCalculator;
 import rlp.footrix.protrix.model.helpers.PositionFactorCalculator;
 
@@ -217,7 +217,7 @@ public class ProtrixPlayer extends Player {
 
     private Map<Position, Double> otherPositions(Position mainPosition, List<Position> secondaryPositions) {
         Map<Position, Double> otherPositions = new HashMap<>();
-        for (Position position : Position.values()) {
+        for (Position position : Positions.values()) {
             if (position == mainPosition || secondaryPositions.contains(position)) continue;
             otherPositions.put(position, PositionFactorCalculator.factor(mainPosition, position));
         }
