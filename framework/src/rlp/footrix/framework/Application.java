@@ -50,7 +50,7 @@ public class Application {
     public Application(FootrixConfiguration configuration) {
         this.configuration = configuration;
 
-        this.game = new Game().date(configuration.initDate()).seasonProvider(configuration.seasonProvider());
+        this.game = new Game().date(configuration.initDate()).initSeason(configuration.initSeason()).seasonProvider(configuration.seasonProvider());
         this.entityStore = configuration.entityStore();
         this.recordStore = configuration.recordStore();
         this.tableStore = configuration.tableStore();

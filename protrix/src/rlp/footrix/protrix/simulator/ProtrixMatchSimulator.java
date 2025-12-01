@@ -13,12 +13,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static rlp.footrix.framework.types.entities.Match.MatchEvent.Type.Expulsion;
+import static rlp.footrix.framework.types.entities.Match.MatchEvent.Type.Substitution;
+
 public class ProtrixMatchSimulator implements MatchSimulator {
-    private final Map<String, Match.PlayerStatistics> playerStatistics = new HashMap<>();
+    private MatchState state;
 
     @Override
     public Match simulate(MatchDefinition definition, Instant date, PlayersLineup localLineup, PlayersLineup visitantLineup) {
-        MatchState state = new MatchState(definition.local(), definition.visitant(), localLineup, visitantLineup);
+        this.state = new MatchState(definition.local(), definition.visitant(), localLineup, visitantLineup);
         PlayerValue playerValue = new PlayerValue(state);
 
         GoalEventSimulator goalSimulator = new GoalEventSimulator(state, playerValue);
@@ -34,29 +37,54 @@ public class ProtrixMatchSimulator implements MatchSimulator {
             state.minuteEvents().addAll(substitutionSimulator.simulate(i));
             state.events().addAll(state.minuteEvents());
             fatigueSimulator.simulate(i);
-            for (Player player : state.localLineup().fieldPlayers()) {
-                this.playerStatistics.putIfAbsent(player.definition().id(), new Match.PlayerStatistics());
-                this.playerStatistics.get(player.definition().id()).addScore(0.1).addMinute();
-            }
-            for (Player player : state.visitantLineup().fieldPlayers()) {
-                this.playerStatistics.putIfAbsent(player.definition().id(), new Match.PlayerStatistics());
-                this.playerStatistics.get(player.definition().id()).addScore(0.1).addMinute();
-            }
-            handle(state.minuteEvents(), state);
+            addMinutes();
+            handle(state.minuteEvents(), state, i);
             state.minuteEvents().clear();
         }
-
-        return new Match(definition, date, playerStatistics, state.events(), "", 90, null);
+        return new Match(definition, date, statistics(), state.events(), "", 90, null);
     }
 
-    private void handle(List<Match.MatchEvent> events, MatchState state) {
+    private void addMinutes() {
+        for (Player player : state.localLineup().fieldPlayers()) this.state.addMinute(player.definition().id());
+        for (Player player : state.visitantLineup().fieldPlayers()) this.state.addMinute(player.definition().id());
+    }
+
+    private void handle(List<Match.MatchEvent> events, MatchState state, int minute) {
         for (Match.MatchEvent event : events) {
-            if (event.type() != Match.MatchEvent.Type.Substitution) continue;
-            if (event.team().equals(state.local())) {
-                state.substitute(state.local(), event.who(), event.secondaryWho());
-            } else {
-                state.substitute(state.visitant(), event.who(), event.secondaryWho());
+            if (event.type() == Substitution) {
+                if (event.team().equals(state.local())) {
+                    state.substitute(state.local(), event.who(), event.secondaryWho());
+                } else {
+                    state.substitute(state.visitant(), event.who(), event.secondaryWho());
+                }
+                if (minute == 90) this.state.addMinute(event.who());    //TODO
+            } else if (event.type() == Expulsion) {
+                if (event.team().equals(state.local())) {
+                    state.expell(state.local(), event.who());
+                } else {
+                    state.expell(state.visitant(), event.who());
+                }
             }
         }
+    }
+
+    private Map<String, Map<String, Match.PlayerStatistics>> statistics() {
+        Map<String, Map<String, Match.PlayerStatistics>> playerStatistics = new HashMap<>();
+        playerStatistics.put(state.local(), statistics(state.local()));
+        playerStatistics.put(state.visitant(), statistics(state.visitant()));
+        return playerStatistics;
+    }
+
+    private Map<String, Match.PlayerStatistics> statistics(String team) {
+        Map<String, Match.PlayerStatistics> playerStatistics = new HashMap<>();
+        PlayersLineup lineup = state.lineup(team);
+        for (Player player : lineup.fieldPlayers()) playerStatistics.put(player.definition().id(), statistics(team, player.definition().id()));
+        for (Player player : lineup.substitutions()) playerStatistics.put(player.definition().id(), statistics(team, player.definition().id()));
+        for (Player player : lineup.expelled()) playerStatistics.put(player.definition().id(), statistics(team, player.definition().id()));
+        return playerStatistics;
+    }
+
+    private Match.PlayerStatistics statistics(String team, String player) {
+        return new Match.PlayerStatistics(state.minutes(player), state.score(team, player, 90), state.fatigue(player));
     }
 }

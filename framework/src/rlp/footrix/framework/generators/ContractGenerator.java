@@ -11,7 +11,7 @@ public class ContractGenerator {
 
     public static PlayerContract expectedContract(Player player, Team team) {
         PlayerContract.Role expectedRole = expectedRole(player, team);
-        return new PlayerContract(null, player.economy().expectedSalary(expectedRole), expectedRole);
+        return new PlayerContract(null, player.economy().expectedSalary(), expectedRole);
     }
 
     private static PlayerContract.Role expectedRole(Player player, Team team) {

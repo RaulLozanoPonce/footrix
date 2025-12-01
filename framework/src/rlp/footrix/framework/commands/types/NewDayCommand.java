@@ -16,8 +16,8 @@ public class NewDayCommand extends Command {
     public void execute() {
         application.game().date(date);
         application.playerManager().players().forEach(p -> {
-            if (p.isInjured() && !p.recoveryDate().isBefore(date)) p.recovery();
-            p.energy(application.energyRecoveryProvider().apply(p));    //TODO
+            if (p.isInjured() && !p.recoveryDate().isAfter(date)) p.recovery();
+            p.energy(0.17 * (1 - p.energy()));  //todo 0.33 de normal, pero hay que poner los entrenos
             p.mood().individualPerformance(application.moodCalculator().deltaIndividualPerformanceInjuryMood(p));
         });
         application.taskHub().execute(date);

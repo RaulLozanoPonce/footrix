@@ -14,6 +14,7 @@ public interface EntityStore {
     void competition(Competition competition, int season);
     Team team(String id);
     void team(Team team);
+    List<Player> players();
     Player player(PlayerDefinition definition);
     Player player(String id);
     void player(Player player);

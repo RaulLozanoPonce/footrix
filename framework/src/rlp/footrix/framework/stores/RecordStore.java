@@ -10,13 +10,13 @@ public interface RecordStore {
     List<PlayerMatchRecord> playerMatchRecords();
     List<TeamMatchRecord> teamMatchRecords();
 
-    default PlayerMatchRecord playerMatchRecord(String player, String team, String competition, int season) {
+    default List<PlayerMatchRecord> playerMatchRecords(String player, String team, String competition, int season) {
         return playerMatchRecords().stream()
                 .filter(r -> r.player().equals(player))
                 .filter(r -> r.team().equals(team))
                 .filter(r -> r.competition().equals(competition))
                 .filter(r -> r.season() == season)
-                .findFirst().orElse(null);
+                .toList();
     }
 
     default List<TeamMatchRecord> teamMatchRecords(String team) {
@@ -45,8 +45,8 @@ public interface RecordStore {
     }
 
     record Create(RecordStore store) {
-        public PlayerMatchRecord playerMatchRecord(String player, String team, String competition, int season) {
-            PlayerMatchRecord analysis = new PlayerMatchRecord(player, team, competition, season);
+        public PlayerMatchRecord playerMatchRecord(String player, String team, String competition, int season, Instant date, Integer enterMinute, Integer exitMinute, int maxMinutes, Double score, boolean injured, boolean expelled, int goals, int assists, int yellowCards, int redCards, double preEnergy) {
+            PlayerMatchRecord analysis = new PlayerMatchRecord(player, team, competition, season, date, enterMinute, exitMinute, maxMinutes, score, injured, expelled, goals, assists, yellowCards, redCards, preEnergy);
             store.playerMatchRecords().add(analysis);
             return analysis;
         }

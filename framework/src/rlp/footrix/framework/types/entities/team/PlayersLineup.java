@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public record PlayersLineup(Lineup lineup, Map<Player, Integer[]> positions, List<Player> substitutes, List<Player> substitutions) {
+public record PlayersLineup(Lineup lineup, Map<Player, Integer[]> positions, List<Player> substitutes, List<Player> substitutions, List<Player> expelled) {
 
     public Integer[] locationOf(String playerId) {
         Player player = positions.keySet().stream().filter(p -> p.definition().id().equals(playerId)).findFirst().orElse(null);
@@ -36,6 +36,6 @@ public record PlayersLineup(Lineup lineup, Map<Player, Integer[]> positions, Lis
     }
 
     public int remainingSubstitutions(int maxSubstitutions) {
-        return Math.min(maxSubstitutions - substitutions.size(), substitutes().size());
+        return Math.max(0, Math.min(maxSubstitutions - substitutions.size(), substitutes().size()));
     }
 }

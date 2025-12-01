@@ -40,6 +40,10 @@ public abstract class Team {
         return players.entrySet().stream().filter(e -> e.getKey().definition().id().equals(player)).map(Map.Entry::getValue).findFirst().orElse(null);
     }
 
+    public Player player(String id) {
+        return players().stream().filter(p -> p.definition().id().equals(id)).findFirst().orElse(null);
+    }
+
     public void setPlayer(Player player, PlayerContract contract) {
         this.players.put(player, contract);
         player.team(this);

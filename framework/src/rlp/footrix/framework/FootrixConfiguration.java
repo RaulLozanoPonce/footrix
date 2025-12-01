@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.function.Function;
 
 public interface FootrixConfiguration {
+    int initSeason();
     Instant initDate();
     Function<Integer, String> seasonProvider();
     DataBase initDatabase(Application application);

@@ -41,18 +41,17 @@ public class PlayerTraceTemplate extends AbstractPlayerTraceTemplate<ProtrixBox>
 	private void renderTableItem(AddCollectionItemEvent event) {
 		PlayerMatchRecord record = event.item();
 		TraceTableRow row = event.component();
-        //TODO
-		/*row.matchTraceMold.matchTrace.value(record.match());
+		//row.matchTraceMold.matchTrace.value(record.match());
 		row.dateTraceMold.dateTrace.value(record.date());
-		row.positionTraceMold.positionTrace.value(record.position() == null ? "" : record.position().id());
+		//row.positionTraceMold.positionTrace.value(record.position() == null ? "" : record.position().id());
 		row.preEnergyTraceMold.preEnergyTrace.value(record.preEnergy());
-		row.postEnergyTraceMold.postEnergyTrace.value(record.postEnergy());
-		row.preHappinessTraceMold.preHappinessTrace.value(record.preHappiness());
-		row.postHappinessTraceMold.postHappinessTrace.value(record.postHappiness());
+		//row.postEnergyTraceMold.postEnergyTrace.value(record.postEnergy());
+		//row.preHappinessTraceMold.preHappinessTrace.value(record.preHappiness());
+		//row.postHappinessTraceMold.postHappinessTrace.value(record.postHappiness());
 		row.expelledTraceMold.expelledTrace.value(record.expelled() ? "Sí" : "");
 		row.injuredTraceMold.injuredTrace.value(record.injured() ? "Sí" : "");
 		row.enterMinuteTraceMold.enterMinuteTrace.value(record.enterMinute() == null ? "" : String.valueOf(record.enterMinute()));
 		row.exitMinuteTraceMold.exitMinuteTrace.value(record.exitMinute() == null ? "" : String.valueOf(record.exitMinute()));
-		row.noteTraceMold.noteTrace.value(record.note());*/
+		//row.noteTraceMold.noteTrace.value(record.note());
 	}
 }

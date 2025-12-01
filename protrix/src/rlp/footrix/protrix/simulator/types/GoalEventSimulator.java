@@ -18,11 +18,11 @@ import static rlp.footrix.protrix.simulator.weights.PositionWeight.attackWeight;
 import static rlp.footrix.protrix.simulator.weights.PositionWeight.defenseWeight;
 
 public class GoalEventSimulator extends EventSimulator {
-    private static final double BaseXG = 1.35;
+    private static final double BaseXG = 1.25;
     private static final double PowerUp = 5.3;
     private static final double Adjust = 0.2;
-    private static final double LocalPowerUp = 1.10;
-    private static final double VisitantPowerUp = 0.92;
+    private static final double LocalPowerUp = 1.3;
+    private static final double VisitantPowerUp = 0.7;
 
     public GoalEventSimulator(MatchState state, PlayerValue playerValue) {
         super(state, playerValue);
@@ -82,14 +82,14 @@ public class GoalEventSimulator extends EventSimulator {
         for (Player p : players) {
             ProtrixPlayer player = (ProtrixPlayer) p;
             double positionWeight = PositionWeight.goal(lineup.positionOf(player.definition().id()));
-            double weight = playerValue.attack(player) * playerValue.form(player) * (1 - playerValue.fatigue(player)) * positionWeight;
+            double weight = playerValue.attack(player) * playerValue.form(player) * playerValue.energy(player) * positionWeight;
             weights.add(weight);
         }
         return weightedChoice(players, weights);
     }
 
     public String chooseAssister(List<Player> players, String scorerId) {
-        if (Math.random() > 0.65) return null;
+        if (Math.random() > 0.75) return null;
 
         List<Player> candidates = players.stream()
                 .filter(p -> !p.definition().id().equals(scorerId))
@@ -100,7 +100,7 @@ public class GoalEventSimulator extends EventSimulator {
         List<Double> weights = new ArrayList<>();
         for (Player p : candidates) {
             ProtrixPlayer player = (ProtrixPlayer) p;
-            double weight = playerValue.pass(player) * playerValue.form(player) * (1 - playerValue.fatigue(player));
+            double weight = playerValue.pass(player) * playerValue.form(player) * playerValue.energy(player);
             weights.add(weight);
         }
 

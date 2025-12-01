@@ -6,7 +6,6 @@ import rlp.footrix.framework.types.entities.definitions.MatchDefinition;
 import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.framework.types.entities.player.Position;
 import rlp.footrix.framework.types.entities.team.PlayersLineup;
-import rlp.footrix.protrix.model.ProtrixPlayer;
 import rlp.footrix.protrix.simulator.MatchState;
 import rlp.footrix.protrix.simulator.weights.PlayerValue;
 
@@ -18,7 +17,7 @@ import static rlp.footrix.framework.types.entities.Match.MatchEvent.Type.Injury;
 import static rlp.footrix.framework.types.entities.Match.MatchEvent.Type.Substitution;
 
 public class SubstitutionEventSimulator extends EventSimulator {
-    private static final double BaseSubChance = 0.44;
+    private static final double BaseSubChance = 1;
     private final MatchDefinition definition;
 
     public SubstitutionEventSimulator(MatchDefinition definition, MatchState state, PlayerValue playerValue) {
@@ -61,25 +60,23 @@ public class SubstitutionEventSimulator extends EventSimulator {
 
     private Set<String> tacticPlayersToSubstitute(String team, Set<String> necessarySubstitutions) {
         if (state.lineup(team).remainingSubstitutions(5) <= 0) return new HashSet<>();  //TODO
-        Set<String> tacticSubstitutions = new HashSet<>();
-        Set<String> irreplaceablePlayers = irreplaceablePlayers(team);
-        List<String> replaceablePlayers;
-        //for (int i = 0; i < state.lineup(team).remainingSubstitutions(5) - necessarySubstitutions.size(); i++) {
-        for (int i = 0; i < 1; i++) {
-            replaceablePlayers = replaceablePlayers(team, irreplaceablePlayers, necessarySubstitutions);
-            if (replaceablePlayers.isEmpty()) break;
-            tacticSubstitutions.add(replaceablePlayers.getFirst());
-        }
-        return tacticSubstitutions;
+        List<String> replaceablePlayers = replaceablePlayers(team, irreplaceablePlayers(team), necessarySubstitutions);
+        if (replaceablePlayers.isEmpty()) return new HashSet<>();
+        return new HashSet<>(replaceablePlayers.subList(0, Math.min(state.lineup(team).remainingSubstitutions(5), 3)));
     }
 
     private List<String> replaceablePlayers(String team, Set<String> irreplaceablePlayers, Set<String> necessarySubstitutions) {
+        //TODO TENER EN CUENTA LA PUNTUACION ACTUAL DEL PARTIDO
         return state.lineup(team).fieldPlayers().stream()
                 .filter(p -> !irreplaceablePlayers.contains(p.definition().id()))
                 .filter(p -> !necessarySubstitutions.contains(p.definition().id()))
-                .sorted((p1, p2) -> Double.compare(scoreOfMatch(p1, state.lineup(team).positionOf(p1.definition().id())), scoreOfMatch(p2, state.lineup(team).positionOf(p2.definition().id()))))
+                .sorted((p1, p2) -> Double.compare(scoreOfMatch(p1, state.lineup(team).positionOf(p1.definition().id()), energy(p1)), scoreOfMatch(p2, state.lineup(team).positionOf(p2.definition().id()), energy(p2))))
                 .map(p -> p.definition().id())
                 .toList();
+    }
+
+    private double energy(Player player) {
+        return player.energy() - state.fatigue(player.definition().id());
     }
 
     private Set<String> irreplaceablePlayers(String team) {
@@ -106,51 +103,10 @@ public class SubstitutionEventSimulator extends EventSimulator {
         PlayersLineup lineup = state.lineup(team);
         Position position = lineup.positionOf(player.definition().id());
         return lineup.substitutes().stream().reduce((p1, p2) -> {
-            if (LineupGenerator.scoreOfMatch(p1, position) > LineupGenerator.scoreOfMatch(p2, position)) return p1;
-            if (LineupGenerator.scoreOfMatch(p1, position) < LineupGenerator.scoreOfMatch(p2, position)) return p2;
+            if (LineupGenerator.scoreOfMatch(p1, position, energy(p1)) > LineupGenerator.scoreOfMatch(p2, position, energy(p2))) return p1;
+            if (LineupGenerator.scoreOfMatch(p1, position, energy(p1)) < LineupGenerator.scoreOfMatch(p2, position, energy(p2))) return p2;
             if (p1.cache().relativeCache(position) > p2.cache().relativeCache(position)) return p1;
             return p2;
         }).orElse(null);
-    }
-
-    private String pickPlayerOut(PlayersLineup lineup) {
-        Map<Player, Double> weights = new HashMap<>();
-        double total = 0;
-
-        for (Player p : lineup.fieldPlayers()) {
-            ProtrixPlayer player = (ProtrixPlayer) p;
-            double weight = (playerValue.fatigue(player) * 0.7) + ((10 - playerValue.rating(player)) * 0.4);
-            if (weight < 0.01) weight = 0.01;
-            weights.put(p, weight);
-            total += weight;
-        }
-
-        double r = Math.random() * total;
-        for (var e : weights.entrySet()) {
-            r -= e.getValue();
-            if (r <= 0) return e.getKey().definition().id();
-        }
-
-        return lineup.fieldPlayers().get((int) (Math.random() * lineup.fieldPlayers().size())).definition().id();
-    }
-
-    private String pickPlayerIn(PlayersLineup lineup, Position positionOut) {
-        Map<Player, Double> weights = new HashMap<>();
-        double total = 0;
-
-        for (Player p : lineup.substitutes()) {
-            ProtrixPlayer player = (ProtrixPlayer) p;
-            double weight = ((1.0 - playerValue.fatigue(player)) * 0.7) + (player.overall(positionOut) / 200.0);
-            weights.put(p, weight);
-            total += weight;
-        }
-
-        double r = Math.random() * total;
-        for (var e : weights.entrySet()) {
-            r -= e.getValue();
-            if (r <= 0) return e.getKey().definition().id();
-        }
-
-        return lineup.substitutes().get((int) (Math.random() * lineup.substitutes().size())).definition().id();
     }
 }

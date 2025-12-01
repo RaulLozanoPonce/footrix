@@ -15,8 +15,8 @@ public class MatchesTemplate extends AbstractMatchesTemplate<ProtrixBox> {
 	}
 
 	public void setCompetition(String competitionId, String matchDayId) {
-		Competition competition = box().application().competitionManager().get(competitionId, 1);
-		Map<String, List<Match>> matchDay = box().application().entityStore().matches(competitionId, 1).stream().collect(Collectors.groupingBy(m -> m.definition().matchDay()));
+		Competition competition = box().application().competitionManager().get(competitionId, 0);
+		Map<String, List<Match>> matchDay = box().application().entityStore().matches(competitionId, 0).stream().collect(Collectors.groupingBy(m -> m.definition().matchDay()));
 		String matchDayName = competition.phase(0).definition().matchDayName(Integer.parseInt(matchDayId));
 		for (Match match : matchDay.get(matchDayName)) {
 			matchRowStamp.add().match(match, this::seeMatch);

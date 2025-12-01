@@ -16,7 +16,7 @@ public class CacheFacet {
     }
 
     public CacheFacet absoluteCache(double deltaAbsoluteCache) {
-        this.absoluteCache += deltaAbsoluteCache;
+        this.absoluteCache = Math.min(1, Math.max(0, this.absoluteCache + deltaAbsoluteCache));
         return this;
     }
 

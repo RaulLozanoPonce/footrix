@@ -23,7 +23,7 @@ Template(layout=Horizontal) appTemplate as Relative(height=100%, width=100%)
 			Item(height=20px, width=5%) idMold > Number id
 		Mold
 			Heading nameHeading > Text(value = "Nombre")
-			Item(height=20px, width=25%) nameMold > Link(title = "nombre") name
+			Item(height=20px, width=20%) nameMold > Link(title = "nombre") name
 		Mold
 			Heading teamHeading > Text(value = "Equipo")
 			Item(height=20px, width=15%) teamMold > Text team
@@ -32,16 +32,31 @@ Template(layout=Horizontal) appTemplate as Relative(height=100%, width=100%)
 			Item(height=20px, width=10%) roleMold > Text role
 		Mold
 			Heading overallHeading > Text(value = "Media")
-			Item(height=20px, width=10%) overallMold > Number overall
+			Item(height=20px, width=5%) overallMold > Number overall
 		Mold
 			Heading positionHeading > Text(value = "Posicion")
-			Item(height=20px, width=10%) positionMold > Text position
+			Item(height=20px, width=5%) positionMold > Text position
 		Mold
-			Heading happinessHeading > Text(value = "Felicidad (TJ)")
-			Item(height=20px, width=10%) happinessMold > Number(countDecimals = 2) happiness
+			Heading happinessContractHeading > Text(value = "Fel (Con.)")
+			Item(height=20px, width=5%) happinessContractMold > Number(countDecimals = 2) happinessContract
 		Mold
-			Heading minutesHeading > Text(value = "Minutos jugados (%)")
-			Item(height=20px, width=10%) minutesMold > Number(countDecimals = 2) minutes
+			Heading happinessGameTimeHeading > Text(value = "Fel (TJu.)")
+			Item(height=20px, width=5%) happinessGameTimeMold > Number(countDecimals = 2) happinessGameTime
+		Mold
+			Heading happinessIndividualHeading > Text(value = "Fel (Ind.)")
+			Item(height=20px, width=5%) happinessIndividualMold > Number(countDecimals = 2) happinessIndividual
+		Mold
+			Heading happinessCollectiveHeading > Text(value = "Fel (Col.)")
+			Item(height=20px, width=5%) happinessCollectiveMold > Number(countDecimals = 2) happinessCollective
+		Mold
+			Heading minutesHeading > Text(value = "Min. (%)")
+			Item(height=20px, width=5%) minutesMold > Number(countDecimals = 2) minutes
+		Mold
+			Heading scoreHeading > Text(value = "Punt.")
+			Item(height=20px, width=5%) scoreMold > Number(countDecimals = 2) score
+		Mold
+			Heading cacheIniHeading > Text(value = "Cache Ini (%)")
+			Item(height=20px, width=5%) cacheIniMold > Number(countDecimals = 2) cacheIni
 		Mold
 			Heading cacheHeading > Text(value = "Cache (%)")
-			Item(height=20px, width=10%) cacheMold > Number(countDecimals = 2) cache
+			Item(height=20px, width=5%) cacheMold > Number(countDecimals = 2) cache

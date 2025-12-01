@@ -5,7 +5,6 @@ import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.framework.types.entities.player.Position;
 import rlp.footrix.framework.types.entities.team.Lineup;
 import rlp.footrix.framework.types.entities.team.PlayersLineup;
-import rlp.footrix.framework.types.entities.team_player.PlayerContract;
 
 import java.util.*;
 
@@ -19,17 +18,18 @@ public class LineupGenerator {
         Map<Player, Integer[]> playersMap = starters(entries(lineup, players));
         List<Player> substitutes = substitutes(phase, entries(lineup, players.stream().filter(p -> !playersMap.containsKey(p)).toList()));
         substitutes.addAll(reserves(phase, entries(lineup, players.stream().filter(p -> !playersMap.containsKey(p) && !substitutes.contains(p)).toList())));
-        return new PlayersLineup(lineup, playersMap, substitutes, new ArrayList<>());
+        return new PlayersLineup(lineup, playersMap, substitutes, new ArrayList<>(), new ArrayList<>());
     }
 
-    public static double scoreOfMatch(Player player, Position position) {
-        return player.cache().relativeCache(position) *
+    public static double scoreOfMatch(Player player, Position position, double energy) {
+        /*return player.cache().relativeCache(position) *
                 (
-                        EnergyFactor * fix(player.energy()) +
+                        EnergyFactor * fix(energy) +
                         RoleFactor * (player.contract().role().expectedPlayingTime() / PlayerContract.Role.Undisputed.expectedPlayingTime()) +
                         GameTimeFactor * (1 - player.mood().gameTime()) +
                         IndividualFactor * player.mood().individualPerformance()
-                );
+                );*/
+        return player.cache().relativeCache(position) * (0.4 * fix(energy) + 0.6 * (1 - player.mood().gameTime()));
     }
 
     private static Map<Player, Integer[]> starters(List<LineupEntry> entries) {
@@ -99,7 +99,7 @@ public class LineupGenerator {
                 Position position = lineup.distribution()[i][j];
                 if (position == null) continue;
                 for (Player player : players) {
-                    entries.add(new LineupEntry(new Integer[]{i, j}, position, player, scoreOfMatch(player, position)));
+                    entries.add(new LineupEntry(new Integer[]{i, j}, position, player, scoreOfMatch(player, position, player.energy())));
                 }
             }
         }

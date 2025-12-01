@@ -20,7 +20,7 @@ public class Calculator {
     }
 
     private int minutesOf(Player player, Match match) {
-        Match.PlayerStatistics statistics = match.playerStatistics().get(player.definition().id());
+        Match.PlayerStatistics statistics = match.playerStatistics().get(player.team().definition().id()).get(player.definition().id());
         return statistics != null ? statistics.minutes() : 0;
     }
 

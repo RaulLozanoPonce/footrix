@@ -21,12 +21,7 @@ public class InitGame extends Task {
     @Override
     public void execute() {
         //TODO PASAR A FRAMEWORK
-        initSeason();
         initEvents();
-    }
-
-    private void initSeason() {
-        application.game().initSeason(0);
     }
 
     private void initEvents() {

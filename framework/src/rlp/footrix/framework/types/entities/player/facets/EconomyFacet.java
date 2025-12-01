@@ -15,20 +15,12 @@ public class EconomyFacet {
     }
 
     public float expectedSalary() {
-        return expectedSalary(player.contract().role());
-    }
-
-    public float expectedSalary(PlayerContract.Role role) {
-        return (float) (baseSalary() * player.cache().absoluteCache() * role.salaryFactor());
+        double cache = 0.8 * player.cache().absoluteCache() + 0.2 * player.cache().relativeCache();
+        return (float) (1700 * (1 + 443 * Math.pow(cache, 5)));
     }
 
     public float marketValue(Instant now) {
         return (float) (baseMarketValue(now) * player.cache().relativeCache());
-    }
-
-    private float baseSalary() {
-        //TODO CUAL ES EL SALARIO BASE PARA UN JUGADOR CON X CARACTERISTICAS
-        return 0;
     }
 
     private float baseMarketValue(Instant now) {

@@ -18,6 +18,10 @@ public class EloManager {
         return (int) Math.round(importance(competition) * (result(result, withPenalties) - expectedResult(teamElo, rivalElo)));
     }
 
+    public double importanceOf(String competition, int phase) {
+        return importance(competition + "-" + phase);
+    }
+
     private double importance(String competition) {
         return this.competitionScores.get(competition);
     }

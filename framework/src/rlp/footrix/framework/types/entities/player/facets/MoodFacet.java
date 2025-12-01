@@ -17,15 +17,17 @@ public class MoodFacet {
         this.player = player;
     }
 
-    /*public double overall() {
+    public double overall() {
         return 0.2 * contract() + 0.15 * gameTime + 0.35 * individualPerformance + 0.3 * collectivePerformance;
-    }*/
+    }
 
     public double contract() {
         PlayerContract expected = ContractGenerator.expectedContract(player, player.team());
         double salarySatisfaction = min(max((player.contract().salary()/(double) expected.salary())/2.0, 0), 1);
         double roleSatisfaction = min(max(0.5 + player.contract().role().expectedPlayingTime() - expected.role().expectedPlayingTime(), 0), 1);
-        return 0.6 * salarySatisfaction + 0.4 * roleSatisfaction;
+        double contractMood = 0.6 * salarySatisfaction + 0.4 * roleSatisfaction;
+        if (contractMood >= 0.5) return 0.7 * contractMood + 0.4;
+        else return 1.3 * contractMood;
     }
 
     public double gameTime() {
@@ -45,10 +47,10 @@ public class MoodFacet {
     }
 
     public double collectivePerformance() {
-        return collectivePerformance;
+        return max(0, min(1, this.collectivePerformance));
     }
 
     public void collectivePerformance(double delta) {
-        this.collectivePerformance = max(0, min(1, this.collectivePerformance + delta));
+        this.collectivePerformance = this.collectivePerformance + delta;
     }
 }

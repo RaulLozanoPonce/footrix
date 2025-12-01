@@ -7,6 +7,7 @@ import rlp.footrix.framework.types.records.PlayerMatchRecord;
 import rlp.footrix.protrix.box.ProtrixBox;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class PlayerTraceDatasource extends PageDatasource<PlayerMatchRecord> {
@@ -17,7 +18,7 @@ public class PlayerTraceDatasource extends PageDatasource<PlayerMatchRecord> {
     public PlayerTraceDatasource(ProtrixBox box, String player) {
         this.trace = box.application().recordStore().playerMatchRecords().stream()
                 .filter(r -> r.player().equals(player))
-                //.sorted(Comparator.comparing(PlayerMatchRecord::date))
+                .sorted(Comparator.comparing(PlayerMatchRecord::date))
                 .toList();
     }
 

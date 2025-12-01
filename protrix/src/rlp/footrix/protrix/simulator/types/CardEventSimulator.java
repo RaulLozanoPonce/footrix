@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class CardEventSimulator extends EventSimulator {
-    private static final double BaseCardChance = 0.03;
+    private static final double BaseCardChance = 0.053;
 
     public CardEventSimulator(MatchState state, PlayerValue playerValue) {
         super(state, playerValue);
@@ -22,14 +22,26 @@ public class CardEventSimulator extends EventSimulator {
     @Override
     public List<Match.MatchEvent> simulate(int minute) {
         if (Math.random() > BaseCardChance) return new ArrayList<>();
-        Match.MatchEvent.Type type = Math.random() < 0.85 ? Match.MatchEvent.Type.YellowCard : Match.MatchEvent.Type.RedCard;
+        Match.MatchEvent.Type type = Math.random() < 0.972 ? Match.MatchEvent.Type.YellowCard : Match.MatchEvent.Type.RedCard;
         if (Math.random() < 0.5) {
             String player = pickPlayerForCard(localLineup());
-            return List.of(new Match.MatchEvent(local(), type, minute, player, null, null));
+            return eventsOf(player, local(), type, minute);
         } else {
             String player = pickPlayerForCard(visitantLineup());
-            return List.of(new Match.MatchEvent(visitant(), type, minute, player, null, null));
+            return eventsOf(player, visitant(), type, minute);
         }
+    }
+
+    private List<Match.MatchEvent> eventsOf(String player, String team, Match.MatchEvent.Type type, int minute) {
+        List<Match.MatchEvent> events = new ArrayList<>();
+        events.add(new Match.MatchEvent(team, type, minute, player, null, null));
+        if (type == Match.MatchEvent.Type.RedCard || hasDoubleYellowCard(player))
+            events.add(new Match.MatchEvent(team, Match.MatchEvent.Type.Expulsion, minute, player, null, null));
+        return events;
+    }
+
+    private boolean hasDoubleYellowCard(String player) {
+        return state.events().stream().anyMatch(e -> e.type() == Match.MatchEvent.Type.YellowCard && e.who().equals(player));
     }
 
     private String pickPlayerForCard(PlayersLineup lineup) {

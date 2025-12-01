@@ -71,15 +71,14 @@ public class PlayerValue {
     }
 
     public double form(ProtrixPlayer player) {
-        //TODO MEJORAR ESTADO DE FORMA
-        return 1;
+        return player.mood().overall();
     }
 
-    public double fatigue(ProtrixPlayer player) {
-        return state.fatigue(player.definition().id());
+    public double energy(ProtrixPlayer player) {
+        return player.energy() - state.fatigue(player.definition().id());
     }
 
-    public double rating(ProtrixPlayer player) {
-        return state.rating(player.definition().id());
+    public double score(ProtrixPlayer player, int minute) {
+        return state.score(player.team().definition().id(), player.definition().id(), minute);
     }
 }

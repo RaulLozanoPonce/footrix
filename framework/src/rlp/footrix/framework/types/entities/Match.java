@@ -9,7 +9,7 @@ import java.util.Map;
 
 import static rlp.footrix.framework.types.entities.Match.MatchEvent.Type.Goal;
 
-public record Match(MatchDefinition definition, Instant date, Map<String, PlayerStatistics> playerStatistics, List<MatchEvent> events, String mvp, int duration, Penalties penalties) {
+public record Match(MatchDefinition definition, Instant date, Map<String, Map<String, Match.PlayerStatistics>> playerStatistics, List<MatchEvent> events, String mvp, int duration, Penalties penalties) {
 
     public String winner() {
         if (penalties != null) return penalties.winner();
@@ -24,27 +24,7 @@ public record Match(MatchDefinition definition, Instant date, Map<String, Player
         return penalties != null;
     }
 
-    public static class PlayerStatistics {
-        private int minutes = 0;
-        private double score = 0.0;
-
-        public int minutes() {
-            return minutes;
-        }
-
-        public Double score() {
-            return score;
-        }
-
-        public void addMinute() {
-            this.minutes++;
-        }
-
-        public PlayerStatistics addScore(Double score) {
-            this.score += score;
-            return this;
-        }
-    }
+    public record PlayerStatistics(Integer minutes, Double score, Double fatigue) {}
 
     public record MatchEvent(String team, Type type, int minute, String who, String secondaryWho, JsonObject metaInfo) {
         public enum Type {Goal, RedCard, YellowCard, Substitution, Injury, Expulsion}

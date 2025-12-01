@@ -35,6 +35,11 @@ public class ProtrixAppConfiguration implements FootrixConfiguration.SimpleFootr
     private static final List<TeamElo> elos = TeamEloLoader.elos();
 
     @Override
+    public int initSeason() {
+        return 0;
+    }
+
+    @Override
     public Instant initDate() {
         return Instant.parse("2024-08-01T00:00:00Z");
     }
@@ -101,26 +106,12 @@ public class ProtrixAppConfiguration implements FootrixConfiguration.SimpleFootr
 
     private Team teamOf(Team team, Application application) {
         double eloPosition = eloOf(team, application) / teams.stream().mapToDouble(t -> eloOf(t, application)).max().orElse(0.0);
-        Map<Player, PlayerContract> teamPlayers = InitialContractGenerator.generate(players.get(team.definition().name()));
-        teamPlayers.forEach((p, c) -> {
-            team.setPlayer(p, c);
-            p.cache().absoluteCache(eloPosition * initialCacheFactorOf(c.role()));
-        });
+        Map<Player, PlayerContract> teamPlayers = InitialContractGenerator.generate(players.get(team.definition().name()), eloPosition);
+        teamPlayers.forEach(team::setPlayer);
         return team;
     }
 
     private double eloOf(Team team, Application application) {
         return application.tableStore().teamElo(team.definition().id()).elo();
-    }
-
-    private double initialCacheFactorOf(PlayerContract.Role role) {
-        return switch (role) {
-            case Undisputed -> 1;
-            case Regular -> 0.8;
-            case Rotation -> 0.5;
-            case Substitute -> 0.3;
-            case Reserve -> 0.15;
-            case Young -> 0.2;
-        };
     }
 }

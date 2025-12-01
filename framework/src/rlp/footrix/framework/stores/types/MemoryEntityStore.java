@@ -38,6 +38,11 @@ public class MemoryEntityStore implements EntityStore {
     }
 
     @Override
+    public List<Player> players() {
+        return new ArrayList<>(players.values());
+    }
+
+    @Override
     public Player player(PlayerDefinition definition) {
         return player(definition.id());
     }
