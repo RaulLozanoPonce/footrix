@@ -2,7 +2,7 @@ package rlp.footrix.framework.types.records;
 
 import java.time.Instant;
 
-public record PlayerMatchRecord(String player, String team, String competition, int season, Instant date,
+public record PlayerMatchRecord(String matchId, String player, String team, String competition, int season, Instant date,
                                 Integer enterMinute, Integer exitMinute, int maxMinutes, Double score, boolean injured,
                                 boolean expelled, int goals, int assists, int yellowCards, int redCards, double preEnergy) {
 

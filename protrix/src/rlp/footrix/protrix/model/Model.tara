@@ -1,0 +1,49 @@
+dsl proteo
+
+Concept Match
+	var string matchId
+	var string competitionName
+	var instant date
+	var string localName
+	var string visitantName
+	var integer localGoals
+	var integer visitantGoals
+
+Concept Classification
+	var string competitionId
+	var integer phase
+	var string team
+	var string teamName
+	var integer playedGames
+	var integer wonGames
+	var integer drawGames
+	var integer lostGames
+	var integer goalsFor
+	var integer goalsAgainst
+	var integer goalsDifference
+	var integer points
+
+Concept PlayerRecord
+	var string competitionId
+	var string teamName
+	var string playerId
+	var string playerName
+	var word:{Goal Assist CleanSheet YellowCard RedCard} type
+	var integer amount
+	var integer playedMatches
+	var double playedMinutes
+
+Concept PlayerMatchRecord
+	var string matchId
+	var string teamId
+	var integer number
+	var string playerName
+	var string position
+	var string enters
+	var string exits
+	var integer goals
+	var integer assists
+	var integer yellowCards
+	var integer redCards
+	var string score
+	var boolean substitute

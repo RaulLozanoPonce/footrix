@@ -38,7 +38,7 @@ public class SubstitutionEventSimulator extends EventSimulator {
         if (Math.random() < 0.5) {
             return substitutions(local(), tacticPlayersToSubstitute(local(), new HashSet<>()), minute);
         } else {
-            return substitutions(local(), tacticPlayersToSubstitute(visitant(), new HashSet<>()), minute);
+            return substitutions(visitant(), tacticPlayersToSubstitute(visitant(), new HashSet<>()), minute);
         }
     }
 

@@ -18,6 +18,7 @@ public interface EntityStore {
     Player player(PlayerDefinition definition);
     Player player(String id);
     void player(Player player);
+    Match match(String id);
     Match match(MatchDefinition definition);
     List<Match> matches(String competition, int season);
     void match(Match match);

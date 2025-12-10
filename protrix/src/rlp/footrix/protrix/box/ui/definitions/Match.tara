@@ -1,0 +1,172 @@
+dsl konos
+
+use Common
+use Theme
+
+Template(layout=Vertical Flexible) matchTemplate as Relative(height=100%, width=100%)
+	Block(layout=Horizontal, format=darkGreyBackground) as Absolute(height=64px)
+		Block(layout=Horizontal Center) as Relative(width=20%)
+			Text(format=h3 airLeft) competition
+		Block(layout=Horizontal) as Relative(width=60%)
+			Block(layout=Horizontal Center EndJustified) as Relative(width=40%)
+				Text(format=h2 airRight) localTeam
+			Block(layout=Horizontal CenterCenter) as Relative(width=20%)
+				Text(format=h1 bold) result
+			Block(layout=Horizontal Center) as Relative(width=40%)
+				Text(format=h2 airLeft) visitantTeam
+		Block(layout=Horizontal Center EndJustified) as Relative(width=20%)
+			Block(format=airRight)
+				Text(format=h4) matchDay
+				Text(format=h5) day
+	Block(format=darkGreyBackground)
+		Selector tabs as Tabs
+			Text(value="Info") infoOpt as Option
+			Text(value="Competición") competitionOpt as Option
+
+	Block(layout=Vertical Flexible, format=wh100) infoBlock as Conditional
+		TemplateStamp(template=matchInfoTemplate) matchInfoStamp
+	Block(layout=Vertical Flexible, format=wh100) competitionBlock as Conditional
+		TemplateStamp(template=matchCompetitionTemplate) matchCompetitionStamp
+
+Template(layout=Horizontal Flexible) matchInfoTemplate as Relative(height=100%, width=100%)
+	Block(layout=Vertical, format=rightSpaced rightBordered) as Absolute(width=600px)
+		Text(value="Local", format=h2 airBottom)
+		TemplateStamp(template=matchPlayersTemplate) localMatchPlayersStamp
+	Block(layout=Vertical, format=leftSpaced rightSpaced rightBordered) as Absolute(width=610px)
+		Text(value="Visitante", format=h2 airBottom)
+		TemplateStamp(template=matchPlayersTemplate) visitantMatchPlayersStamp
+	Block(layout=Horizontal Flexible, format=leftSpaced)
+		Block(layout=Vertical Flexible) as Relative(width=50%)
+			Text(value="Eventos", format=h2 airBottom)
+			Table(itemClass="rlp.footrix.framework.types.entities.Match.MatchEvent", pageSize=20) matchEventsTable
+				noItemsMessage = ""
+				noItemsFoundMessage = ""
+				Mold
+					Item(height=50px, width=45%) matchEventsLocalPlayerMold
+						Block(layout=Horizontal EndJustified) as Relative(width=100%)
+							Block(format=doubleAirRight)
+								Text(format=bold textEnd w100) matchEventsLocalFirstPlayer
+								Text(format=middleAirTop textEnd w100) matchEventsLocalSecondPlayer
+							Block(layout=Horizontal Center)
+								Icon(icon = "", format=matchEventIcon) matchEventsLocalEventIcon
+				Mold
+					Item(height=50px, width=10%) matchEventsMinuteMold
+						Block(layout=Horizontal CenterCenter)
+							Text(format=h4 bold) matchEventsMinute
+				Mold
+					Item(height=50px, width=45%) matchEventsVisitantPlayerMold
+						Block(layout=Horizontal) as Relative(width=100%)
+							Block(layout=Horizontal Center)
+								Icon(icon = "", format=matchEventIcon) matchEventsVisitantEventIcon
+							Block(format=doubleAirLeft)
+								Text(format=bold) matchEventsVisitantFirstPlayer
+								Text(format=middleAirTop) matchEventsVisitantSecondPlayer
+
+Template matchPlayersTemplate as Relative(height=100%)
+	Block(format=bg field)
+		Image(value="/images/field.jpg", format=relative) fieldImage
+		Block p1 > TemplateStamp(template=matchLineupPinTemplate) player1
+		Block p2 > TemplateStamp(template=matchLineupPinTemplate) player2
+		Block p3 > TemplateStamp(template=matchLineupPinTemplate) player3
+		Block p4 > TemplateStamp(template=matchLineupPinTemplate) player4
+		Block p5 > TemplateStamp(template=matchLineupPinTemplate) player5
+		Block p6 > TemplateStamp(template=matchLineupPinTemplate) player6
+		Block p7 > TemplateStamp(template=matchLineupPinTemplate) player7
+		Block p8 > TemplateStamp(template=matchLineupPinTemplate) player8
+		Block p9 > TemplateStamp(template=matchLineupPinTemplate) player9
+		Block p10 > TemplateStamp(template=matchLineupPinTemplate) player10
+		Block p11 > TemplateStamp(template=matchLineupPinTemplate) player11
+	Table(itemClass="rlp.footrix.protrix.model.PlayerMatchRecord", pageSize=25) matchPlayersTable
+		noItemsMessage = ""
+		noItemsFoundMessage = ""
+		Mold
+			Heading matchPlayersNumberHeading > Text(value = "Dor.", format=bold)
+			Item(height=25px, width=10%) matchPlayersNumberMold > Text matchPlayersNumber
+		Mold
+			Heading matchPlayersNameHeading > Text(value = "Jugador", format=bold)
+			Item(height=25px, width=42%) matchPlayersNameMold > Text matchPlayersName
+		Mold
+			Heading matchPlayersPositionHeading > Text(value = "Pos.", format=bold)
+			Item(height=25px, width=8%) matchPlayersPositionMold > Text(format=positionChip) matchPlayersPosition as Highlighted(backgroundColor="black", textColor = "white")
+		Mold
+			Heading matchPlayersEntersHeading > Text(value = "Ent.", format=bold)
+			Item(height=25px, width=6%) matchPlayersEntersMold > Text matchPlayersEnters
+		Mold
+			Heading matchPlayersExitsHeading > Text(value = "Sal.", format=bold)
+			Item(height=25px, width=6%) matchPlayersExitsMold > Text matchPlayersExits
+		Mold
+			Heading matchPlayersGoalsHeading > Text(value = "G", format=bold)
+			Item(height=25px, width=5%) matchPlayersGoalsMold > Text matchPlayersGoals
+		Mold
+			Heading matchPlayersAssistsHeading > Text(value = "A", format=bold)
+			Item(height=25px, width=5%) matchPlayersAssistsMold > Text matchPlayersAssists
+		Mold
+			Heading matchPlayersYellowCardsHeading > Text(value = "TA", format=bold)
+			Item(height=25px, width=5%) matchPlayersYellowCardsMold > Text matchPlayersYellowCards
+		Mold
+			Heading matchPlayersRedCardsHeading > Text(value = "TR", format=bold)
+			Item(height=25px, width=5%) matchPlayersRedCardsMold > Text matchPlayersRedCards
+		Mold
+			Heading matchPlayersScoreHeading > Text(value = "Punt.", format=bold)
+			Item(height=25px, width=8%) matchPlayersScoreMold > Text matchPlayersScore as Highlighted(backgroundColor="black", textColor = "white")
+
+Template(format=matchLineupPin) matchLineupPinTemplate as Absolute(height=64px, width=72px)
+	Block(layout=Horizontal, format=middleAirBottom)
+		Block(layout=Horizontal CenterCenter, format=smallAirRight) as Absolute(width=22px, height=16px)
+			Icon(icon = "/icons/goal.png", format=matchEventIcon, visible=false) goalsIcon
+			Icon(icon = "/icons/assist.png", format=matchEventIcon, visible=false) assistsIcon
+			Text(format=hSmall matchLineupPinGoals, visible=false) goals
+			Text(format=hSmall matchLineupPinAssists, visible=false) assists
+		Block(layout=Horizontal CenterCenter, format=smallAirRight) as Absolute(width=22px, height=16px)
+			Text(format=positionChipSmall hSmall) position as Highlighted(backgroundColor="black", textColor = "white")
+		Block(layout=Horizontal CenterCenter) as Absolute(width=22px, height=16px)
+			Text(format=positionChipSmall hSmall) score as Highlighted(backgroundColor="black", textColor = "white")
+	Block(layout=Horizontal, format=middleAirBottom)
+		Block(layout=Horizontal CenterCenter, format=smallAirRight) as Absolute(width=22px, height=16px)
+			Text(format=positionChipSmall hSmall, visible=false) exits as Highlighted(backgroundColor="#f83333", textColor = "white")
+		Block(layout=Horizontal CenterCenter, format=smallAirRight) as Absolute(width=22px, height=16px)
+			Text(format=h6) number
+		Block(layout=Horizontal CenterCenter, format=smallAirRight) as Absolute(width=22px, height=16px)
+			Icon(icon = "/icons/yellow-card.png", format=matchEventIcon, visible=false) yellowCardsIcon
+			Icon(icon = "/icons/red-card.png", format=matchEventIcon, visible=false) redCardsIcon
+	Block(layout=Horizontal CenterCenter) as Absolute(width=72px, height=16px)
+		Text(format=ellipsis h6) name as Highlighted(backgroundColor="black", textColor = "white")
+
+Template(layout=Horizontal Flexible) matchCompetitionTemplate as Relative(height=100%, width=100%)
+	Block(layout=Vertical, format=rightSpaced rightBordered) as Absolute(width=500px)
+		TemplateStamp(template=matchesTemplate) matchesStamp
+	Block(layout=Vertical Flexible, format=leftSpaced)
+		Text(value="Clasificación", format=h2 airBottom)
+		Table(itemClass="rlp.footrix.protrix.model.Classification", pageSize=20) matchCompetitionClassificationTable
+			noItemsMessage = "No existen partidos para esta competición"
+			noItemsFoundMessage = "No existen partidos para esta competición"
+			Mold
+				Heading matchCompetitionClassificationPositionHeading > Text(value = "Pos.", format=bold)
+				Item(height=30px, width=10%) matchCompetitionClassificationPositionMold > Text matchCompetitionClassificationPosition
+			Mold
+				Heading matchCompetitionClassificationTeamHeading > Text(value = "Equipo", format=bold)
+				Item(height=30px, width=30%) matchCompetitionClassificationTeamMold > Text matchCompetitionClassificationTeam
+			Mold
+				Heading matchCompetitionClassificationPlayedMatchesHeading > Text(value = "PJ", format=bold)
+				Item(height=30px, width=10%) matchCompetitionClassificationPlayedMatchesMold > Text matchCompetitionClassificationPlayedMatches
+			Mold
+				Heading matchCompetitionClassificationWinMatchesHeading > Text(value = "V", format=bold)
+				Item(height=30px, width=10%) matchCompetitionClassificationWinMatchesMold > Text matchCompetitionClassificationWinMatches
+			Mold
+				Heading matchCompetitionClassificationDrawMatchesHeading > Text(value = "E", format=bold)
+				Item(height=30px, width=10%) matchCompetitionClassificationDrawMatchesMold > Text matchCompetitionClassificationDrawMatches
+			Mold
+				Heading matchCompetitionClassificationLostMatchesHeading > Text(value = "D", format=bold)
+				Item(height=30px, width=10%) matchCompetitionClassificationLostMatchesMold > Text matchCompetitionClassificationLostMatches
+			Mold
+				Heading matchCompetitionClassificationGoalsForHeading > Text(value = "GF", format=bold)
+				Item(height=30px, width=10%) matchCompetitionClassificationGoalsForMold > Text matchCompetitionClassificationGoalsFor
+			Mold
+				Heading matchCompetitionClassificationGoalsAgainstHeading > Text(value = "GC", format=bold)
+				Item(height=30px, width=10%) matchCompetitionClassificationGoalsAgainstMold > Text matchCompetitionClassificationGoalsAgainst
+			Mold
+				Heading matchCompetitionClassificationGoalsDifferenceHeading > Text(value = "DG", format=bold)
+				Item(height=30px, width=10%) matchCompetitionClassificationGoalsDifferenceMold > Text matchCompetitionClassificationGoalsDifference
+			Mold
+				Heading matchCompetitionClassificationPointsHeading > Text(value = "Pts.", format=bold)
+				Item(height=30px, width=10%) matchCompetitionClassificationPointsMold > Text matchCompetitionClassificationPoints

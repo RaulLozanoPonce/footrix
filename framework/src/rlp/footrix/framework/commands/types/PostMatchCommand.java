@@ -219,7 +219,7 @@ public class PostMatchCommand extends Command {
     }
 
     private void updatePlayerMatchRecord(Team team, Player player, Integer enterMinute, Integer exitMinute, int maxMinutes, Double score, boolean injured, boolean expelled, int goals, int assists, int yellowCards, int redCards, double preEnergy) {
-        application.recordStore().create().playerMatchRecord(player.definition().id(), team.definition().id(), match.definition().competition(), match.definition().season(), match.date(), enterMinute, exitMinute, maxMinutes, score, injured, expelled, goals, assists, yellowCards, redCards, preEnergy);
+        application.recordStore().create().playerMatchRecord(match.definition().id(), player.definition().id(), team.definition().id(), match.definition().competition(), match.definition().season(), match.date(), enterMinute, exitMinute, maxMinutes, score, injured, expelled, goals, assists, yellowCards, redCards, preEnergy);
     }
 
     private void createTeamMatchRecord(Team team, int goalsFor, int goalsAgainst) {

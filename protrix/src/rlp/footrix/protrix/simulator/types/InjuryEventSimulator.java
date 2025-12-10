@@ -24,6 +24,7 @@ public class InjuryEventSimulator extends EventSimulator {
     public List<Match.MatchEvent> simulate(int minute) {
         if (Math.random() > BaseInjuryChance) return new ArrayList<>();
         JsonObject metainfo = new JsonObject();
+        metainfo.addProperty("level", 1);   //TODO
         if (Math.random() < 0.5) {
             String player = pickPlayerForInjury(localLineup());
             return List.of(new Match.MatchEvent(local(), Match.MatchEvent.Type.Injury, minute, player, null, metainfo));

@@ -80,5 +80,12 @@
     <orderEntry type="library" name="Intino: org.glassfish.grizzly:grizzly-http-server:4.0.2" level="project" />
     <orderEntry type="library" name="Intino: org.glassfish.grizzly:grizzly-http:4.0.2" level="project" />
     <orderEntry type="module" module-name="protrix-ui" />
+    <orderEntry type="library" name="Intino: io.intino.tara:language:1.6.1" level="project" />
+    <orderEntry type="library" name="Intino: io.intino.magritte:framework:5.2.1" level="project" />
+    <orderEntry type="library" name="Intino: io.intino.magritte:io:5.0.0" level="project" />
+    <orderEntry type="library" name="Intino: com.esotericsoftware:kryo:5.4.0" level="project" />
+    <orderEntry type="library" name="Intino: com.esotericsoftware:reflectasm:1.11.9" level="project" />
+    <orderEntry type="library" name="Intino: org.objenesis:objenesis:3.3" level="project" />
+    <orderEntry type="library" name="Intino: com.esotericsoftware:minlog:1.3.1" level="project" />
   </component>
 </module>

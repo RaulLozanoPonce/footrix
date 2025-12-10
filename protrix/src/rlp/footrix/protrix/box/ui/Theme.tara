@@ -1,8 +1,118 @@
 dsl konos
 
+Theme theme1
+	type = Auto
+
+	Typography
+		fontSize = 11px
+
+	Primary("#303030")
+	Secondary("#AE2E24")
+	Error("#f44336")
+
+// FONTS
+Format("fontSize:'30pt'") h1
+Format("fontSize:'20pt'") h2
+Format("fontSize:'16pt'") h3
+Format("fontSize:'13pt'") h4
+Format("fontSize:'12pt'") h5
+Format("fontSize:'9pt'") h6
+Format("fontSize:'7pt'") hSmall
+Format("fontWeight:'bold'") bold
+Format("textAlign:'end'") textEnd
+Format("") secondary
+
+
+// SPACED, AIR
+Format("marginLeft:'20px'") doubleAirLeft
+Format("marginLeft:'10px'") airLeft
+Format("marginTop:'10px'") airTop
+Format("marginTop:'5px'") middleAirTop
+Format("marginBottom:'10px'") airBottom
+Format("marginBottom:'5px'") middleAirBottom
+Format("marginRight:'20px'") doubleAirRight
+Format("marginRight:'10px'") airRight
+Format("marginRight:'5px'") middleAirRight
+Format("marginRight:'2px'") smallAirRight
+
+Format("padding:'10px 20px'") spaced
+Format("paddingLeft:'10px'") leftSpaced
+Format("paddingRight:'10px'") rightSpaced
+
+
+// BORDERED
+Format("border:'2px solid #262626'") bordered
+Format("borderLeft:'2px solid #262626'") leftBordered
+Format("borderRight:'2px solid #262626'") rightBordered
+Format("borderBottom:'2px solid #262626'") bottomBordered
+Format("borderBottom:'2px solid #7f211a'") secondaryBottomBordered
+
+
+
+
+
+// COMMON
+Format("position:'relative'") relative
+Format("display:'flex',alignItems:'center'") centeredVertically
+Format("borderRadius:'5px'") rounded
+Format("borderRadius:'1000px'") circle
+Format("overflowY:'auto'") overflow
+Format("height:'16px',width:'16px'") matchEventIcon
+Format("padding:'0px 5px', width:'35px', textAlign:'center'") positionChip
+Format("padding:'0px 2px', width:'22px', textAlign:'center'") positionChipSmall
+
+
+Format("position:'relative', height:'388d px', minHeight:'388px', width:'588px', minWidth:'588px'") field
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'26px', left:'26px', height:'32px', width:'32px'") p04
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'26px', left:'110px', height:'32px', width:'32px'") p14
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'26px', left:'194px', height:'32px', width:'32px'") p24
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'26px', left:'278px', height:'32px', width:'32px'") p34
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'26px', left:'362px', height:'32px', width:'32px'") p44
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'26px', left:'446px', height:'32px', width:'32px'") p54
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'26px', left:'530px', height:'32px', width:'32px'") p64
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'102px', left:'26px', height:'32px', width:'32px'") p03
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'102px', left:'110px', height:'32px', width:'32px'") p13
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'102px', left:'194px', height:'32px', width:'32px'") p23
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'102px', left:'278px', height:'32px', width:'32px'") p33
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'102px', left:'362px', height:'32px', width:'32px'") p43
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'102px', left:'446px', height:'32px', width:'32px'") p53
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'102px', left:'530px', height:'32px', width:'32px'") p63
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'178px', left:'26px', height:'32px', width:'32px'") p02
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'178px', left:'110px', height:'32px', width:'32px'") p12
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'178px', left:'194px', height:'32px', width:'32px'") p22
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'178px', left:'278px', height:'32px', width:'32px'") p32
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'178px', left:'362px', height:'32px', width:'32px'") p42
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'178px', left:'446px', height:'32px', width:'32px'") p52
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'178px', left:'530px', height:'32px', width:'32px'") p62
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'254px', left:'26px', height:'32px', width:'32px'") p01
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'254px', left:'110px', height:'32px', width:'32px'") p11
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'254px', left:'194px', height:'32px', width:'32px'") p21
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'254px', left:'278px', height:'32px', width:'32px'") p31
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'254px', left:'362px', height:'32px', width:'32px'") p41
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'254px', left:'446px', height:'32px', width:'32px'") p51
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'254px', left:'530px', height:'32px', width:'32px'") p61
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'330px', left:'26px', height:'32px', width:'32px'") p00
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'330px', left:'110px', height:'32px', width:'32px'") p10
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'330px', left:'194px', height:'32px', width:'32px'") p20
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'330px', left:'278px', height:'32px', width:'32px'") p30
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'330px', left:'362px', height:'32px', width:'32px'") p40
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'330px', left:'446px', height:'32px', width:'32px'") p50
+Format("position:'absolute', backgroundColor:'red', borderRadius:'1000px', top:'330px', left:'530px', height:'32px', width:'32px'") p60
+
+Format("whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis', width:'72px'") ellipsis
+Format("top:'-12px', left:'-19px', position:'absolute'") matchLineupPin
+Format("position:'absolute', backgroundColor:'black', width:'12px', textAlign:'center', borderRadius:'1000px', left:'-4px', top:'-8px'") matchLineupPinGoals
+Format("position:'absolute', backgroundColor:'red', width:'12px', textAlign:'center', borderRadius:'1000px', left:'-4px', top:'8px'") matchLineupPinAssists
+
+
 Format("width:'100%',height:'100&'") wh100
 Format("width:'100%'") w100
+Format("height:'100&'") h100
+Format("height:'auto'") hauto
 
+//BACKGROUNDS
 Format("backgroundColor:'green'") bg
 Format("backgroundColor:'red'") br
 Format("backgroundColor:'yellow'") by
+Format("backgroundColor:'#262626'") darkGreyBackground
+Format("backgroundColor:'#AE2E24'") scarletBackground

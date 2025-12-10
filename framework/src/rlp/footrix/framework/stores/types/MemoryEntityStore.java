@@ -58,6 +58,22 @@ public class MemoryEntityStore implements EntityStore {
     }
 
     @Override
+    public Match match(String id) {
+        for (Integer season : matches.keySet()) {
+            for (String competition : matches.get(season).keySet()) {
+                for (Integer phase : matches.get(season).get(competition).keySet()) {
+                    for (String matchDay : matches.get(season).get(competition).get(phase).keySet()) {
+                        for (Match match : matches.get(season).get(competition).get(phase).get(matchDay)) {
+                            if (match.definition().id().equals(id)) return match;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
     public Match match(MatchDefinition definition) {
         return matches.get(definition.season())
                 .get(definition.competition())

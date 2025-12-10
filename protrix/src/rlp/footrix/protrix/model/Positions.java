@@ -20,4 +20,8 @@ public class Positions {
     public static List<Position> values() {
         return List.of(PT, CT, CAR, LAT, CCD, CC, MP, VOL, EXT, SS, DL);
     }
+
+    public static Position of(String positionId) {
+        return values().stream().filter(v -> v.id().equals(positionId)).findFirst().orElse(null);
+    }
 }

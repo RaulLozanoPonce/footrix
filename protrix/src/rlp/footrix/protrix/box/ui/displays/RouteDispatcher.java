@@ -1,29 +1,29 @@
 package rlp.footrix.protrix.box.ui.displays;
 
 import io.intino.alexandria.ui.Soul;
-import rlp.footrix.protrix.box.ui.displays.templates.ClassificationTemplate;
-import rlp.footrix.protrix.box.ui.displays.templates.MatchesTemplate;
+import rlp.footrix.protrix.box.ui.displays.templates.AppTemplate;
 import rlp.footrix.protrix.box.ui.displays.templates.PlayerTraceTemplate;
+import rlp.footrix.protrix.box.ui.displays.templates.TraceTemplate;
 
 public class RouteDispatcher extends AbstractRouteDispatcher {
 
     @Override
     public void dispatchHome(Soul soul) {
+        soul.display(AppTemplate.class).openHome();
+    }
 
+    @Override
+    public void dispatchMatch(Soul soul, String matchId) {
+        soul.display(AppTemplate.class).openMatch(matchId);
+    }
+
+    @Override
+    public void dispatchTrace(Soul soul) {
+        soul.display(TraceTemplate.class);
     }
 
     @Override
     public void dispatchPlayerTrace(Soul soul, String playerId) {
         soul.display(PlayerTraceTemplate.class).setPlayer(playerId);
-    }
-
-    @Override
-    public void dispatchClassification(Soul soul, String competitionId, String season) {
-        soul.display(ClassificationTemplate.class).setParameters(competitionId, Integer.parseInt(season));
-    }
-
-    @Override
-    public void dispatchMatches(Soul soul, String competitionId, String matchDayId) {
-        soul.display(MatchesTemplate.class).setCompetition(competitionId, matchDayId);
     }
 }

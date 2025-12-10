@@ -3,9 +3,10 @@ package rlp.footrix.protrix.box;
 import rlp.footrix.framework.types.entities.Match;
 import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.framework.types.records.PlayerMatchRecord;
-import rlp.footrix.framework.types.records.TeamMatchRecord;
 import rlp.footrix.protrix.ProtrixAppConfiguration;
 import rlp.footrix.protrix.ProtrixApplication;
+import rlp.footrix.protrix.box.helper.DatamartFeeder;
+import rlp.footrix.protrix.model.ProtrixGraph;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -17,9 +18,10 @@ import java.util.stream.Collectors;
 import static rlp.footrix.framework.types.entities.Match.MatchEvent.Type.*;
 
 public class ProtrixBox extends AbstractBox {
-
 	private ProtrixApplication application;
     private Map<String, Double> initialCaches;
+    private ProtrixGraph graph;
+    private DatamartFeeder datamartFeeder;
 
     public ProtrixBox(String[] args) {
 		this(new ProtrixConfiguration(args));
@@ -32,18 +34,23 @@ public class ProtrixBox extends AbstractBox {
 	@Override
 	public io.intino.alexandria.core.Box put(Object o) {
 		super.put(o);
-		return this;
+        if (o instanceof ProtrixGraph graph) this.graph = graph;
+        return this;
 	}
 
 	public void beforeStart() {
 		ProtrixAppConfiguration config = new ProtrixAppConfiguration();
 		application = new ProtrixApplication(config);
 		application.start();
+        datamartFeeder = new DatamartFeeder(this);
 	}
 
 	public void afterStart() {
         this.initialCaches = application.entityStore().players().stream().collect(Collectors.toMap(p -> p.definition().id(), p -> p.cache().absoluteCache()));
 		application.setDate(Instant.parse("2025-08-01T00:00:00Z"));
+        datamartFeeder.feedMatches();
+        datamartFeeder.feedClassifications();
+        datamartFeeder.feedPlayerRecords();
 
         double homeWinPct = application.entityStore().matches("ESP-1", 0).stream().filter(m -> m.definition().local().equals(m.winner())).count() / (double) (38 * 10);
         double drawPct = application.entityStore().matches("ESP-1", 0).stream().filter(m -> m.winner() == null).count() / (double) (38 * 10);
@@ -136,5 +143,9 @@ public class ProtrixBox extends AbstractBox {
 
     public Map<String, Double> initialCaches() {
         return initialCaches;
+    }
+
+    public ProtrixGraph graph() {
+        return graph;
     }
 }

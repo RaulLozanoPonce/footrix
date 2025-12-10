@@ -21,6 +21,8 @@ public class ProtrixMatchSimulator implements MatchSimulator {
 
     @Override
     public Match simulate(MatchDefinition definition, Instant date, PlayersLineup localLineup, PlayersLineup visitantLineup) {
+        Map<Player, Integer[]> firstLocalLineup = new HashMap<>(localLineup.positions());
+        Map<Player, Integer[]> firstVisitantLineup = new HashMap<>(visitantLineup.positions());
         this.state = new MatchState(definition.local(), definition.visitant(), localLineup, visitantLineup);
         PlayerValue playerValue = new PlayerValue(state);
 
@@ -41,7 +43,7 @@ public class ProtrixMatchSimulator implements MatchSimulator {
             handle(state.minuteEvents(), state, i);
             state.minuteEvents().clear();
         }
-        return new Match(definition, date, statistics(), state.events(), "", 90, null);
+        return new Match(definition, date, firstLocalLineup, firstVisitantLineup, statistics(), state.events(), 90, null);
     }
 
     private void addMinutes() {

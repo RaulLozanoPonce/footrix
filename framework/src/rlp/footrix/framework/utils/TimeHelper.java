@@ -242,7 +242,7 @@ public class TimeHelper {
     }
 
     public static String shortDateStyled(Instant instant) {
-        return allNumericDayStyled(instant) + " a las " + hourStyled(hourOf(instant)) + ":" + minuteStyled(minuteOf(instant));
+        return shortDayStyled(instant) + " a las " + hourStyled(hourOf(instant)) + ":" + minuteStyled(minuteOf(instant));
     }
 
     public static String longDateStyled(Instant instant) {
@@ -250,7 +250,7 @@ public class TimeHelper {
                 " a las " + hourStyled(hourOf(instant)) + ":" + minuteStyled(minuteOf(instant));
     }
 
-    public static String allNumericDayStyled(Instant instant) {
+    public static String shortDayStyled(Instant instant) {
         return dayStyled(monthDayOf(instant)) + "/" + monthStyled(monthOf(instant)) + "/" + yearStyled(yearOf(instant));
     }
 

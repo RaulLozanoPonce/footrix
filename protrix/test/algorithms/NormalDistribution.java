@@ -1,6 +1,8 @@
+package algorithms;
+
 import java.util.Random;
 
-public class Normal {
+public class NormalDistribution {
 
     public static void main(String[] args) {
         Random random = new Random();

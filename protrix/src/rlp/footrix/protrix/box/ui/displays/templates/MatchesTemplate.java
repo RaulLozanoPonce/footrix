@@ -1,33 +1,59 @@
 package rlp.footrix.protrix.box.ui.displays.templates;
 
-import rlp.footrix.framework.types.entities.Competition;
-import rlp.footrix.framework.types.entities.Match;
+import io.intino.alexandria.ui.displays.events.AddCollectionItemEvent;
+import io.intino.alexandria.ui.displays.events.SelectionEvent;
+import rlp.footrix.framework.types.entities.definitions.CompetitionDefinition;
+import rlp.footrix.framework.utils.TimeHelper;
 import rlp.footrix.protrix.box.ProtrixBox;
-
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import rlp.footrix.protrix.box.ui.datasources.MatchDatasource;
+import rlp.footrix.protrix.box.ui.displays.items.MatchTableMold;
+import rlp.footrix.protrix.model.Match;
 
 public class MatchesTemplate extends AbstractMatchesTemplate<ProtrixBox> {
+    private final MatchDatasource matchDatasource;
 
-	public MatchesTemplate(ProtrixBox box) {
+    private CompetitionDefinition competition;
+
+    public MatchesTemplate(ProtrixBox box) {
 		super(box);
+        this.matchDatasource = new MatchDatasource(box);
 	}
 
-	public void setCompetition(String competitionId, String matchDayId) {
-		Competition competition = box().application().competitionManager().get(competitionId, 0);
-		Map<String, List<Match>> matchDay = box().application().entityStore().matches(competitionId, 0).stream().collect(Collectors.groupingBy(m -> m.definition().matchDay()));
-		String matchDayName = competition.phase(0).definition().matchDayName(Integer.parseInt(matchDayId));
-		for (Match match : matchDay.get(matchDayName)) {
-			matchRowStamp.add().match(match, this::seeMatch);
-		}
-	}
+    @Override
+    public void init() {
+        super.init();
+        initTable();
+    }
 
-	private void seeMatch(Match match) {
-		eventRowStamp.clear();
-		for (Match.MatchEvent event : match.events()) {
-			if (event.type() == Match.MatchEvent.Type.Expulsion || (event.type() == Match.MatchEvent.Type.Substitution && event.metaInfo() != null)) continue;
-			eventRowStamp.add().event(event.team().equals(match.definition().local()), event);
-		}
-	}
+    public void setup(CompetitionDefinition competition) {
+        this.competition = competition;
+    }
+
+    @Override
+    public void refresh() {
+        super.refresh();
+        matchTable.source(matchDatasource);
+    }
+
+    private void initTable() {
+        matchTable.onAddItem(this::addMatch);
+        matchTable.onSelect(this::selectMatch);
+        matchDatasource.loadData();
+    }
+
+    private void addMatch(AddCollectionItemEvent event) {
+        Match match = event.item();
+        MatchTableMold item = event.component();
+        item.day.value(TimeHelper.shortDayStyled(match.date()));
+        item.competition.value(match.competitionName());
+        item.localLink.title(match.localName());
+        item.localLink.onExecute(e -> notifier.redirect(""));
+        item.match.value(match.localGoals() + " - " + match.visitantGoals());
+        item.visitantLink.title(match.visitantName());
+        item.visitantLink.onExecute(e -> notifier.redirect(""));
+    }
+
+    private void selectMatch(SelectionEvent event) {
+        notifier.redirect("/matches/" + ((Match) event.first()).matchId());
+    }
 }

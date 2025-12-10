@@ -2,6 +2,7 @@ dsl Legio
 
 Artifact("rlp.footrix", "1.0.0-SNAPSHOT") protrix
 	Dsl("konos", "12.3.0") > Builder(generationPackage="box")
+	Dsl("proteo", "1.0.4") > Builder(generationPackage="model")
 	Imports
 		Test("junit", "junit", "4.13")
 		Compile("io.intino.alexandria", "core-framework", "2.2.0")

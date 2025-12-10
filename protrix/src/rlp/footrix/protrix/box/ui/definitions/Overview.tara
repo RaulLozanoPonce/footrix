@@ -1,0 +1,73 @@
+dsl konos
+
+use Common
+use Theme
+
+Template(layout=Horizontal Flexible) overviewTemplate as Relative(height=100%, width=100%)
+	Block(layout=Vertical, format=rightSpaced rightBordered) as Absolute(width=500px)
+		TemplateStamp(template=matchesTemplate) matchesStamp
+	Block(layout=Vertical Flexible, format=leftSpaced rightSpaced) as Relative(width=50%)
+		Text(value="Noticias", format=h2 airBottom)
+	Block(layout=Vertical Flexible, format=leftSpaced leftBordered) as Relative(width=50%)
+		Text(value="Clasificación", format=h2 airBottom)
+		Table(itemClass="rlp.footrix.protrix.model.Classification", pageSize=20) classificationTable
+			noItemsMessage = "No existen partidos para esta competición"
+			noItemsFoundMessage = "No existen partidos para esta competición"
+			Mold
+				Heading classificationPositionHeading > Text(value = "Pos.", format=bold)
+				Item(height=20px, width=10%) classificationPositionMold > Text classificationPosition
+			Mold
+				Heading classificationTeamHeading > Text(value = "Equipo", format=bold)
+				Item(height=20px, width=30%) classificationTeamMold > Text classificationTeam
+			Mold
+				Heading classificationPlayedMatchesHeading > Text(value = "PJ", format=bold)
+				Item(height=20px, width=10%) classificationPlayedMatchesMold > Text classificationPlayedMatches
+			Mold
+				Heading classificationWinMatchesHeading > Text(value = "V", format=bold)
+				Item(height=20px, width=10%) classificationWinMatchesMold > Text classificationWinMatches
+			Mold
+				Heading classificationDrawMatchesHeading > Text(value = "E", format=bold)
+				Item(height=20px, width=10%) classificationDrawMatchesMold > Text classificationDrawMatches
+			Mold
+				Heading classificationLostMatchesHeading > Text(value = "D", format=bold)
+				Item(height=20px, width=10%) classificationLostMatchesMold > Text classificationLostMatches
+			Mold
+				Heading classificationGoalsDifferenceHeading > Text(value = "DG", format=bold)
+				Item(height=20px, width=10%) classificationGoalsDifferenceMold > Text classificationGoalsDifference
+			Mold
+				Heading classificationPointsHeading > Text(value = "Pts.", format=bold)
+				Item(height=20px, width=10%) classificationPointsMold > Text classificationPoints
+		Block(format=airTop) as Absolute(height=244px)
+			Text(value="Máximos Goleadores", format=h2 airBottom)
+			Table(itemClass="rlp.footrix.protrix.model.PlayerRecord", pageSize=5) topScorersTable
+				noItemsMessage = "No existen goleadores en esta competición"
+				noItemsFoundMessage = "No existen goleadores en esta competición"
+				Mold
+					Heading topScorersPositionHeading > Text(value = "Pos.", format=bold)
+					Item(height=25px, width=10%) topScorersPositionMold > Text topScorersPosition
+				Mold
+					Heading topScorersPlayerHeading > Text(value = "Jugador", format=bold)
+					Item(height=25px, width=70%) topScorersPlayerMold > Link(title="Cargando...", color="white") topScorersPlayer
+				Mold
+					Heading topScorersGoalsHeading > Text(value = "Goles", format=bold)
+					Item(height=25px, width=10%) topScorersGoalsMold > Text topScorersGoals
+				Mold
+					Heading topScorersPlayedMatchesHeading > Text(value = "PJ", format=bold)
+					Item(height=25px, width=10%) topScorersPlayedMatchesMold > Text topScorersPlayedMatches
+		Block(format=airTop) as Absolute(height=244px)
+			Text(value="Máximos Asistentes", format=h2 airBottom)
+			Table(itemClass="rlp.footrix.protrix.model.PlayerRecord", pageSize=5) topAssistersTable
+				noItemsMessage = "No existen asistentes en esta competición"
+				noItemsFoundMessage = "No existen asistentes en esta competición"
+				Mold
+					Heading topAssistersPositionHeading > Text(value = "Pos.", format=bold)
+					Item(height=25px, width=10%) topAssistersPositionMold > Text topAssistersPosition
+				Mold
+					Heading topAssistersPlayerHeading > Text(value = "Jugador", format=bold)
+					Item(height=25px, width=70%) topAssistersPlayerMold > Link(title="Cargando...", color="white") topAssistersPlayer
+				Mold
+					Heading topAssistersAssistsHeading > Text(value = "Asist.", format=bold)
+					Item(height=25px, width=10%) topAssistersAssistsMold > Text topAssistersAssists
+				Mold
+					Heading topAssistersPlayedMatchesHeading > Text(value = "PJ", format=bold)
+					Item(height=25px, width=10%) topAssistersPlayedMatchesMold > Text topAssistersPlayedMatches

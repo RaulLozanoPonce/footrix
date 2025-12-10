@@ -4,6 +4,7 @@ import rlp.footrix.framework.ai.ModelCloudAccessor;
 import rlp.footrix.framework.calculators.CacheCalculator;
 import rlp.footrix.framework.calculators.MoodCalculator;
 import rlp.footrix.framework.calculators.InjuryCalculator;
+import rlp.footrix.framework.calculators.RetireCalculator;
 import rlp.footrix.framework.configuration.TeamRule;
 import rlp.footrix.framework.events.EventHub;
 import rlp.footrix.framework.events.subscribers.InitPhaseSubscriber;
@@ -46,6 +47,7 @@ public class Application {
     private final CacheCalculator cacheCalculator;
     private final MoodCalculator moodCalculator;
     private final InjuryCalculator injuryCalculator;
+    private final RetireCalculator retireCalculator;
 
     public Application(FootrixConfiguration configuration) {
         this.configuration = configuration;
@@ -71,12 +73,13 @@ public class Application {
         this.cacheCalculator = new CacheCalculator(this);
         this.moodCalculator = new MoodCalculator(this);
         this.injuryCalculator = new InjuryCalculator(this);
+        this.retireCalculator = new RetireCalculator(this);
 
         //TODO SOLO CUANDO ESTÉ INICIALIZADO
         this.taskHub.add(configuration.initTasks(this));
         this.tableStore.setup(configuration.initDatabase(this).elos());
         configuration.initDatabase(this).competitions().forEach(c -> {
-            this.competitionManager.setup(c);
+            this.competitionManager.add(c);
             this.eloManager.addCompetition(c);
         });
         configuration.initDatabase(this).teams().forEach(this.teamManager::add);
@@ -189,5 +192,9 @@ public class Application {
 
     public InjuryCalculator injuryCalculator() {
         return injuryCalculator;
+    }
+
+    public RetireCalculator retireCalculator() {
+        return retireCalculator;
     }
 }

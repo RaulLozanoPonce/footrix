@@ -2,6 +2,7 @@ package rlp.footrix.framework.types.entities;
 
 import com.google.gson.JsonObject;
 import rlp.footrix.framework.types.entities.definitions.MatchDefinition;
+import rlp.footrix.framework.types.entities.player.Player;
 
 import java.time.Instant;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.Map;
 
 import static rlp.footrix.framework.types.entities.Match.MatchEvent.Type.Goal;
 
-public record Match(MatchDefinition definition, Instant date, Map<String, Map<String, Match.PlayerStatistics>> playerStatistics, List<MatchEvent> events, String mvp, int duration, Penalties penalties) {
+public record Match(MatchDefinition definition, Instant date, Map<Player, Integer[]> localLineup, Map<Player, Integer[]> visitantLineup, Map<String, Map<String, Match.PlayerStatistics>> playerStatistics, List<MatchEvent> events, int duration, Penalties penalties) {
 
     public String winner() {
         if (penalties != null) return penalties.winner();
@@ -18,6 +19,14 @@ public record Match(MatchDefinition definition, Instant date, Map<String, Map<St
         if (localGoals > visitantGoals) return definition.local();
         if (visitantGoals > localGoals) return definition.visitant();
         return null;
+    }
+
+    public int localGoals() {
+        return goalsForOf(definition.local());
+    }
+
+    public int visitantGoals() {
+        return goalsForOf(definition.visitant());
     }
 
     public boolean withPenalties() {

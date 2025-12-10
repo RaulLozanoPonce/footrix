@@ -32,6 +32,9 @@ public abstract class Player {
     private final Map<String, Integer> accumulatedYellowCards = new HashMap<>();
     private final Map<String, Integer> sanctionsMatches = new HashMap<>();
 
+    private boolean decidedToRetire = false;
+    private boolean retired = false;
+
     protected Player(PlayerDefinition definition, Position mainPosition, List<Position> secondaryPositions) {
         this.definition = definition;
         secondaryPositions.forEach(p -> this.mainPositions.put(p, 0.0));
@@ -131,4 +134,21 @@ public abstract class Player {
     }
 
     public abstract double overall(Position position);
+
+    public boolean isDecidedToRetire() {
+        return decidedToRetire;
+    }
+
+    public void decidedToRetire() {
+        this.decidedToRetire = true;
+    }
+
+    public boolean active() {
+        return !retired;
+    }
+
+    public void retire() {
+        retired = true;
+        //TODO QUITAR EL RESTO DE COSAS
+    }
 }

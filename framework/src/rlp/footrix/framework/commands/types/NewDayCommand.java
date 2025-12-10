@@ -2,6 +2,7 @@ package rlp.footrix.framework.commands.types;
 
 import rlp.footrix.framework.Application;
 import rlp.footrix.framework.commands.Command;
+import rlp.footrix.framework.types.entities.player.Player;
 
 import java.time.Instant;
 
@@ -15,11 +16,12 @@ public class NewDayCommand extends Command {
     @Override
     public void execute() {
         application.game().date(date);
-        application.playerManager().players().forEach(p -> {
-            if (p.isInjured() && !p.recoveryDate().isAfter(date)) p.recovery();
-            p.energy(0.17 * (1 - p.energy()));  //todo 0.33 de normal, pero hay que poner los entrenos
-            p.mood().individualPerformance(application.moodCalculator().deltaIndividualPerformanceInjuryMood(p));
-        });
+        for (Player player : application.playerManager().players()) {
+            if (player.isInjured() && !player.recoveryDate().isAfter(date)) player.recovery();
+            player.energy(0.17 * (1 - player.energy()));  //todo 0.33 de normal, pero hay que poner los entrenos
+            player.mood().individualPerformance(application.moodCalculator().deltaIndividualPerformanceInjuryMood(player));
+            if (application.retireCalculator().decidedToRetire(player)) player.decidedToRetire();
+        }
         application.taskHub().execute(date);
     }
 }

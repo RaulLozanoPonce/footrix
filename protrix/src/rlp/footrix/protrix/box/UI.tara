@@ -1,62 +1,45 @@
 dsl konos
 
+use Overview
+use Match
+use App
 use PlayerTrace
-use Classification
-use Matches
 use Theme
 
 Service protrixUi as UI(port = "{port}", title = "Protrix", favicon = "")
 	Resource("/") home as Page(appTemplate) Main
+	Resource("/matches/:matchId") match as Page(appTemplate)
+	Resource("/trace") trace as Page(traceTemplate)
 	Resource("/player-trace/:playerId") playerTrace as Page(playerTraceTemplate)
-	Resource("/classification/:competitionId/:season") classification as Page(classificationTemplate)
-	Resource("/matches/:competitionId/:matchDayId") matches as Page(matchesTemplate)
 
-Template(layout=Horizontal) appTemplate as Relative(height=100%, width=100%)
-	Block as Relative(width=15%)
-		Grouping(collections=playersTable, pageSize=20) teamGroup as Labeled("Equipo")
-		Grouping(collections=playersTable, pageSize=20) positionGroup as Labeled("Posicion")
-	Table(itemClass="rlp.footrix.protrix.model.ProtrixPlayer", pageSize=30, format=wh100) playersTable
-		noItemsMessage = "No existen jugadores"
-		noItemsFoundMessage = "Ningún jugador encontrado para los criterios establecidos"
-		Mold
-			Heading idHeading > Text(value = "Id")
-			Item(height=20px, width=5%) idMold > Number id
-		Mold
-			Heading nameHeading > Text(value = "Nombre")
-			Item(height=20px, width=20%) nameMold > Link(title = "nombre") name
-		Mold
-			Heading teamHeading > Text(value = "Equipo")
-			Item(height=20px, width=15%) teamMold > Text team
-		Mold
-			Heading roleHeading > Text(value = "Rol")
-			Item(height=20px, width=10%) roleMold > Text role
-		Mold
-			Heading overallHeading > Text(value = "Media")
-			Item(height=20px, width=5%) overallMold > Number overall
-		Mold
-			Heading positionHeading > Text(value = "Posicion")
-			Item(height=20px, width=5%) positionMold > Text position
-		Mold
-			Heading happinessContractHeading > Text(value = "Fel (Con.)")
-			Item(height=20px, width=5%) happinessContractMold > Number(countDecimals = 2) happinessContract
-		Mold
-			Heading happinessGameTimeHeading > Text(value = "Fel (TJu.)")
-			Item(height=20px, width=5%) happinessGameTimeMold > Number(countDecimals = 2) happinessGameTime
-		Mold
-			Heading happinessIndividualHeading > Text(value = "Fel (Ind.)")
-			Item(height=20px, width=5%) happinessIndividualMold > Number(countDecimals = 2) happinessIndividual
-		Mold
-			Heading happinessCollectiveHeading > Text(value = "Fel (Col.)")
-			Item(height=20px, width=5%) happinessCollectiveMold > Number(countDecimals = 2) happinessCollective
-		Mold
-			Heading minutesHeading > Text(value = "Min. (%)")
-			Item(height=20px, width=5%) minutesMold > Number(countDecimals = 2) minutes
-		Mold
-			Heading scoreHeading > Text(value = "Punt.")
-			Item(height=20px, width=5%) scoreMold > Number(countDecimals = 2) score
-		Mold
-			Heading cacheIniHeading > Text(value = "Cache Ini (%)")
-			Item(height=20px, width=5%) cacheIniMold > Number(countDecimals = 2) cacheIni
-		Mold
-			Heading cacheHeading > Text(value = "Cache (%)")
-			Item(height=20px, width=5%) cacheMold > Number(countDecimals = 2) cache
+Template(layout=Horizontal Flexible) appTemplate as Relative(height=100%, width=100%)
+	Block(layout=Vertical Flexible)
+		Header(elevation=0, format=spaced secondaryBottomBordered scarletBackground) as Absolute(height=80px)
+			TemplateStamp(template=headerTemplate) header
+
+		Block(layout=Horizontal Flexible, format=h100)
+			Block(format=h100 scarletBackground) as Absolute(width=200px)
+				Selector menu as ListBox
+					Block(layout=Horizontal) overviewOpt as Option
+						MaterialIcon(icon="Home", format=middleAirRight centeredVertically, color="white")
+						Text(value="Inicio", format=h4 centeredVertically, color="white")
+			Block(layout=Vertical Flexible, format=spaced) as Relative(width=100%)
+				Block(layout=Vertical Flexible CenterCenter) loading > Spinner(format=secondary)
+
+				Block(layout=Vertical Flexible CenterCenter, visible=false) updateRequiredPage
+					Text(value="Hay una actualización pendiente. No se puede acceder en estos momentos. Inténtelo más tarde.", format=h4)
+					Link(title="Intentar de nuevo", format=airTop) reloadPage as Action
+
+				Block(layout=Vertical Flexible) overviewPage as Conditional > TemplateStamp(template=overviewTemplate) overviewStamp
+				Block(layout=Vertical Flexible) matchPage as Conditional > TemplateStamp(template=matchTemplate) matchStamp
+
+Template(layout=Horizontal Flexible) headerTemplate
+	Block(layout=Horizontal Flexible Center)
+		Block(layout=Vertical CenterCenter, format=relative) as Absolute(height=45px, width=48px)
+			//Link(title="", format=homeButton) homeButton as Action
+			//Block(layout=Horizontal CenterCenter) as Relative(height=100%, width=100%)
+				//Image(defaultValue="images/logo.png", format=fullHeight)
+
+		Text(value="Protrix: Las meta-ligas de fútbol", format=h3 bold airLeft)
+	Block(layout=Horizontal EndJustified Center)
+		Text(value="Cargando...") date
