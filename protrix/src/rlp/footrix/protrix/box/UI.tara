@@ -4,6 +4,7 @@ use Overview
 use Match
 use App
 use PlayerTrace
+use PlayerMatchTrace
 use Theme
 
 Service protrixUi as UI(port = "{port}", title = "Protrix", favicon = "")
@@ -11,6 +12,7 @@ Service protrixUi as UI(port = "{port}", title = "Protrix", favicon = "")
 	Resource("/matches/:matchId") match as Page(appTemplate)
 	Resource("/trace") trace as Page(traceTemplate)
 	Resource("/player-trace/:playerId") playerTrace as Page(playerTraceTemplate)
+	Resource("/minute-player-trace/:playerId") playerMatchTrace as Page(playerMatchTraceTemplate)
 
 Template(layout=Horizontal Flexible) appTemplate as Relative(height=100%, width=100%)
 	Block(layout=Vertical Flexible)

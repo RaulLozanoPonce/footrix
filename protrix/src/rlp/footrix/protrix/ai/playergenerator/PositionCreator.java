@@ -3,12 +3,12 @@ package rlp.footrix.protrix.ai.playergenerator;
 import rlp.footrix.framework.types.entities.Country;
 import rlp.footrix.framework.types.entities.definitions.PlayerDefinition;
 import rlp.footrix.framework.types.entities.player.Position;
+import rlp.footrix.pes6.types.Countries;
+import rlp.footrix.pes6.types.Pes6Player;
+import rlp.footrix.pes6.types.player.Pes6Skills;
 import rlp.footrix.protrix.ai.playergenerator.country.EnglandCreator;
 import rlp.footrix.protrix.ai.playergenerator.country.ItalyCreator;
 import rlp.footrix.protrix.ai.playergenerator.country.SpainCreator;
-import rlp.footrix.protrix.types.Countries;
-import rlp.footrix.protrix.types.ProtrixPlayer;
-import rlp.footrix.protrix.types.player.ProtrixSkills;
 
 import java.time.Instant;
 import java.util.*;
@@ -37,10 +37,10 @@ public abstract class PositionCreator {
         this.std = std;
     }
 
-    public ProtrixPlayer generate(Instant now) {
+    public Pes6Player generate(Instant now) {
         PlayerDefinition definition = definition(now);
-        ProtrixPlayer player = new ProtrixPlayer(definition, position(), new ArrayList<>());
-        ProtrixSkills skills = new ProtrixSkills(player, attack(), defense(), balance(), stamina(), topSpeed(), acceleration(),
+        Pes6Player player = new Pes6Player(definition, position(), new ArrayList<>());
+        Pes6Skills skills = new Pes6Skills(player, attack(), defense(), balance(), stamina(), topSpeed(), acceleration(),
                 response(), agility(), dribbleAccuracy(), dribbleSpeed(), shortPassAccuracy(), shortPassSpeed(), longPassAccuracy(),
                 longPassSpeed(), shotAccuracy(), shotPower(), shotTechnique(), freeKickAccuracy(), swerve(), heading(),
                 jump(), technique(), aggression(), mentality(), goalKeeping(), teamWork());

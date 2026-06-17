@@ -1,0 +1,27 @@
+dsl konos
+
+use Theme
+
+Template playerMatchTraceTemplate as Relative(height=100%, width=100%)
+	Block(layout=Horizontal, spacing=DP32) as Relative(height=5%)
+		Text name as Labeled("Nombre:")
+		Number stamina as Labeled("Resistencia:")
+	Block as Relative(width=100%, height=95%)
+		Table(itemClass="rlp.footrix.framework.types.records.PlayerMinuteRecord", pageSize=90, format=wh100) minuteTraceTable
+			noItemsMessage = "Este jugador no ha jugado partidos"
+			noItemsFoundMessage = "Este jugador no ha jugado partidos con los criterios establecidos"
+			Mold
+				Heading matchTraceHeading > Text(value = "Partido")
+				Item(height=20px, width=20%) matchTraceMinuteMold > Text matchTrace
+			Mold
+				Heading dateTraceHeading > Text(value = "Fecha")
+				Item(height=20px, width=5%) dateTraceMinuteMold > Date dateTrace
+			Mold
+				Heading minuteTraceHeading > Text(value = "Minuto")
+				Item(height=20px, width=5%) minuteTraceMinuteMold > Text minuteTrace
+			Mold
+				Heading staminaTraceHeading > Text(value = "Stamina")
+				Item(height=20px, width=7%) staminaTraceMinuteMold > Number(countDecimals=2) staminaTrace
+			Mold
+				Heading energyTraceHeading > Text(value = "Energía")
+				Item(height=20px, width=7%) energyTraceMinuteMold > Number(countDecimals=2) energyTrace

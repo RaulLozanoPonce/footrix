@@ -1,43 +1,44 @@
 package algorithms;
 
 import rlp.footrix.framework.types.entities.player.Position;
+import rlp.footrix.pes6.types.player.Pes6Skills;
 import rlp.footrix.protrix.ai.playergenerator.position.*;
-import rlp.footrix.protrix.types.ProtrixPlayer;
+import rlp.footrix.pes6.types.Pes6Player;
 
 import java.time.Instant;
 
-import static rlp.footrix.protrix.helper.OverallCalculator.Factors;
+import static rlp.footrix.pes6.calculators.OverallCalculator.Factors;
 
 public class PlayerTraining {
 
-    public static void train(ProtrixPlayer player, int age, double trainScore) {
+    public static void train(Pes6Player player, int age, double trainScore) {
         System.out.println(age + ": " + player.overall());
-        player.attack(minMax(player.attack() + ageEvolutionOf(0, age) + trainEvolutionOf(0, trainScore, player.mainPosition())));
-        player.defense(minMax(player.defense() + ageEvolutionOf(1, age) + trainEvolutionOf(1, trainScore, player.mainPosition())));
-        player.balance(minMax(player.balance() + ageEvolutionOf(2, age) + trainEvolutionOf(2, trainScore, player.mainPosition())));
-        player.stamina(minMax(player.stamina() + ageEvolutionOf(3, age) + trainEvolutionOf(3, trainScore, player.mainPosition())));
-        player.speed(minMax(player.speed() + ageEvolutionOf(4, age) + trainEvolutionOf(4, trainScore, player.mainPosition())));
-        player.acceleration(minMax(player.acceleration() + ageEvolutionOf(5, age) + trainEvolutionOf(5, trainScore, player.mainPosition())));
-        player.response(minMax(player.response() + ageEvolutionOf(6, age) + trainEvolutionOf(6, trainScore, player.mainPosition())));
-        player.agility(minMax(player.agility() + ageEvolutionOf(7, age) + trainEvolutionOf(7, trainScore, player.mainPosition())));
-        player.dribbleAccuracy(minMax(player.dribbleAccuracy() + ageEvolutionOf(8, age) + trainEvolutionOf(8, trainScore, player.mainPosition())));
-        player.dribbleSpeed(minMax(player.dribbleSpeed() + ageEvolutionOf(9, age) + trainEvolutionOf(9, trainScore, player.mainPosition())));
-        player.shortPassAccuracy(minMax(player.shortPassAccuracy() + ageEvolutionOf(10, age) + trainEvolutionOf(10, trainScore, player.mainPosition())));
-        player.shortPassSpeed(minMax(player.shortPassSpeed() + ageEvolutionOf(11, age) + trainEvolutionOf(11, trainScore, player.mainPosition())));
-        player.longPassAccuracy(minMax(player.longPassAccuracy() + ageEvolutionOf(12, age) + trainEvolutionOf(12, trainScore, player.mainPosition())));
-        player.longPassSpeed(minMax(player.longPassSpeed() + ageEvolutionOf(13, age) + trainEvolutionOf(13, trainScore, player.mainPosition())));
-        player.shotAccuracy(minMax(player.shotAccuracy() + ageEvolutionOf(14, age) + trainEvolutionOf(14, trainScore, player.mainPosition())));
-        player.shotTechnique(minMax(player.shotTechnique() + ageEvolutionOf(15, age) + trainEvolutionOf(15, trainScore, player.mainPosition())));
-        player.freeKickAccuracy(minMax(player.freeKickAccuracy() + ageEvolutionOf(16, age) + trainEvolutionOf(16, trainScore, player.mainPosition())));
-        player.swerve(minMax(player.swerve() + ageEvolutionOf(17, age) + trainEvolutionOf(17, trainScore, player.mainPosition())));
-        player.heading(minMax(player.heading() + ageEvolutionOf(18, age) + trainEvolutionOf(18, trainScore, player.mainPosition())));
-        player.jump(minMax(player.jump() + ageEvolutionOf(19, age) + trainEvolutionOf(19, trainScore, player.mainPosition())));
-        player.technique(minMax(player.technique() + ageEvolutionOf(20, age) + trainEvolutionOf(20, trainScore, player.mainPosition())));
-        player.aggression(minMax(player.aggression() + ageEvolutionOf(21, age) + trainEvolutionOf(21, trainScore, player.mainPosition())));
-        player.mentality(minMax(player.mentality() + ageEvolutionOf(22, age) + trainEvolutionOf(22, trainScore, player.mainPosition())));
-        player.gkSkills(minMax(player.gkSkills() + ageEvolutionOf(23, age) + trainEvolutionOf(23, trainScore, player.mainPosition())));
-        player.teamWork(minMax(player.teamWork() + ageEvolutionOf(24, age) + trainEvolutionOf(24, trainScore, player.mainPosition())));
-        player.shotPower(minMax(player.shotPower() + ageEvolutionOf(25, age) + trainEvolutionOf(25, trainScore, player.mainPosition())));
+        ((Pes6Skills) player.skills()).attack(minMax(((Pes6Skills) player.skills()).attack() + ageEvolutionOf(0, age) + trainEvolutionOf(0, trainScore, player.mainPosition())));
+        ((Pes6Skills) player.skills()).defense(minMax(((Pes6Skills) player.skills()).defense() + ageEvolutionOf(1, age) + trainEvolutionOf(1, trainScore, player.mainPosition())));
+        ((Pes6Skills) player.skills()).balance(minMax(((Pes6Skills) player.skills()).balance() + ageEvolutionOf(2, age) + trainEvolutionOf(2, trainScore, player.mainPosition())));
+        ((Pes6Skills) player.skills()).stamina(minMax(((Pes6Skills) player.skills()).stamina() + ageEvolutionOf(3, age) + trainEvolutionOf(3, trainScore, player.mainPosition())));
+        ((Pes6Skills) player.skills()).speed(minMax(((Pes6Skills) player.skills()).speed() + ageEvolutionOf(4, age) + trainEvolutionOf(4, trainScore, player.mainPosition())));
+        ((Pes6Skills) player.skills()).acceleration(minMax(((Pes6Skills) player.skills()).acceleration() + ageEvolutionOf(5, age) + trainEvolutionOf(5, trainScore, player.mainPosition())));
+        ((Pes6Skills) player.skills()).response(minMax(((Pes6Skills) player.skills()).response() + ageEvolutionOf(6, age) + trainEvolutionOf(6, trainScore, player.mainPosition())));
+        ((Pes6Skills) player.skills()).agility(minMax(((Pes6Skills) player.skills()).agility() + ageEvolutionOf(7, age) + trainEvolutionOf(7, trainScore, player.mainPosition())));
+        ((Pes6Skills) player.skills()).dribbleAccuracy(minMax(((Pes6Skills) player.skills()).dribbleAccuracy() + ageEvolutionOf(8, age) + trainEvolutionOf(8, trainScore, player.mainPosition())));
+        ((Pes6Skills) player.skills()).dribbleSpeed(minMax(((Pes6Skills) player.skills()).dribbleSpeed() + ageEvolutionOf(9, age) + trainEvolutionOf(9, trainScore, player.mainPosition())));
+        ((Pes6Skills) player.skills()).shortPassAccuracy(minMax(((Pes6Skills) player.skills()).shortPassAccuracy() + ageEvolutionOf(10, age) + trainEvolutionOf(10, trainScore, player.mainPosition())));
+        ((Pes6Skills) player.skills()).shortPassSpeed(minMax(((Pes6Skills) player.skills()).shortPassSpeed() + ageEvolutionOf(11, age) + trainEvolutionOf(11, trainScore, player.mainPosition())));
+        ((Pes6Skills) player.skills()).longPassAccuracy(minMax(((Pes6Skills) player.skills()).longPassAccuracy() + ageEvolutionOf(12, age) + trainEvolutionOf(12, trainScore, player.mainPosition())));
+        ((Pes6Skills) player.skills()).longPassSpeed(minMax(((Pes6Skills) player.skills()).longPassSpeed() + ageEvolutionOf(13, age) + trainEvolutionOf(13, trainScore, player.mainPosition())));
+        ((Pes6Skills) player.skills()).shotAccuracy(minMax(((Pes6Skills) player.skills()).shotAccuracy() + ageEvolutionOf(14, age) + trainEvolutionOf(14, trainScore, player.mainPosition())));
+        ((Pes6Skills) player.skills()).shotTechnique(minMax(((Pes6Skills) player.skills()).shotTechnique() + ageEvolutionOf(15, age) + trainEvolutionOf(15, trainScore, player.mainPosition())));
+        ((Pes6Skills) player.skills()).freeKickAccuracy(minMax(((Pes6Skills) player.skills()).freeKickAccuracy() + ageEvolutionOf(16, age) + trainEvolutionOf(16, trainScore, player.mainPosition())));
+        ((Pes6Skills) player.skills()).swerve(minMax(((Pes6Skills) player.skills()).swerve() + ageEvolutionOf(17, age) + trainEvolutionOf(17, trainScore, player.mainPosition())));
+        ((Pes6Skills) player.skills()).heading(minMax(((Pes6Skills) player.skills()).heading() + ageEvolutionOf(18, age) + trainEvolutionOf(18, trainScore, player.mainPosition())));
+        ((Pes6Skills) player.skills()).jump(minMax(((Pes6Skills) player.skills()).jump() + ageEvolutionOf(19, age) + trainEvolutionOf(19, trainScore, player.mainPosition())));
+        ((Pes6Skills) player.skills()).technique(minMax(((Pes6Skills) player.skills()).technique() + ageEvolutionOf(20, age) + trainEvolutionOf(20, trainScore, player.mainPosition())));
+        ((Pes6Skills) player.skills()).aggression(minMax(((Pes6Skills) player.skills()).aggression() + ageEvolutionOf(21, age) + trainEvolutionOf(21, trainScore, player.mainPosition())));
+        ((Pes6Skills) player.skills()).mentality(minMax(((Pes6Skills) player.skills()).mentality() + ageEvolutionOf(22, age) + trainEvolutionOf(22, trainScore, player.mainPosition())));
+        ((Pes6Skills) player.skills()).gkSkills(minMax(((Pes6Skills) player.skills()).gkSkills() + ageEvolutionOf(23, age) + trainEvolutionOf(23, trainScore, player.mainPosition())));
+        ((Pes6Skills) player.skills()).teamWork(minMax(((Pes6Skills) player.skills()).teamWork() + ageEvolutionOf(24, age) + trainEvolutionOf(24, trainScore, player.mainPosition())));
+        ((Pes6Skills) player.skills()).shotPower(minMax(((Pes6Skills) player.skills()).shotPower() + ageEvolutionOf(25, age) + trainEvolutionOf(25, trainScore, player.mainPosition())));
     }
 
     private static double minMax(double value) {
@@ -80,7 +81,7 @@ public class PlayerTraining {
     }
 
     public static void main(String[] args) {
-        ProtrixPlayer player = new PtCreator(72, 0).generate(Instant.now());
+        Pes6Player player = new PtCreator(72, 0).generate(Instant.now());
         for (int i = 16; i < 46; i++) {
             train(player, i, 10);
         }

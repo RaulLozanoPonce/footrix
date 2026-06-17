@@ -5,7 +5,6 @@ import rlp.footrix.framework.FootrixConfiguration;
 import rlp.footrix.framework.ai.MatchSimulator;
 import rlp.footrix.framework.ai.ModelCloudAccessor;
 import rlp.footrix.framework.ai.PlayerGenerator;
-import rlp.footrix.framework.ai.Trainer;
 import rlp.footrix.framework.configuration.DataBase;
 import rlp.footrix.framework.stores.EntityStore;
 import rlp.footrix.framework.stores.RecordStore;
@@ -13,21 +12,18 @@ import rlp.footrix.framework.stores.TableStore;
 import rlp.footrix.framework.stores.types.MemoryEntityStore;
 import rlp.footrix.framework.stores.types.MemoryRecordStore;
 import rlp.footrix.framework.stores.types.MemoryTableStore;
-import rlp.footrix.framework.tasks.Task;
 import rlp.footrix.framework.types.entities.definitions.CompetitionDefinition;
 import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.framework.types.entities.team.Team;
 import rlp.footrix.framework.types.entities.team_player.PlayerContract;
 import rlp.footrix.framework.types.tables.TeamElo;
-import rlp.footrix.protrix.ai.trainer.ProtrixTrainer;
-import rlp.footrix.protrix.events.InitGame;
+import rlp.footrix.protrix.ai.matchsimulator.ProtrixMatchSimulator;
 import rlp.footrix.protrix.ai.playergenerator.ProtrixPlayerGenerator;
+import rlp.footrix.protrix.competitions.SpainFirstDivisionDefinition;
+import rlp.footrix.protrix.helper.ContractHelper;
 import rlp.footrix.protrix.loader.PlayerLoader;
 import rlp.footrix.protrix.loader.TeamEloLoader;
 import rlp.footrix.protrix.loader.TeamLoader;
-import rlp.footrix.protrix.types.competitions.SpainFirstDivisionDefinition;
-import rlp.footrix.protrix.helper.ContractHelper;
-import rlp.footrix.protrix.ai.matchsimulator.ProtrixMatchSimulator;
 
 import java.time.Instant;
 import java.util.List;
@@ -80,26 +76,16 @@ public class ProtrixAppConfiguration implements FootrixConfiguration.SimpleFootr
     }
 
     @Override
-    public List<Task> initTasks(Application application) {
-        return List.of(new InitGame(Instant.parse("2024-08-01T00:00:00Z"), application));
-    }
-
-    @Override
-    public ModelCloudAccessor models() {
+    public ModelCloudAccessor models(Application application) {
         return new ModelCloudAccessor() {
             @Override
             public MatchSimulator matchSimulator() {
-                return new ProtrixMatchSimulator();
+                return new ProtrixMatchSimulator(application);
             }
 
             @Override
             public PlayerGenerator playerGenerator() {
                 return new ProtrixPlayerGenerator();
-            }
-
-            @Override
-            public Trainer trainer() {
-                return new ProtrixTrainer();
             }
         };
     }

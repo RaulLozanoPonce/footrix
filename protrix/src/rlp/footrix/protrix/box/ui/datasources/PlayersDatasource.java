@@ -7,8 +7,8 @@ import io.intino.alexandria.ui.model.datasource.filters.GroupFilter;
 import rlp.footrix.framework.types.entities.team.Team;
 import rlp.footrix.framework.types.entities.team_player.PlayerContract;
 import rlp.footrix.protrix.box.ProtrixBox;
-import rlp.footrix.protrix.types.Positions;
-import rlp.footrix.protrix.types.ProtrixPlayer;
+import rlp.footrix.pes6.types.Positions;
+import rlp.footrix.pes6.types.Pes6Player;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -16,7 +16,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PlayersDatasource extends PageDatasource<ProtrixPlayer> {
+public class PlayersDatasource extends PageDatasource<Pes6Player> {
 
     public static final String TeamGroup = "Equipo";
     public static final String RoleGroup = "Rol";
@@ -30,8 +30,8 @@ public class PlayersDatasource extends PageDatasource<ProtrixPlayer> {
     }
 
     @Override
-    public List<ProtrixPlayer> items(int start, int count, String condition, List<Filter> filters, List<String> sorting) {
-        List<ProtrixPlayer> events = filterAndSort(box.application().playerManager().players().stream().map(p -> (ProtrixPlayer) p).toList(), filters);
+    public List<Pes6Player> items(int start, int count, String condition, List<Filter> filters, List<String> sorting) {
+        List<Pes6Player> events = filterAndSort(box.application().playerManager().players().stream().map(p -> (Pes6Player) p).toList(), filters);
         if (start > events.size()) return Collections.emptyList();
         int end = Math.min(start + count, events.size());
         return events.subList(start, end);
@@ -40,7 +40,7 @@ public class PlayersDatasource extends PageDatasource<ProtrixPlayer> {
 
     @Override
     public long itemCount(String condition, List<Filter> filters) {
-        return filterAndSort(box.application().playerManager().players().stream().map(p -> (ProtrixPlayer) p).toList(), filters).size();
+        return filterAndSort(box.application().playerManager().players().stream().map(p -> (Pes6Player) p).toList(), filters).size();
     }
 
     @Override
@@ -56,13 +56,13 @@ public class PlayersDatasource extends PageDatasource<ProtrixPlayer> {
         return Collections.emptyList();
     }
 
-    private List<ProtrixPlayer> filterAndSort(List<ProtrixPlayer> players, List<Filter> filters) {
-        List<ProtrixPlayer> result = players.stream().filter(player -> filterPlayer(player, filters)).collect(Collectors.toList());
+    private List<Pes6Player> filterAndSort(List<Pes6Player> players, List<Filter> filters) {
+        List<Pes6Player> result = players.stream().filter(player -> filterPlayer(player, filters)).collect(Collectors.toList());
         sort(result);
         return result;
     }
 
-    private boolean filterPlayer(ProtrixPlayer player, List<Filter> filters) {
+    private boolean filterPlayer(Pes6Player player, List<Filter> filters) {
         Team team = player.team();
         if (team == null) return false;
         String teamName = team.definition().name();
@@ -79,12 +79,12 @@ public class PlayersDatasource extends PageDatasource<ProtrixPlayer> {
         return true;
     }
 
-    private String retired(ProtrixPlayer player) {
+    private String retired(Pes6Player player) {
         if (player.active()) return "false";
         return "true";
     }
 
-    private void sort(List<ProtrixPlayer> result) {
+    private void sort(List<Pes6Player> result) {
         result.sort(Comparator.comparing(p -> p.mood().gameTime()));
     }
 }

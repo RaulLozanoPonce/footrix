@@ -8,7 +8,7 @@ Template(layout=Horizontal) traceTemplate as Relative(height=100%, width=100%)
 		Grouping(collections=playersTable, pageSize=20) roleGroup as Labeled("Rol")
 		Grouping(collections=playersTable, pageSize=20) retiredGroup as Labeled("Retirado")
 		Grouping(collections=playersTable, pageSize=20) positionGroup as Labeled("Posicion")
-	Table(itemClass="rlp.footrix.protrix.types.ProtrixPlayer", pageSize=30, format=wh100) playersTable
+	Table(itemClass="rlp.footrix.pes6.types.Pes6Player", pageSize=30, format=wh100) playersTable
 		noItemsMessage = "No existen jugadores"
 		noItemsFoundMessage = "Ningún jugador encontrado para los criterios establecidos"
 		Mold

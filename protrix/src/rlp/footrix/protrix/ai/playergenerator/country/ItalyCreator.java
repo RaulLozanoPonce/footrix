@@ -1,6 +1,6 @@
 package rlp.footrix.protrix.ai.playergenerator.country;
 
-import rlp.footrix.protrix.types.Countries;
+import rlp.footrix.pes6.types.Countries;
 import rlp.footrix.protrix.ai.playergenerator.CountryCreator;
 
 public class ItalyCreator extends CountryCreator {

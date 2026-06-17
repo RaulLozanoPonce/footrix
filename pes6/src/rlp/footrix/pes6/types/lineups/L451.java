@@ -1,0 +1,24 @@
+package rlp.footrix.pes6.types.lineups;
+
+import rlp.footrix.framework.types.entities.player.Position;
+import rlp.footrix.framework.types.entities.team.Lineup;
+
+import static rlp.footrix.pes6.types.Positions.*;
+
+public class L451 extends Lineup {
+
+    private static Position[][] distribution = new Position[][] {
+            {null, null, PT, null, null},
+            {CAR, CT, null, CT, CAR},
+            {null, null, CCD, null, null},
+            {null, CC, null, CC, null},
+            {VOL, null, null, null, VOL},
+            {null, null, null, null, null},
+            {null, null, DL, null, null},
+            {null, null, null, null, null}
+    };
+
+    public L451() {
+        super("4_5_1", distribution);
+    }
+}

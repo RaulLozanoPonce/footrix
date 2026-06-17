@@ -2,14 +2,21 @@ package rlp.footrix.framework.stores.types;
 
 import rlp.footrix.framework.stores.RecordStore;
 import rlp.footrix.framework.types.records.PlayerMatchRecord;
+import rlp.footrix.framework.types.records.PlayerMinuteRecord;
 import rlp.footrix.framework.types.records.TeamMatchRecord;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MemoryRecordStore implements RecordStore {
+    private final List<PlayerMinuteRecord> playerMinuteRecords = new ArrayList<>();
     private final List<PlayerMatchRecord> playerMatchRecords = new ArrayList<>();
     private final List<TeamMatchRecord> teamMatchRecord = new ArrayList<>();
+
+    @Override
+    public List<PlayerMinuteRecord> playerMinuteRecords() {
+        return playerMinuteRecords;
+    }
 
     @Override
     public List<PlayerMatchRecord> playerMatchRecords() {

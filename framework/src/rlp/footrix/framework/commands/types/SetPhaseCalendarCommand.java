@@ -44,7 +44,7 @@ public class SetPhaseCalendarCommand extends Command {
             String matchDayName = phase.definition().matchDayName(i);
             Instant finalDate = phase.definition().nextDate(i, date);
             matchDays.get(i).stream().map(m -> matchOf(m, groupId, matchDayName))
-                    .forEach(m -> application.taskHub().add(finalDate, new ScheduledMatchEvent().definition(m)));
+                    .forEach(m -> application.taskHub().add(finalDate, new ScheduledMatchEvent().date(finalDate).definition(m)));
             date = finalDate;
         }
     }

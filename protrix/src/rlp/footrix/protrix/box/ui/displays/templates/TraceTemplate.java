@@ -6,7 +6,7 @@ import rlp.footrix.framework.types.records.PlayerMatchRecord;
 import rlp.footrix.protrix.box.ProtrixBox;
 import rlp.footrix.protrix.box.ui.datasources.PlayersDatasource;
 import rlp.footrix.protrix.box.ui.displays.rows.PlayersTableRow;
-import rlp.footrix.protrix.types.ProtrixPlayer;
+import rlp.footrix.pes6.types.Pes6Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class TraceTemplate extends AbstractTraceTemplate<ProtrixBox> {
     }
 
     private void renderTableItem(AddCollectionItemEvent event) {
-        ProtrixPlayer player = event.item();
+        Pes6Player player = event.item();
         PlayersTableRow row = event.component();
         Team team = player.team();
         List<PlayerMatchRecord> records = team == null ? new ArrayList<>() : box().application().recordStore().playerMatchRecords(player.definition().id(), team.definition().id(), "ESP-1", 0);

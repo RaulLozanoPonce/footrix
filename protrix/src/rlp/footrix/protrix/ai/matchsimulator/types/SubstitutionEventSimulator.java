@@ -6,9 +6,10 @@ import rlp.footrix.framework.types.entities.definitions.MatchDefinition;
 import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.framework.types.entities.player.Position;
 import rlp.footrix.framework.types.entities.team.PlayersLineup;
+import rlp.footrix.pes6.types.Pes6Player;
 import rlp.footrix.protrix.ai.matchsimulator.MatchState;
 import rlp.footrix.protrix.ai.matchsimulator.weights.PlayerValue;
-import rlp.footrix.protrix.types.Positions;
+import rlp.footrix.pes6.types.Positions;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -37,9 +38,9 @@ public class SubstitutionEventSimulator extends EventSimulator {
         if (minute < 45) return new ArrayList<>();
         if (Math.random() > BaseSubChance) return new ArrayList<>();
         if (Math.random() < 0.5) {
-            return substitutions(local(), tacticPlayersToSubstitute(local()), minute);
+            return substitutions(local(), tacticPlayersToSubstitute(local(), minute), minute);
         } else {
-            return substitutions(visitant(), tacticPlayersToSubstitute(visitant()), minute);
+            return substitutions(visitant(), tacticPlayersToSubstitute(visitant(), minute), minute);
         }
     }
 
@@ -59,10 +60,10 @@ public class SubstitutionEventSimulator extends EventSimulator {
                 .collect(Collectors.toSet());
     }
 
-    private Set<String> tacticPlayersToSubstitute(String team) {
+    private Set<String> tacticPlayersToSubstitute(String team, int minute) {
         int remainingSubstitutions = state.lineup(team).remainingSubstitutions(5);  //TODO PARAMETRIZAR
         if (remainingSubstitutions <= 0) return new HashSet<>();
-        List<String> replaceablePlayers = replaceablePlayers(team, irreplaceablePlayers(team));
+        List<String> replaceablePlayers = replaceablePlayers(team, irreplaceablePlayers(team), minute);
         if (replaceablePlayers.isEmpty()) return new HashSet<>();
         return replaceablePlayers.stream()
                 .limit(min(remainingSubstitutions, 3, replaceablePlayers.size()))
@@ -73,18 +74,13 @@ public class SubstitutionEventSimulator extends EventSimulator {
         return Math.min(remainingSubstitutions, Math.min(maxSubstitutionsByWindow, replaceablePlayers));
     }
 
-    private List<String> replaceablePlayers(String team, Set<String> irreplaceablePlayers) {
-        //TODO TENER EN CUENTA LA PUNTUACION ACTUAL DEL PARTIDO
+    private List<String> replaceablePlayers(String team, Set<String> irreplaceablePlayers, int minute) {
         return state.lineup(team).fieldPlayers().stream()
                 .filter(p -> !irreplaceablePlayers.contains(p.definition().id()))
-                .filter(p -> energy(p) < 0.25)
+                .filter(p -> performance((Pes6Player) p, minute) < 0.6)
                 .sorted((p1, p2) -> Double.compare(scoreOfMatch(p1, state.lineup(team).positionOf(p1.definition().id()), energy(p1)), scoreOfMatch(p2, state.lineup(team).positionOf(p2.definition().id()), energy(p2))))
                 .map(p -> p.definition().id())
                 .toList();
-    }
-
-    private double energy(Player player) {
-        return player.energy() - state.fatigue(player.definition().id());
     }
 
     private Set<String> irreplaceablePlayers(String team) {
@@ -121,5 +117,19 @@ public class SubstitutionEventSimulator extends EventSimulator {
             if (p1.cache().relativeCache(position) > p2.cache().relativeCache(position)) return p1;
             return p2;
         }).orElse(null);
+    }
+
+    private double performance(Pes6Player player, int minute) {
+        double energyPerformance = 1;
+        if (energy(player) < 0.1) energyPerformance = 0;
+        else if (energy(player) < 0.25) energyPerformance = (energy(player) - 0.1) / 0.15;
+        double scorePerformance = 1;
+        if (playerValue.score(player, minute) < 5) scorePerformance = 0;
+        else if (playerValue.score(player, minute) < 5.5) scorePerformance = (playerValue.score(player, minute) - 5) / 0.5;
+        return 0.5 * energyPerformance + 0.5 * scorePerformance;
+    }
+
+    private double energy(Player player) {
+        return Math.max(0, player.energy() - state.fatigue(player.definition().id()));
     }
 }

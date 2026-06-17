@@ -2,7 +2,7 @@ package rlp.footrix.protrix.loader;
 
 import rlp.footrix.framework.types.entities.definitions.TeamDefinition;
 import rlp.footrix.framework.types.entities.team.Team;
-import rlp.footrix.protrix.types.ProtrixTeam;
+import rlp.footrix.pes6.types.Pes6Team;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,6 +32,6 @@ public class TeamLoader {
         String name = team[1];
         String lineupId = team[3];
         TeamDefinition definition = new TeamDefinition.Simple(id, name, team[2]);
-        return new ProtrixTeam(definition).lineup(lineupId);
+        return new Pes6Team(definition).lineup(lineupId);
     }
 }

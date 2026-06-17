@@ -3,10 +3,10 @@ package rlp.footrix.protrix.loader;
 import rlp.footrix.framework.types.entities.definitions.PlayerDefinition;
 import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.framework.types.entities.player.Position;
-import rlp.footrix.protrix.types.Positions;
-import rlp.footrix.protrix.types.ProtrixPlayer;
+import rlp.footrix.pes6.types.Pes6Player;
+import rlp.footrix.pes6.types.Positions;
+import rlp.footrix.pes6.types.player.Pes6Skills;
 import rlp.footrix.protrix.helper.InjuryHelper;
-import rlp.footrix.protrix.types.player.ProtrixSkills;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -35,8 +35,8 @@ public class PlayerLoader {
     }
 
     private static Player playerOf(String[] raw, Integer id) {
-        ProtrixPlayer player = new ProtrixPlayer(playerDefinitionOf(raw, id), positionOf(raw[6]), positionsOf(raw[7]));
-        ProtrixSkills skills = new ProtrixSkills(player, Integer.parseInt(raw[11]), Integer.parseInt(raw[12]), Integer.parseInt(raw[13]),
+        Pes6Player player = new Pes6Player(playerDefinitionOf(raw, id), positionOf(raw[6]), positionsOf(raw[7]));
+        Pes6Skills skills = new Pes6Skills(player, Integer.parseInt(raw[11]), Integer.parseInt(raw[12]), Integer.parseInt(raw[13]),
                 Integer.parseInt(raw[14]), Integer.parseInt(raw[15]), Integer.parseInt(raw[16]), Integer.parseInt(raw[17]),
                 Integer.parseInt(raw[18]), Integer.parseInt(raw[19]), Integer.parseInt(raw[20]), Integer.parseInt(raw[21]),
                 Integer.parseInt(raw[22]), Integer.parseInt(raw[23]), Integer.parseInt(raw[24]), Integer.parseInt(raw[25]),

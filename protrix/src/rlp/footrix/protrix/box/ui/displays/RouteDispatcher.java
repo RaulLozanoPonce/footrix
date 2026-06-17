@@ -2,6 +2,7 @@ package rlp.footrix.protrix.box.ui.displays;
 
 import io.intino.alexandria.ui.Soul;
 import rlp.footrix.protrix.box.ui.displays.templates.AppTemplate;
+import rlp.footrix.protrix.box.ui.displays.templates.PlayerMatchTraceTemplate;
 import rlp.footrix.protrix.box.ui.displays.templates.PlayerTraceTemplate;
 import rlp.footrix.protrix.box.ui.displays.templates.TraceTemplate;
 
@@ -25,5 +26,10 @@ public class RouteDispatcher extends AbstractRouteDispatcher {
     @Override
     public void dispatchPlayerTrace(Soul soul, String playerId) {
         soul.display(PlayerTraceTemplate.class).setPlayer(playerId);
+    }
+
+    @Override
+    public void dispatchPlayerMatchTrace(Soul soul, String playerId) {
+        soul.display(PlayerMatchTraceTemplate.class).setPlayer(playerId);
     }
 }

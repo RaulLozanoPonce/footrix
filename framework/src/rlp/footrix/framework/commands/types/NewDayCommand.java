@@ -31,7 +31,7 @@ public class NewDayCommand extends Command {
 
     private void makeTimePassTo(Player player) {
         if (player.isInjured() && !player.recoveryDate().isAfter(newDate)) player.recovery();
-        player.energy(recovery(player));
+        player.energy(application.energyCalculator().dayRecovery(player));
         player.mood().individualPerformance(application.moodCalculator().deltaIndividualPerformanceInjuryMood(player)); //TODO Se quitará para modificar el estado de ánimo
         player.skills().naturalProgress(application.getDate());
         if (application.retireCalculator().decidedToRetire(player)) player.decidedToRetire();
@@ -39,18 +39,12 @@ public class NewDayCommand extends Command {
 
     private void makeTimePassTo(Team team) {
         //TODO ESTOS SON ENTRENAMIENTOS BÁSICOS. SE DEBERÍA GENERAR CON LO QUE EL MANAGER PONGA EN SU EQUIPO
-        if (weekDayOf(newDate) != 1) return;
-        application.taskHub().add(newDate, new TrainEvent().teamId(team.definition().id()).minutes(120));
+        //TODO VARIAR LOS ENTRENAMIENTOS
+        if (weekDayOf(newDate) != 7) return;
         application.taskHub().add(nextInstant(newDate, Day), new TrainEvent().teamId(team.definition().id()).minutes(120));
         application.taskHub().add(nextInstant(newDate, Day, 2), new TrainEvent().teamId(team.definition().id()).minutes(120));
         application.taskHub().add(nextInstant(newDate, Day, 3), new TrainEvent().teamId(team.definition().id()).minutes(120));
         application.taskHub().add(nextInstant(newDate, Day, 4), new TrainEvent().teamId(team.definition().id()).minutes(120));
-    }
-
-    private double recovery(Player player) {
-        double factor = 1.0;
-        if (player.energy() < 0.15) factor = 0.6;
-        else if (player.energy() < 0.3) factor = 0.8;
-        return factor * (10 + (player.skills().stamina() / 10.0)) / 100.0;
+        application.taskHub().add(nextInstant(newDate, Day, 5), new TrainEvent().teamId(team.definition().id()).minutes(120));
     }
 }

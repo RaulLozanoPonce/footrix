@@ -3,22 +3,20 @@ package rlp.footrix.protrix.box.ui.displays.templates;
 import io.intino.alexandria.ui.displays.events.AddCollectionItemEvent;
 import rlp.footrix.framework.types.entities.team.Team;
 import rlp.footrix.framework.types.records.PlayerMatchRecord;
+import rlp.footrix.pes6.types.Pes6Player;
 import rlp.footrix.protrix.box.ProtrixBox;
 import rlp.footrix.protrix.box.ui.datasources.PlayerTraceDatasource;
 import rlp.footrix.protrix.box.ui.displays.rows.TraceTableRow;
-import rlp.footrix.protrix.types.ProtrixPlayer;
-import rlp.footrix.protrix.types.player.ProtrixSkills;
 
 public class PlayerTraceTemplate extends AbstractPlayerTraceTemplate<ProtrixBox> {
-
-	private ProtrixPlayer player;
+	private Pes6Player player;
 
 	public PlayerTraceTemplate(ProtrixBox box) {
 		super(box);
 	}
 
 	public PlayerTraceTemplate setPlayer(String playerId) {
-		this.player = (ProtrixPlayer) box().application().playerManager().get(playerId);
+		this.player = (Pes6Player) box().application().playerManager().get(playerId);
 		initHeader();
 		initTable();
 		return this;
@@ -30,7 +28,7 @@ public class PlayerTraceTemplate extends AbstractPlayerTraceTemplate<ProtrixBox>
 		team.value(playerTeam.definition().name());
 		position.value(player.mainPosition().id());
 		role.value(playerTeam.contractOf(player.definition().id()).role().name());
-		stamina.value(((ProtrixSkills) player.skills()).stamina());
+		stamina.value(player.skills().stamina());
 		injuryResistance.value(player.definition().injuryResistance().name());
 	}
 

@@ -2,8 +2,8 @@ package rlp.footrix.protrix.ai.playergenerator;
 
 import rlp.footrix.framework.ai.PlayerGenerator;
 import rlp.footrix.framework.types.entities.player.Position;
-import rlp.footrix.protrix.types.Positions;
-import rlp.footrix.protrix.types.ProtrixPlayer;
+import rlp.footrix.pes6.types.Positions;
+import rlp.footrix.pes6.types.Pes6Player;
 import rlp.footrix.protrix.ai.playergenerator.position.*;
 
 import java.time.Instant;
@@ -12,7 +12,7 @@ import java.util.List;
 public class ProtrixPlayerGenerator implements PlayerGenerator {
 
     @Override
-    public ProtrixPlayer generate(Instant now) {
+    public Pes6Player generate(Instant now) {
         Position mainPosition = position();
         if (mainPosition.equals(Positions.PT)) return new PtCreator(60, 10).generate(now);
         if (mainPosition.equals(Positions.CT)) return new CtCreator(60, 10).generate(now);

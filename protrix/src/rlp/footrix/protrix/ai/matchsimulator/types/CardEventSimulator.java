@@ -3,7 +3,7 @@ package rlp.footrix.protrix.ai.matchsimulator.types;
 import rlp.footrix.framework.types.entities.Match;
 import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.framework.types.entities.team.PlayersLineup;
-import rlp.footrix.protrix.types.ProtrixPlayer;
+import rlp.footrix.pes6.types.Pes6Player;
 import rlp.footrix.protrix.ai.matchsimulator.MatchState;
 import rlp.footrix.protrix.ai.matchsimulator.weights.PlayerValue;
 
@@ -49,7 +49,7 @@ public class CardEventSimulator extends EventSimulator {
         Map<Player, Double> weights = new HashMap<>();
 
         for (Player p : lineup.fieldPlayers()) {
-            ProtrixPlayer player = (ProtrixPlayer) p;
+            Pes6Player player = (Pes6Player) p;
             double weight = (playerValue.agression(player) * 0.5) + ((1 - playerValue.defense(player, lineup.positionOf(player.definition().id()))) * 0.3) + ((1.0 - playerValue.discipline(player)) * 0.7);
             if (weight < 0.01) weight = 0.01;
             weights.put(p, weight);

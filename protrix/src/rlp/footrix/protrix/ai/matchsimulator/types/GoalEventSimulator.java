@@ -4,7 +4,7 @@ import rlp.footrix.framework.types.entities.Match;
 import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.framework.types.entities.player.Position;
 import rlp.footrix.framework.types.entities.team.PlayersLineup;
-import rlp.footrix.protrix.types.ProtrixPlayer;
+import rlp.footrix.pes6.types.Pes6Player;
 import rlp.footrix.protrix.ai.matchsimulator.MatchState;
 import rlp.footrix.protrix.ai.matchsimulator.weights.PlayerValue;
 import rlp.footrix.protrix.ai.matchsimulator.weights.PositionWeight;
@@ -59,20 +59,20 @@ public class GoalEventSimulator extends EventSimulator {
 
     private double attackScore(PlayersLineup lineup) {
         double weightSum = lineup.fieldPlayers().stream().mapToDouble(p -> attackWeight(lineup.positionOf(p.definition().id()))).sum();
-        return lineup.fieldPlayers().stream().mapToDouble(p -> attackOf((ProtrixPlayer) p, lineup, weightSum)).sum();
+        return lineup.fieldPlayers().stream().mapToDouble(p -> attackOf((Pes6Player) p, lineup, weightSum)).sum();
     }
 
     private double defenseScore(PlayersLineup lineup) {
         double weightSum = lineup.fieldPlayers().stream().mapToDouble(p -> defenseWeight(lineup.positionOf(p.definition().id()))).sum();
-        return lineup.fieldPlayers().stream().mapToDouble(p -> defenseOf((ProtrixPlayer) p, lineup, weightSum)).sum();
+        return lineup.fieldPlayers().stream().mapToDouble(p -> defenseOf((Pes6Player) p, lineup, weightSum)).sum();
     }
 
-    private double attackOf(ProtrixPlayer player, PlayersLineup lineup, double weightSum) {
+    private double attackOf(Pes6Player player, PlayersLineup lineup, double weightSum) {
         Position position = lineup.positionOf(player.definition().id());
         return (attackWeight(position) / weightSum) * (player.skills().overall(position) / player.overall()) * pow(playerValue.attack(player) * 100, PowerUp)/100.0;
     }
 
-    private double defenseOf(ProtrixPlayer player, PlayersLineup lineup, double weightSum) {
+    private double defenseOf(Pes6Player player, PlayersLineup lineup, double weightSum) {
         Position position = lineup.positionOf(player.definition().id());
         return (defenseWeight(position) / weightSum) * (player.skills().overall(position) / player.overall()) * pow(playerValue.defense(player, position) * 100, PowerUp)/100.0;
     }
@@ -80,7 +80,7 @@ public class GoalEventSimulator extends EventSimulator {
     public String chooseGoalScorer(List<Player> players, PlayersLineup lineup) {
         List<Double> weights = new ArrayList<>();
         for (Player p : players) {
-            ProtrixPlayer player = (ProtrixPlayer) p;
+            Pes6Player player = (Pes6Player) p;
             double positionWeight = PositionWeight.goal(lineup.positionOf(player.definition().id()));
             double weight = playerValue.attack(player) * playerValue.form(player) * playerValue.energy(player) * positionWeight;
             weights.add(weight);
@@ -99,7 +99,7 @@ public class GoalEventSimulator extends EventSimulator {
 
         List<Double> weights = new ArrayList<>();
         for (Player p : candidates) {
-            ProtrixPlayer player = (ProtrixPlayer) p;
+            Pes6Player player = (Pes6Player) p;
             double weight = playerValue.pass(player) * playerValue.form(player) * playerValue.energy(player);
             weights.add(weight);
         }

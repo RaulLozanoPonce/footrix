@@ -1,10 +1,7 @@
 package rlp.footrix.framework;
 
 import rlp.footrix.framework.ai.ModelCloudAccessor;
-import rlp.footrix.framework.calculators.CacheCalculator;
-import rlp.footrix.framework.calculators.InjuryCalculator;
-import rlp.footrix.framework.calculators.MoodCalculator;
-import rlp.footrix.framework.calculators.RetireCalculator;
+import rlp.footrix.framework.calculators.*;
 import rlp.footrix.framework.configuration.TeamRule;
 import rlp.footrix.framework.events.Event;
 import rlp.footrix.framework.events.EventHub;
@@ -23,7 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-public class Application {
+public abstract class Application {
+    private final GamePlatform platform;
     private final FootrixConfiguration configuration;
     private final Game game;
 
@@ -48,15 +46,17 @@ public class Application {
     private final MoodCalculator moodCalculator;
     private final InjuryCalculator injuryCalculator;
     private final RetireCalculator retireCalculator;
+    private final EnergyCalculator energyCalculator;
 
-    public Application(FootrixConfiguration configuration) {
+    public Application(GamePlatform platform, FootrixConfiguration configuration) {
+        this.platform = platform;
         this.configuration = configuration;
 
         this.game = new Game().date(configuration.initDate()).initSeason(configuration.initSeason()).seasonProvider(configuration.seasonProvider());
         this.entityStore = configuration.entityStore();
         this.recordStore = configuration.recordStore();
         this.tableStore = configuration.tableStore();
-        this.models = configuration.models();
+        this.models = configuration.models(this);
 
         this.eventHub = new EventHub();
         this.taskHub = new TaskHub(eventHub);
@@ -73,9 +73,9 @@ public class Application {
         this.moodCalculator = new MoodCalculator(this);
         this.injuryCalculator = new InjuryCalculator(this);
         this.retireCalculator = new RetireCalculator(this);
+        this.energyCalculator = new EnergyCalculator(this);
 
-        //TODO SOLO CUANDO ESTÉ INICIALIZADO
-        this.taskHub.add(configuration.initTasks(this));
+        this.taskHub.add(configuration.initDate(), new InitGameEvent()); //TODO SOLO CUANDO ESTÉ INICIALIZADO
         this.tableStore.setup(configuration.initDatabase(this).elos());
         configuration.initDatabase(this).competitions().forEach(c -> {
             this.competitionManager.add(c);
@@ -195,7 +195,9 @@ public class Application {
         return retireCalculator;
     }
 
-    public Map<Instant, List<Event>> newSeasonTasks(boolean isNewGame) {
-        return Map.of();    //TODO
+    public EnergyCalculator energyCalculator() {
+        return energyCalculator;
     }
+
+    public abstract Map<Instant, List<Event>> newSeasonTasks(boolean isNewGame);
 }

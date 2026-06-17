@@ -91,10 +91,6 @@ public class MatchState {
         return positions.get(team).get(player);
     }
 
-
-
-
-
     public void addFatigue(String player, Double delta) {
         fatigue.putIfAbsent(player, 0.0);
         fatigue.put(player, Math.min(1, fatigue.get(player) + delta));

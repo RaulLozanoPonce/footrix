@@ -8,7 +8,7 @@ Artifact("rlp.footrix", "1.0.0-SNAPSHOT") protrix
 		Compile("io.intino.alexandria", "core-framework", "2.2.0")
 		Compile("io.intino.alexandria", "logger4j", "1.0.1")
 		Compile("io.intino.alexandria", "ui-framework", "5.4.4")
-		Compile("rlp.footrix", "framework", "1.0.0-SNAPSHOT")
+		Compile("rlp.footrix", "pes6", "1.0.0-SNAPSHOT")
 		Web("rlp.footrix", "protrix-ui", "1.0.0-SNAPSHOT")
 
 	Package(ModulesAndLibrariesExtracted) as Runnable("rlp.footrix.protrix.box.Main")

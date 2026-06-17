@@ -3,14 +3,15 @@ package rlp.footrix.framework.events.types;
 import rlp.footrix.framework.events.Event;
 import rlp.footrix.framework.types.entities.SeasonReference;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class InitPhaseEvent extends Event {
     private String competitionId;
     private SeasonReference season;
     private int nPhase;
-    private List<String> rulesIds;
-    private List<String> teamIds;
+    private List<String> rulesIds = new ArrayList<>();
+    private List<String> teamIds = new ArrayList<>();
 
     public String competitionId() {
         return competitionId;

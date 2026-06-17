@@ -18,9 +18,8 @@ public interface FootrixConfiguration {
     Instant initDate();
     Function<Integer, String> seasonProvider();
     DataBase initDatabase(Application application);
-    Map<Instant, List<Event>> initTasks(Application application);
-    Function<Player, Double> energyRecoveryProvider();
-    ModelCloudAccessor models();
+    Function<Player, Double> energyRecoveryProvider();  //TODO POR QUE?
+    ModelCloudAccessor models(Application application);
     EntityStore entityStore();
     RecordStore recordStore();
     TableStore tableStore();

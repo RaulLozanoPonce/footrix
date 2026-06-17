@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 import rlp.footrix.framework.types.entities.Match;
 import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.framework.types.entities.team.PlayersLineup;
-import rlp.footrix.protrix.types.ProtrixPlayer;
+import rlp.footrix.pes6.types.Pes6Player;
 import rlp.footrix.protrix.ai.matchsimulator.MatchState;
 import rlp.footrix.protrix.ai.matchsimulator.weights.PlayerValue;
 
@@ -39,7 +39,7 @@ public class InjuryEventSimulator extends EventSimulator {
         double total = 0.0;
 
         for (Player p : lineup.fieldPlayers()) {
-            ProtrixPlayer player = (ProtrixPlayer) p;
+            Pes6Player player = (Pes6Player) p;
             double weight = (playerValue.injuryProne(player) * 0.6) + ((1 - playerValue.energy(player)) * 0.5) + ((1.0 - playerValue.fitness(player)) * 0.3);
             if (weight < 0.01) weight = 0.01;
             weights.put(p, weight);

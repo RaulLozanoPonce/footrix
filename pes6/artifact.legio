@@ -1,0 +1,6 @@
+dsl Legio
+
+Artifact(groupId = "rlp.footrix", version = "1.0.0-SNAPSHOT") pes6
+	Imports
+		Compile("rlp.footrix", "framework", "1.0.0-SNAPSHOT")
+	Package(mode = ModulesAndLibrariesLinkedByManifest, attachDoc=true)

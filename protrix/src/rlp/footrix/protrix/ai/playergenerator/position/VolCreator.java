@@ -1,7 +1,7 @@
 package rlp.footrix.protrix.ai.playergenerator.position;
 
 import rlp.footrix.framework.types.entities.player.Position;
-import rlp.footrix.protrix.types.Positions;
+import rlp.footrix.pes6.types.Positions;
 import rlp.footrix.protrix.ai.playergenerator.PositionCreator;
 
 public class VolCreator extends PositionCreator {

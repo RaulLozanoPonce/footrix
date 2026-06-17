@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/framework/framework.iml" filepath="$PROJECT_DIR$/framework/framework.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pes6/pes6.iml" filepath="$PROJECT_DIR$/pes6/pes6.iml" />
       <module fileurl="file://$PROJECT_DIR$/protrix/protrix.iml" filepath="$PROJECT_DIR$/protrix/protrix.iml" />
       <module fileurl="file://$PROJECT_DIR$/protrix-ui/protrix-ui.iml" filepath="$PROJECT_DIR$/protrix-ui/protrix-ui.iml" />
     </modules>

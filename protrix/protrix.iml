@@ -86,7 +86,7 @@
     <orderEntry type="library" name="Intino: com.esotericsoftware:reflectasm:1.11.9" level="project" />
     <orderEntry type="library" name="Intino: org.objenesis:objenesis:3.3" level="project" />
     <orderEntry type="library" name="Intino: com.esotericsoftware:minlog:1.3.1" level="project" />
-    <orderEntry type="library" name="Intino: com.google.code.gson:gson:2.14.0" level="project" />
-    <orderEntry type="library" name="Intino: com.google.errorprone:error_prone_annotations:2.48.0" level="project" />
+    <orderEntry type="library" name="Intino: com.google.code.gson:gson:2.10.1" level="project" />
+    <orderEntry type="library" name="Intino: rlp.footrix:pes6:1.0.0-SNAPSHOT" level="project" />
   </component>
 </module>

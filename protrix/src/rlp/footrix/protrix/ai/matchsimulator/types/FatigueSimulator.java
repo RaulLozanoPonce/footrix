@@ -2,7 +2,7 @@ package rlp.footrix.protrix.ai.matchsimulator.types;
 
 import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.framework.types.entities.team.PlayersLineup;
-import rlp.footrix.protrix.types.ProtrixPlayer;
+import rlp.footrix.pes6.types.Pes6Player;
 import rlp.footrix.protrix.ai.matchsimulator.MatchState;
 import rlp.footrix.protrix.ai.matchsimulator.weights.PlayerValue;
 
@@ -24,7 +24,7 @@ public class FatigueSimulator {
 
     private void applyFatigueToTeam(PlayersLineup lineup, double intensity) {
         for (Player p : lineup.fieldPlayers()) {
-            ProtrixPlayer player = (ProtrixPlayer) p;
+            Pes6Player player = (Pes6Player) p;
             double staminaFactor = (1.0 - playerValue.stamina(player)) * 0.008;
             double fitnessFactor = (1.0 - playerValue.fitness(player)) * 0.005;
             double randomVariation = (Math.random() * 0.004) - 0.002;
@@ -35,10 +35,10 @@ public class FatigueSimulator {
 
     private double getMatchIntensity(int minute) {
         double base;
-        if (minute < 15) base = 0.8;
-        else if (minute < 60) base = 1.0;
-        else if (minute < 75) base = 1.15;
-        else base = 1.25;
+        if (minute < 15) base = 0.6;
+        else if (minute < 60) base = 0.75;
+        else if (minute < 75) base = 0.85;
+        else base = 0.95;
         return base;
     }
 }

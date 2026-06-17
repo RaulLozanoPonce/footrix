@@ -15,6 +15,6 @@ public class ScheduledMatchSubscriber implements Subscriber<ScheduledMatchEvent>
     @Override
     public void receive(ScheduledMatchEvent event) {
         //TODO AQUÍ HABRÁ QUE DECIDIR SI SE SIMULA O NO DEPENDIENDO DE SI LOS MANAGERS SON REALES
-        application.eventHub().publish(new SimulateMatchEvent().definition(event.definition()));
+        application.eventHub().publish(new SimulateMatchEvent().date(event.date()).definition(event.definition()));
     }
 }

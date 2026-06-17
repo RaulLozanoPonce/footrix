@@ -1,5 +1,6 @@
 package rlp.footrix.protrix.ai.matchsimulator;
 
+import rlp.footrix.framework.Application;
 import rlp.footrix.framework.ai.MatchSimulator;
 import rlp.footrix.framework.types.entities.Match;
 import rlp.footrix.framework.types.entities.definitions.MatchDefinition;
@@ -17,7 +18,12 @@ import static rlp.footrix.framework.types.entities.Match.MatchEvent.Type.Expulsi
 import static rlp.footrix.framework.types.entities.Match.MatchEvent.Type.Substitution;
 
 public class ProtrixMatchSimulator implements MatchSimulator {
+    private final Application application;
     private MatchState state;
+
+    public ProtrixMatchSimulator(Application application) {
+        this.application = application;
+    }
 
     @Override
     public Match simulate(MatchDefinition definition, Instant date, PlayersLineup localLineup, PlayersLineup visitantLineup) {
@@ -33,6 +39,7 @@ public class ProtrixMatchSimulator implements MatchSimulator {
         FatigueSimulator fatigueSimulator = new FatigueSimulator(state, playerValue);
 
         for (int i = 1; i <= 90; i++) {
+            savePlayersState(definition, date, i);
             state.minuteEvents().addAll(goalSimulator.simulate(i));
             state.minuteEvents().addAll(cardSimulator.simulate(i));
             state.minuteEvents().addAll(injurySimulator.simulate(i));
@@ -88,5 +95,17 @@ public class ProtrixMatchSimulator implements MatchSimulator {
 
     private Match.PlayerStatistics statistics(String team, String player) {
         return new Match.PlayerStatistics(state.minutes(player), state.score(team, player, 90), state.fatigue(player));
+    }
+
+    private void savePlayersState(MatchDefinition match, Instant date, int minute) {
+        state.localLineup().fieldPlayers().forEach(p -> savePlayerState(p, match, date, minute));
+        state.localLineup().benchPlayers().forEach(p -> savePlayerState(p, match, date, minute));
+        state.visitantLineup().fieldPlayers().forEach(p -> savePlayerState(p, match, date, minute));
+        state.visitantLineup().benchPlayers().forEach(p -> savePlayerState(p, match, date, minute));
+    }
+
+    private void savePlayerState(Player player, MatchDefinition match, Instant date, int minute) {
+        double fatigue = state.fatigue(player.definition().id());
+        application.recordStore().create().playerMinuteRecord(match.id(), player.definition().id(), date, minute, Math.max(0, player.energy() - fatigue), player.skills().stamina());
     }
 }
