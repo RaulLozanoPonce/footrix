@@ -2,7 +2,7 @@ package rlp.footrix.protrix.loader;
 
 import rlp.footrix.framework.types.entities.definitions.TeamDefinition;
 import rlp.footrix.framework.types.entities.team.Team;
-import rlp.footrix.protrix.model.ProtrixTeam;
+import rlp.footrix.protrix.types.ProtrixTeam;
 
 import java.io.File;
 import java.io.IOException;

@@ -4,12 +4,13 @@ import io.intino.alexandria.ui.model.datasource.Filter;
 import io.intino.alexandria.ui.model.datasource.Group;
 import io.intino.alexandria.ui.model.datasource.PageDatasource;
 import io.intino.alexandria.ui.model.datasource.filters.GroupFilter;
-import rlp.footrix.framework.types.entities.definitions.TeamDefinition;
 import rlp.footrix.framework.types.entities.team.Team;
+import rlp.footrix.framework.types.entities.team_player.PlayerContract;
 import rlp.footrix.protrix.box.ProtrixBox;
-import rlp.footrix.protrix.model.Positions;
-import rlp.footrix.protrix.model.ProtrixPlayer;
+import rlp.footrix.protrix.types.Positions;
+import rlp.footrix.protrix.types.ProtrixPlayer;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -18,6 +19,8 @@ import java.util.stream.Collectors;
 public class PlayersDatasource extends PageDatasource<ProtrixPlayer> {
 
     public static final String TeamGroup = "Equipo";
+    public static final String RoleGroup = "Rol";
+    public static final String RetiredGroup = "Retirado";
     public static final String PositionGroup = "Posicion";
 
     private final ProtrixBox box;
@@ -46,6 +49,10 @@ public class PlayersDatasource extends PageDatasource<ProtrixPlayer> {
             return box.application().teamManager().teamDefinitions().stream().map(t -> new Group().label(t.name()).name(t.name())).toList();
         if (key.equalsIgnoreCase(PositionGroup))
             return Positions.values().stream().map(p -> new Group().name(p.id()).label(p.id())).toList();
+        if (key.equalsIgnoreCase(RoleGroup))
+            return Arrays.stream(PlayerContract.Role.values()).map(p -> new Group().name(p.name()).label(p.name())).toList();
+        if (key.equalsIgnoreCase(RetiredGroup))
+            return List.of(new Group().name("true").label("Sí"), new Group().name("false").label("No"));
         return Collections.emptyList();
     }
 
@@ -64,8 +71,17 @@ public class PlayersDatasource extends PageDatasource<ProtrixPlayer> {
                 return false;
             if (filter.grouping().equalsIgnoreCase(PositionGroup) && !((GroupFilter)filter).groups().contains(player.mainPosition().id()))
                 return false;
+            if (filter.grouping().equalsIgnoreCase(RoleGroup) && (player.contract() == null || !((GroupFilter)filter).groups().contains(player.contract().role().name())))
+                return false;
+            if (filter.grouping().equalsIgnoreCase(RetiredGroup) && !((GroupFilter)filter).groups().contains(retired(player)))
+                return false;
         }
         return true;
+    }
+
+    private String retired(ProtrixPlayer player) {
+        if (player.active()) return "false";
+        return "true";
     }
 
     private void sort(List<ProtrixPlayer> result) {

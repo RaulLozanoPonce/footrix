@@ -4,6 +4,7 @@ import rlp.footrix.framework.types.entities.definitions.PlayerDefinition;
 import rlp.footrix.framework.types.entities.player.facets.CacheFacet;
 import rlp.footrix.framework.types.entities.player.facets.EconomyFacet;
 import rlp.footrix.framework.types.entities.player.facets.MoodFacet;
+import rlp.footrix.framework.types.entities.player.facets.SkillsFacet;
 import rlp.footrix.framework.types.entities.team.Team;
 import rlp.footrix.framework.types.entities.team_player.PlayerContract;
 
@@ -14,12 +15,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public abstract class Player {
+public class Player {
     private final PlayerDefinition definition;
     private Team team;
 
     private final Map<Position, Double> mainPositions = new HashMap<>();
     protected final Map<Position, Double> otherPositions = new HashMap<>(); //TODO
+
+    private SkillsFacet skillsFacet;
 
     private final MoodFacet mood = new MoodFacet(this);
     private final EconomyFacet economy = new EconomyFacet(this);
@@ -35,7 +38,7 @@ public abstract class Player {
     private boolean decidedToRetire = false;
     private boolean retired = false;
 
-    protected Player(PlayerDefinition definition, Position mainPosition, List<Position> secondaryPositions) {
+    public Player(PlayerDefinition definition, Position mainPosition, List<Position> secondaryPositions) {
         this.definition = definition;
         secondaryPositions.forEach(p -> this.mainPositions.put(p, 0.0));
         this.mainPositions.put(mainPosition, 1.0);
@@ -50,6 +53,18 @@ public abstract class Player {
             if (e1.getValue() > e2.getValue()) return e1;
             return e2;
         }).map(Map.Entry::getKey).orElse(null);
+    }
+
+    public void skills(SkillsFacet skills) {
+        this.skillsFacet = skills;
+    }
+
+    public SkillsFacet skills() {
+        return skillsFacet;
+    }
+
+    public double overall() {
+        return skillsFacet.overall(mainPosition());
     }
 
     public Set<Position> secondaryPositions() {
@@ -128,12 +143,6 @@ public abstract class Player {
         this.contract = contract;
         return this;
     }
-
-    public double overall() {
-        return overall(mainPosition());
-    }
-
-    public abstract double overall(Position position);
 
     public boolean isDecidedToRetire() {
         return decidedToRetire;

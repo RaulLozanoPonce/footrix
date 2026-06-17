@@ -5,7 +5,7 @@ import rlp.footrix.framework.types.entities.Match;
 import rlp.footrix.protrix.box.ProtrixBox;
 import rlp.footrix.protrix.box.ui.datasources.MatchEventDatasource;
 import rlp.footrix.protrix.box.ui.displays.rows.MatchEventsTableRow;
-import rlp.footrix.protrix.util.Resources;
+import rlp.footrix.protrix.box.util.Resources;
 
 import java.net.URL;
 

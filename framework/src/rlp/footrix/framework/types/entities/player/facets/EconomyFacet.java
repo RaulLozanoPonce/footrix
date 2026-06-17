@@ -1,11 +1,10 @@
 package rlp.footrix.framework.types.entities.player.facets;
 
 import rlp.footrix.framework.types.entities.player.Player;
-import rlp.footrix.framework.types.entities.team_player.PlayerContract;
 
 import java.time.Instant;
 
-import static java.lang.Math.*;
+import static java.lang.Math.pow;
 
 public class EconomyFacet {
     private final Player player;

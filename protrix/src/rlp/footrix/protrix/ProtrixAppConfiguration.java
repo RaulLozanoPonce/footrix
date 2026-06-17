@@ -2,7 +2,10 @@ package rlp.footrix.protrix;
 
 import rlp.footrix.framework.Application;
 import rlp.footrix.framework.FootrixConfiguration;
+import rlp.footrix.framework.ai.MatchSimulator;
 import rlp.footrix.framework.ai.ModelCloudAccessor;
+import rlp.footrix.framework.ai.PlayerGenerator;
+import rlp.footrix.framework.ai.Trainer;
 import rlp.footrix.framework.configuration.DataBase;
 import rlp.footrix.framework.stores.EntityStore;
 import rlp.footrix.framework.stores.RecordStore;
@@ -16,13 +19,15 @@ import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.framework.types.entities.team.Team;
 import rlp.footrix.framework.types.entities.team_player.PlayerContract;
 import rlp.footrix.framework.types.tables.TeamElo;
+import rlp.footrix.protrix.ai.trainer.ProtrixTrainer;
 import rlp.footrix.protrix.events.InitGame;
+import rlp.footrix.protrix.ai.playergenerator.ProtrixPlayerGenerator;
 import rlp.footrix.protrix.loader.PlayerLoader;
 import rlp.footrix.protrix.loader.TeamEloLoader;
 import rlp.footrix.protrix.loader.TeamLoader;
-import rlp.footrix.protrix.loader.competitions.SpainFirstDivisionDefinition;
-import rlp.footrix.protrix.model.helpers.InitialContractGenerator;
-import rlp.footrix.protrix.simulator.ProtrixMatchSimulator;
+import rlp.footrix.protrix.types.competitions.SpainFirstDivisionDefinition;
+import rlp.footrix.protrix.helper.ContractHelper;
+import rlp.footrix.protrix.ai.matchsimulator.ProtrixMatchSimulator;
 
 import java.time.Instant;
 import java.util.List;
@@ -81,7 +86,22 @@ public class ProtrixAppConfiguration implements FootrixConfiguration.SimpleFootr
 
     @Override
     public ModelCloudAccessor models() {
-        return ProtrixMatchSimulator::new;
+        return new ModelCloudAccessor() {
+            @Override
+            public MatchSimulator matchSimulator() {
+                return new ProtrixMatchSimulator();
+            }
+
+            @Override
+            public PlayerGenerator playerGenerator() {
+                return new ProtrixPlayerGenerator();
+            }
+
+            @Override
+            public Trainer trainer() {
+                return new ProtrixTrainer();
+            }
+        };
     }
 
     @Override
@@ -105,13 +125,9 @@ public class ProtrixAppConfiguration implements FootrixConfiguration.SimpleFootr
     }
 
     private Team teamOf(Team team, Application application) {
-        double eloPosition = eloOf(team, application) / teams.stream().mapToDouble(t -> eloOf(t, application)).max().orElse(0.0);
-        Map<Player, PlayerContract> teamPlayers = InitialContractGenerator.generate(players.get(team.definition().name()), eloPosition);
+        double eloPosition = application.tableStore().eloPosition(team.definition().id());
+        Map<Player, PlayerContract> teamPlayers = ContractHelper.generate(players.get(team.definition().name()), eloPosition);
         teamPlayers.forEach(team::setPlayer);
         return team;
-    }
-
-    private double eloOf(Team team, Application application) {
-        return application.tableStore().teamElo(team.definition().id()).elo();
     }
 }

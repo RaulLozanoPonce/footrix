@@ -28,6 +28,10 @@ public class InitGame extends Task {
         application.taskHub().add(new InitPhaseTask(date(2, 8, yearOf(executionDate)), application, "ESP-1", SeasonReference.Current, 0, List.of(), application.teamManager().ids()));
         application.taskHub().add(new SetPhaseCalendarTask(date(4, 8, yearOf(executionDate)), application, "ESP-1", SeasonReference.Current, 0));
         application.taskHub().add(new NewSeasonTask(date(1, 8, yearOf(executionDate) + 1), application));
+
+        application.taskHub().add(new InitPhaseTask(date(2, 8, yearOf(executionDate)), application, "ESP-1", SeasonReference.Current, 0, List.of("ESP-1-RULE"), List.of()));
+        application.taskHub().add(new SetPhaseCalendarTask(date(4, 8, yearOf(executionDate)), application, "ESP-1", SeasonReference.Current, 0));
+        application.taskHub().add(new NewSeasonTask(date(1, 8, yearOf(executionDate) + 1), application));
     }
 
     private Instant date(int day, int month, int year) {

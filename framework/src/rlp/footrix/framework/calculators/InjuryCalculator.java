@@ -12,10 +12,15 @@ public class InjuryCalculator extends Calculator {
         super(application);
     }
 
-    public int deltaInjury(Player player, Match match) {
+    public int injuryDays(Player player, Match match) {
         List<Match.MatchEvent> injuries = injuriesOf(player, match);
         if (injuries.isEmpty()) return 0;
         int level = injuryLevel(injuries);
+        return injuryDays(level);
+    }
+
+    public int injuryDays(int level) {
+        if (level == 0) return 0;
         double random = 0.99 * Math.random();
         return (int) Math.round(minInjuryDays(level) - meanInjuryDays(level) * Math.log10(1 - random));
     }

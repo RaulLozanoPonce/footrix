@@ -1,24 +1,32 @@
 package rlp.footrix.framework.events.types;
 
-import rlp.footrix.framework.configuration.TeamRule;
 import rlp.footrix.framework.events.Event;
-import rlp.footrix.framework.types.entities.Competition;
-import rlp.footrix.framework.types.entities.team.Team;
+import rlp.footrix.framework.types.entities.SeasonReference;
 
 import java.util.List;
 
-public class InitPhaseEvent implements Event {
-    private Competition competition;
+public class InitPhaseEvent extends Event {
+    private String competitionId;
+    private SeasonReference season;
     private int nPhase;
-    private List<TeamRule> teamRules;
-    private List<Team> teams;
+    private List<String> rulesIds;
+    private List<String> teamIds;
 
-    public Competition competition() {
-        return competition;
+    public String competitionId() {
+        return competitionId;
     }
 
-    public InitPhaseEvent competition(Competition competition) {
-        this.competition = competition;
+    public InitPhaseEvent competitionId(String competitionId) {
+        this.competitionId = competitionId;
+        return this;
+    }
+
+    public SeasonReference season() {
+        return season;
+    }
+
+    public InitPhaseEvent season(SeasonReference season) {
+        this.season = season;
         return this;
     }
 
@@ -31,21 +39,21 @@ public class InitPhaseEvent implements Event {
         return this;
     }
 
-    public List<TeamRule> teamRules() {
-        return teamRules;
+    public List<String> rulesIds() {
+        return rulesIds;
     }
 
-    public InitPhaseEvent teamRules(List<TeamRule> teamRules) {
-        this.teamRules = teamRules;
+    public InitPhaseEvent rulesIds(List<String> rulesIds) {
+        this.rulesIds = rulesIds;
         return this;
     }
 
-    public List<Team> teams() {
-        return teams;
+    public List<String> teamIds() {
+        return teamIds;
     }
 
-    public InitPhaseEvent teams(List<Team> teams) {
-        this.teams = teams;
+    public InitPhaseEvent teamIds(List<String> teamIds) {
+        this.teamIds = teamIds;
         return this;
     }
 }

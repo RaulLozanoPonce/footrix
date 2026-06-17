@@ -33,6 +33,10 @@ public class TeamManager {
         return definitions.get(id);
     }
 
+    public List<Team> teams() {
+        return definitions.keySet().stream().map(store::team).toList();
+    }
+
     @Deprecated
     public List<TeamDefinition> teamDefinitions() {
         return new ArrayList<>(this.definitions.values());

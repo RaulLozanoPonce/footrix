@@ -21,12 +21,19 @@ public interface TableStore {
         }).orElse(null);
     }
 
-    default Create create() {
-        return new Create(this);
+    default double eloPosition(String team) {
+        TeamElo teamElo = teamElo(team);
+        TeamElo maxElo = maxElo();
+        if (teamElo == null || maxElo == null) return 0.0;
+        return teamElo.elo() / (double) maxElo.elo();
     }
 
     default void teamElo(TeamElo analysis) {
         teamElo().add(analysis);
+    }
+
+    default Create create() {
+        return new Create(this);
     }
 
     record Create(TableStore store) {

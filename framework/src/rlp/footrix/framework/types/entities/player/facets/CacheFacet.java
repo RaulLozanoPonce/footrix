@@ -25,7 +25,7 @@ public class CacheFacet {
     }
 
     public double relativeCache(Position position) {
-        double overall = player.overall(position);
+        double overall = player.skills().overall(position);
         return Math.max(0, Math.min(1, ((overall - 40) / (99 - 40)) * absoluteCache));
     }
 }

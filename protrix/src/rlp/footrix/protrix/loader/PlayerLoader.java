@@ -3,11 +3,12 @@ package rlp.footrix.protrix.loader;
 import rlp.footrix.framework.types.entities.definitions.PlayerDefinition;
 import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.framework.types.entities.player.Position;
-import rlp.footrix.protrix.model.Positions;
-import rlp.footrix.protrix.model.ProtrixPlayer;
+import rlp.footrix.protrix.types.Positions;
+import rlp.footrix.protrix.types.ProtrixPlayer;
+import rlp.footrix.protrix.helper.InjuryHelper;
+import rlp.footrix.protrix.types.player.ProtrixSkills;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.time.Instant;
 import java.util.Arrays;
@@ -34,15 +35,16 @@ public class PlayerLoader {
     }
 
     private static Player playerOf(String[] raw, Integer id) {
-        return new ProtrixPlayer(playerDefinitionOf(raw, id), positionOf(raw[6]), positionsOf(raw[7]),
-                Integer.parseInt(raw[11]), Integer.parseInt(raw[12]), Integer.parseInt(raw[13]), Integer.parseInt(raw[14]),
-                Integer.parseInt(raw[15]), Integer.parseInt(raw[16]), Integer.parseInt(raw[17]), Integer.parseInt(raw[18]),
-                Integer.parseInt(raw[19]), Integer.parseInt(raw[20]), Integer.parseInt(raw[21]), Integer.parseInt(raw[22]),
-                Integer.parseInt(raw[23]), Integer.parseInt(raw[24]), Integer.parseInt(raw[25]), Integer.parseInt(raw[26]),
-                Integer.parseInt(raw[27]), Integer.parseInt(raw[28]), Integer.parseInt(raw[29]), Integer.parseInt(raw[30]),
-                Integer.parseInt(raw[31]), Integer.parseInt(raw[32]), Integer.parseInt(raw[33]), Integer.parseInt(raw[34]),
-                Integer.parseInt(raw[35]), Integer.parseInt(raw[36])
-        );
+        ProtrixPlayer player = new ProtrixPlayer(playerDefinitionOf(raw, id), positionOf(raw[6]), positionsOf(raw[7]));
+        ProtrixSkills skills = new ProtrixSkills(player, Integer.parseInt(raw[11]), Integer.parseInt(raw[12]), Integer.parseInt(raw[13]),
+                Integer.parseInt(raw[14]), Integer.parseInt(raw[15]), Integer.parseInt(raw[16]), Integer.parseInt(raw[17]),
+                Integer.parseInt(raw[18]), Integer.parseInt(raw[19]), Integer.parseInt(raw[20]), Integer.parseInt(raw[21]),
+                Integer.parseInt(raw[22]), Integer.parseInt(raw[23]), Integer.parseInt(raw[24]), Integer.parseInt(raw[25]),
+                Integer.parseInt(raw[26]), Integer.parseInt(raw[27]), Integer.parseInt(raw[28]), Integer.parseInt(raw[29]),
+                Integer.parseInt(raw[30]), Integer.parseInt(raw[31]), Integer.parseInt(raw[32]), Integer.parseInt(raw[33]),
+                Integer.parseInt(raw[34]), Integer.parseInt(raw[35]), Integer.parseInt(raw[36]));
+        player.skills(skills);
+        return player;
     }
 
     private static PlayerDefinition playerDefinitionOf(String[] raw, Integer id) {
@@ -85,17 +87,9 @@ public class PlayerLoader {
 
             @Override
             public InjuryResistance injuryResistance() {
-                //return InjuryResistance.valueOf(raw[5]);  //TODO
-                return randomInjuryResistance();
+                return InjuryHelper.randomInjuryResistance();
             }
         };
-    }
-
-    private static PlayerDefinition.InjuryResistance randomInjuryResistance() {
-        double random = Math.random();
-        if (random < 0.37) return PlayerDefinition.InjuryResistance.A;
-        if (random < 0.37 + 0.48) return PlayerDefinition.InjuryResistance.B;
-        return PlayerDefinition.InjuryResistance.C;
     }
 
     private static List<Position> positionsOf(String positions) {

@@ -5,19 +5,24 @@ use Theme
 Template(layout=Horizontal) traceTemplate as Relative(height=100%, width=100%)
 	Block as Relative(width=15%)
 		Grouping(collections=playersTable, pageSize=20) teamGroup as Labeled("Equipo")
+		Grouping(collections=playersTable, pageSize=20) roleGroup as Labeled("Rol")
+		Grouping(collections=playersTable, pageSize=20) retiredGroup as Labeled("Retirado")
 		Grouping(collections=playersTable, pageSize=20) positionGroup as Labeled("Posicion")
-	Table(itemClass="rlp.footrix.protrix.model.ProtrixPlayer", pageSize=30, format=wh100) playersTable
+	Table(itemClass="rlp.footrix.protrix.types.ProtrixPlayer", pageSize=30, format=wh100) playersTable
 		noItemsMessage = "No existen jugadores"
 		noItemsFoundMessage = "Ningún jugador encontrado para los criterios establecidos"
 		Mold
 			Heading idHeading > Text(value = "Id")
-			Item(height=20px, width=5%) idMold > Number id
+			Item(height=20px, width=5%) idMold > Text(format=ellipsis) id
 		Mold
 			Heading nameHeading > Text(value = "Nombre")
-			Item(height=20px, width=20%) nameMold > Link(title = "nombre") name
+			Item(height=20px, width=20%) nameMold > Link(title = "nombre", color="white") name
 		Mold
 			Heading teamHeading > Text(value = "Equipo")
-			Item(height=20px, width=15%) teamMold > Text team
+			Item(height=20px, width=10%) teamMold > Text team
+		Mold
+			Heading ageHeading > Text(value = "Edad")
+			Item(height=20px, width=5%) ageMold > Text age
 		Mold
 			Heading roleHeading > Text(value = "Rol")
 			Item(height=20px, width=10%) roleMold > Text role

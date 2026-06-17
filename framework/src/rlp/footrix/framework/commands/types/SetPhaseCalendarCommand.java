@@ -2,7 +2,8 @@ package rlp.footrix.framework.commands.types;
 
 import rlp.footrix.framework.Application;
 import rlp.footrix.framework.commands.Command;
-import rlp.footrix.framework.tasks.types.SimulateMatchTask;
+import rlp.footrix.framework.events.types.ScheduledMatchEvent;
+import rlp.footrix.framework.events.types.SetPhaseCalendarEvent;
 import rlp.footrix.framework.types.entities.Competition;
 import rlp.footrix.framework.types.entities.SeasonReference;
 import rlp.footrix.framework.types.entities.definitions.MatchDefinition;
@@ -14,20 +15,22 @@ import java.util.Collections;
 import java.util.List;
 
 public class SetPhaseCalendarCommand extends Command {
-    public Competition competition;
-    public SeasonReference season;
-    public int nPhase;
-    public Instant ts;
+    private final Competition competition;
+    private final SeasonReference season;
+    private final int nPhase;
+    private final Competition.Phase phase;
+    private final Instant ts;
 
-    private Competition.Phase phase;
-
-    public SetPhaseCalendarCommand(Application application) {
+    public SetPhaseCalendarCommand(Application application, SetPhaseCalendarEvent event) {
         super(application);
+        this.competition = competition(event.competitionId(), event.season());
+        this.season = event.season();
+        this.nPhase = event.nPhase();
+        this.phase = competition.phase(event.nPhase());
+        this.ts = event.executionDate();
     }
 
-    @Override
     public void execute() {
-        this.phase = competition.phase(nPhase);
         for (int i = 0; i < phase.groups().size(); i++) {
             setCalendar(phase.group(i), i);
         }
@@ -41,7 +44,7 @@ public class SetPhaseCalendarCommand extends Command {
             String matchDayName = phase.definition().matchDayName(i);
             Instant finalDate = phase.definition().nextDate(i, date);
             matchDays.get(i).stream().map(m -> matchOf(m, groupId, matchDayName))
-                    .forEach(m -> application.taskHub().add(new SimulateMatchTask(finalDate, application, m)));
+                    .forEach(m -> application.taskHub().add(finalDate, new ScheduledMatchEvent().definition(m)));
             date = finalDate;
         }
     }

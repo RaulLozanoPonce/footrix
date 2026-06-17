@@ -1,23 +1,22 @@
 package rlp.footrix.framework.events.types;
 
 import rlp.footrix.framework.events.Event;
-import rlp.footrix.framework.types.entities.Competition;
 import rlp.footrix.framework.types.entities.SeasonReference;
 
 import java.time.Instant;
 
-public class SetPhaseCalendarEvent implements Event {
-    private Competition competition;
+public class SetPhaseCalendarEvent extends Event {
+    private String competitionId;
     private SeasonReference season;
     private int nPhase;
-    private Instant ts;
+    private Instant executionDate;
 
-    public Competition competition() {
-        return competition;
+    public String competitionId() {
+        return competitionId;
     }
 
-    public SetPhaseCalendarEvent competition(Competition competition) {
-        this.competition = competition;
+    public SetPhaseCalendarEvent competitionId(String competitionId) {
+        this.competitionId = competitionId;
         return this;
     }
 
@@ -39,12 +38,12 @@ public class SetPhaseCalendarEvent implements Event {
         return this;
     }
 
-    public Instant ts() {
-        return ts;
+    public Instant executionDate() {
+        return executionDate;
     }
 
-    public SetPhaseCalendarEvent ts(Instant ts) {
-        this.ts = ts;
+    public SetPhaseCalendarEvent executionDate(Instant executionDate) {
+        this.executionDate = executionDate;
         return this;
     }
 }

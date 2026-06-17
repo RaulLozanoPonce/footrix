@@ -15,7 +15,7 @@ public interface PlayerDefinition {
     InjuryResistance injuryResistance();
 
     default int age(Instant now) {
-        return (int) TimeHelper.getInstantDiff(now, birth(), TimeHelper.Scale.Year);
+        return (int) TimeHelper.getInstantDiff(birth(), now, TimeHelper.Scale.Year);
     }
 
     enum Foot {

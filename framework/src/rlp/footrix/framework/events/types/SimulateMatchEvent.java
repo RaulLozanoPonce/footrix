@@ -5,18 +5,9 @@ import rlp.footrix.framework.types.entities.definitions.MatchDefinition;
 
 import java.time.Instant;
 
-public class SimulateMatchEvent implements Event {
-    private Instant ts;
+public class SimulateMatchEvent extends Event {
     private MatchDefinition definition;
-
-    public Instant ts() {
-        return ts;
-    }
-
-    public SimulateMatchEvent ts(Instant ts) {
-        this.ts = ts;
-        return this;
-    }
+    private Instant date;
 
     public MatchDefinition definition() {
         return definition;
@@ -24,6 +15,15 @@ public class SimulateMatchEvent implements Event {
 
     public SimulateMatchEvent definition(MatchDefinition definition) {
         this.definition = definition;
+        return this;
+    }
+
+    public Instant date() {
+        return date;
+    }
+
+    public SimulateMatchEvent date(Instant date) {
+        this.date = date;
         return this;
     }
 }

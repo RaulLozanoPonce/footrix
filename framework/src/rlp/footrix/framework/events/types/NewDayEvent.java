@@ -4,7 +4,7 @@ import rlp.footrix.framework.events.Event;
 
 import java.time.Instant;
 
-public class NewDayEvent implements Event {
+public class NewDayEvent extends Event {
     private Instant date;
 
     public Instant date() {

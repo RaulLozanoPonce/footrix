@@ -36,14 +36,6 @@ public interface RecordStore {
         return new Create(this);
     }
 
-    default void playerMatchRecord(PlayerMatchRecord analysis) {
-        playerMatchRecords().add(analysis);
-    }
-
-    default void teamMatchRecord(TeamMatchRecord analysis) {
-        teamMatchRecords().add(analysis);
-    }
-
     record Create(RecordStore store) {
         public PlayerMatchRecord playerMatchRecord(String matchId, String player, String team, String competition, int season, Instant date, Integer enterMinute, Integer exitMinute, int maxMinutes, Double score, boolean injured, boolean expelled, int goals, int assists, int yellowCards, int redCards, double preEnergy) {
             PlayerMatchRecord analysis = new PlayerMatchRecord(matchId, player, team, competition, season, date, enterMinute, exitMinute, maxMinutes, score, injured, expelled, goals, assists, yellowCards, redCards, preEnergy);
@@ -53,7 +45,7 @@ public interface RecordStore {
 
         public TeamMatchRecord teamMatchRecord(String team, String competition, int season, Instant date, int goalsFor, int goalsAgainst) {
             TeamMatchRecord analysis = new TeamMatchRecord(team, competition, season, date, goalsFor, goalsAgainst);
-            store.teamMatchRecord(analysis);
+            store.teamMatchRecords().add(analysis);
             return analysis;
         }
     }

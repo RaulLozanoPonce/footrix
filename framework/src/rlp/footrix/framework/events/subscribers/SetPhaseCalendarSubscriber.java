@@ -14,11 +14,6 @@ public class SetPhaseCalendarSubscriber implements Subscriber<SetPhaseCalendarEv
 
     @Override
     public void receive(SetPhaseCalendarEvent event) {
-        SetPhaseCalendarCommand command = new SetPhaseCalendarCommand(application);
-        command.competition = event.competition();
-        command.season = event.season();
-        command.nPhase = event.nPhase();
-        command.ts = event.ts();
-        command.execute();
+        new SetPhaseCalendarCommand(application, event).execute();
     }
 }

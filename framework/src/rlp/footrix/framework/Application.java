@@ -2,48 +2,48 @@ package rlp.footrix.framework;
 
 import rlp.footrix.framework.ai.ModelCloudAccessor;
 import rlp.footrix.framework.calculators.CacheCalculator;
-import rlp.footrix.framework.calculators.MoodCalculator;
 import rlp.footrix.framework.calculators.InjuryCalculator;
+import rlp.footrix.framework.calculators.MoodCalculator;
 import rlp.footrix.framework.calculators.RetireCalculator;
 import rlp.footrix.framework.configuration.TeamRule;
+import rlp.footrix.framework.events.Event;
 import rlp.footrix.framework.events.EventHub;
-import rlp.footrix.framework.events.subscribers.InitPhaseSubscriber;
-import rlp.footrix.framework.events.subscribers.NewDaySubscriber;
-import rlp.footrix.framework.events.subscribers.SetPhaseCalendarSubscriber;
-import rlp.footrix.framework.events.subscribers.SimulateMatchSubscriber;
-import rlp.footrix.framework.events.types.InitPhaseEvent;
-import rlp.footrix.framework.events.types.NewDayEvent;
-import rlp.footrix.framework.events.types.SetPhaseCalendarEvent;
-import rlp.footrix.framework.events.types.SimulateMatchEvent;
+import rlp.footrix.framework.events.subscribers.*;
+import rlp.footrix.framework.events.types.*;
 import rlp.footrix.framework.managers.*;
 import rlp.footrix.framework.stores.EntityStore;
 import rlp.footrix.framework.stores.RecordStore;
 import rlp.footrix.framework.stores.TableStore;
-import rlp.footrix.framework.tasks.TaskHub;
-import rlp.footrix.framework.types.entities.Country;
+import rlp.footrix.framework.events.TaskHub;
 import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.framework.types.entities.team.Lineup;
 
 import java.time.Instant;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 public class Application {
     private final FootrixConfiguration configuration;
     private final Game game;
+
     private final EntityStore entityStore;
     private final RecordStore recordStore;
     private final TableStore tableStore;
+
     private final EventHub eventHub;
     private final TaskHub taskHub;
+
     private final TimeManager timeManager;
-    private final CountryManager countryManager;
     private final CompetitionManager competitionManager;
     private final LineupsManager lineupsManager;
     private final TeamManager teamManager;
     private final PlayerManager playerManager;
     private final RulesManager rulesManager;
     private final EloManager eloManager;
+
     private final ModelCloudAccessor models;
+
     private final CacheCalculator cacheCalculator;
     private final MoodCalculator moodCalculator;
     private final InjuryCalculator injuryCalculator;
@@ -59,11 +59,10 @@ public class Application {
         this.models = configuration.models();
 
         this.eventHub = new EventHub();
-        this.taskHub = new TaskHub();
+        this.taskHub = new TaskHub(eventHub);
 
         this.timeManager = new TimeManager(this.game, this.eventHub);
         this.rulesManager = new RulesManager();
-        this.countryManager = new CountryManager();
         this.competitionManager = new CompetitionManager(this.game, this.entityStore);
         this.teamManager = new TeamManager(this.game, this.entityStore);
         this.playerManager = new PlayerManager(this.game, this.entityStore);
@@ -87,10 +86,6 @@ public class Application {
         this.competitionManager.setupNewSeason();
     }
 
-    protected void add(Country country) {
-        this.countryManager.add(country);
-    }
-
     protected void add(Lineup lineup) {
         this.lineupsManager.add(lineup);
     }
@@ -100,10 +95,16 @@ public class Application {
     }
 
     public void start() {
+        this.eventHub.subscribe(InitGameEvent.class, new InitGameSubscriber(this));
+        this.eventHub.subscribe(NewSeasonEvent.class, new NewSeasonSubscriber(this));
         this.eventHub.subscribe(InitPhaseEvent.class, new InitPhaseSubscriber(this));
         this.eventHub.subscribe(NewDayEvent.class, new NewDaySubscriber(this));
         this.eventHub.subscribe(SetPhaseCalendarEvent.class, new SetPhaseCalendarSubscriber(this));
+        this.eventHub.subscribe(ScheduledMatchEvent.class, new ScheduledMatchSubscriber(this));
         this.eventHub.subscribe(SimulateMatchEvent.class, new SimulateMatchSubscriber(this));
+        this.eventHub.subscribe(PlayMatchEvent.class, new PlayMatchSubscriber(this));
+        this.eventHub.subscribe(PlayedMatchEvent.class, new PlayedMatchSubscriber(this));
+        this.eventHub.subscribe(TrainEvent.class, new TrainSubscriber(this));
     }
 
     public Instant getDate() {
@@ -112,10 +113,6 @@ public class Application {
 
     public void setDate(Instant to) {
         this.timeManager.update(to);
-    }
-
-    public CountryManager countryManager() {
-        return countryManager;
     }
 
     public PlayerManager playerManager() {
@@ -196,5 +193,9 @@ public class Application {
 
     public RetireCalculator retireCalculator() {
         return retireCalculator;
+    }
+
+    public Map<Instant, List<Event>> newSeasonTasks(boolean isNewGame) {
+        return Map.of();    //TODO
     }
 }

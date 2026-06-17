@@ -52,7 +52,10 @@ public class ProtrixBox extends AbstractBox {
         datamartFeeder.feedClassifications();
         datamartFeeder.feedPlayerRecords();
 
-        double homeWinPct = application.entityStore().matches("ESP-1", 0).stream().filter(m -> m.definition().local().equals(m.winner())).count() / (double) (38 * 10);
+        System.out.println("Finish");
+
+        //TODO ACTIVAR CUANDO SE JUEGUE UNA TEMPORADA SOLO
+        /*double homeWinPct = application.entityStore().matches("ESP-1", 0).stream().filter(m -> m.definition().local().equals(m.winner())).count() / (double) (38 * 10);
         double drawPct = application.entityStore().matches("ESP-1", 0).stream().filter(m -> m.winner() == null).count() / (double) (38 * 10);
         double minScore = application.recordStore().playerMatchRecords().stream().filter(r -> r.score() != null).mapToDouble(PlayerMatchRecord::score).min().orElse(0.0);
         double meanScore = application.recordStore().playerMatchRecords().stream().filter(r -> r.score() != null).mapToDouble(PlayerMatchRecord::score).average().orElse(0.0);
@@ -100,7 +103,7 @@ public class ProtrixBox extends AbstractBox {
         System.out.println("Substitution: " + averages.get("Substitution"));    // 7–8
         System.out.println("YellowCard: " + averages.get("YellowCard"));    //4 – 5
         System.out.println("RedCard: " + averages.get("RedCard"));  //0.10 – 0.15
-        System.out.println("Injury: " + averages.get("Injury"));    //1.2 – 1.5
+        System.out.println("Injury: " + averages.get("Injury"));    //1.2 – 1.5*/
 	}
 
     private Map<String, Double> averages() {

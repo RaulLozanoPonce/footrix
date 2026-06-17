@@ -14,8 +14,6 @@ public class NewDaySubscriber implements Subscriber<NewDayEvent> {
 
     @Override
     public void receive(NewDayEvent event) {
-        NewDayCommand command = new NewDayCommand(application);
-        command.date = event.date();
-        command.execute();
+        new NewDayCommand(application, event).execute();
     }
 }

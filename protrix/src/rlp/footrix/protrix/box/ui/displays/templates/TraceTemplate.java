@@ -6,7 +6,7 @@ import rlp.footrix.framework.types.records.PlayerMatchRecord;
 import rlp.footrix.protrix.box.ProtrixBox;
 import rlp.footrix.protrix.box.ui.datasources.PlayersDatasource;
 import rlp.footrix.protrix.box.ui.displays.rows.PlayersTableRow;
-import rlp.footrix.protrix.model.ProtrixPlayer;
+import rlp.footrix.protrix.types.ProtrixPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,10 +37,11 @@ public class TraceTemplate extends AbstractTraceTemplate<ProtrixBox> {
         List<PlayerMatchRecord> records = team == null ? new ArrayList<>() : box().application().recordStore().playerMatchRecords(player.definition().id(), team.definition().id(), "ESP-1", 0);
         double score = records.stream().filter(e -> e.score() != null).mapToDouble(PlayerMatchRecord::score).average().orElse(0);
         double minutes = records.stream().filter(r -> r.playedAvailableMinutesPercent() != null).mapToDouble(PlayerMatchRecord::playedAvailableMinutesPercent).average().orElse(0.0);
-        row.idMold.id.value(Double.parseDouble(player.definition().id()));
+        row.idMold.id.value(player.definition().id());
         row.nameMold.name.title(player.definition().name());
         row.nameMold.name.onExecute(l -> notifier.redirect("http://localhost:9001/player-trace/" + player.definition().id()));
         row.teamMold.team.value(team == null ? "Agente Libre" : team.definition().name());
+        row.ageMold.age.value(String.valueOf(player.definition().age(box().application().getDate())));
         row.roleMold.role.value(team == null ? "" : team.contractOf(player.definition().id()).role().name());
         row.overallMold.overall.value(player.overall());
         row.positionMold.position.value(player.mainPosition().id());

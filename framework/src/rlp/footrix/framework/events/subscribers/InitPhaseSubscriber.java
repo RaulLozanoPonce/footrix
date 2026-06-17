@@ -14,11 +14,6 @@ public class InitPhaseSubscriber implements Subscriber<InitPhaseEvent> {
 
     @Override
     public void receive(InitPhaseEvent event) {
-        InitPhaseCommand command = new InitPhaseCommand(application);
-        command.competition = event.competition();
-        command.nPhase = event.nPhase();
-        command.teamRules = event.teamRules();
-        command.teams = event.teams();
-        command.execute();
+        new InitPhaseCommand(application, event).execute();
     }
 }

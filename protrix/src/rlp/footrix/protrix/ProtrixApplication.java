@@ -5,7 +5,7 @@ import rlp.footrix.framework.Application;
 import rlp.footrix.framework.FootrixConfiguration;
 import rlp.footrix.framework.configuration.TeamRule;
 import rlp.footrix.framework.types.entities.SeasonReference;
-import rlp.footrix.protrix.loader.lineups.*;
+import rlp.footrix.protrix.types.lineups.*;
 
 public class ProtrixApplication extends Application {
 

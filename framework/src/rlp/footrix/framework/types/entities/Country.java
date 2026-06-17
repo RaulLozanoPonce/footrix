@@ -1,10 +1,10 @@
 package rlp.footrix.framework.types.entities;
 
-public abstract class Country {
+public class Country {
     private final String id;
     private final String label;
 
-    protected Country(String id, String label) {
+    public Country(String id, String label) {
         this.id = id;
         this.label = label;
     }
@@ -15,5 +15,9 @@ public abstract class Country {
 
     public String label() {
         return label;
+    }
+
+    public static Country of(String id, String label) {
+        return new Country(id, label);
     }
 }

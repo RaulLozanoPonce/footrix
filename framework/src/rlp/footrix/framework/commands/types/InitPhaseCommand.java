@@ -3,6 +3,7 @@ package rlp.footrix.framework.commands.types;
 import rlp.footrix.framework.Application;
 import rlp.footrix.framework.commands.Command;
 import rlp.footrix.framework.configuration.TeamRule;
+import rlp.footrix.framework.events.types.InitPhaseEvent;
 import rlp.footrix.framework.types.entities.Competition;
 import rlp.footrix.framework.types.entities.team.Team;
 
@@ -11,18 +12,22 @@ import java.util.Collections;
 import java.util.List;
 
 public class InitPhaseCommand extends Command {
-    public Competition competition;
-    public int nPhase;
-    public List<TeamRule> teamRules;
-    public List<Team> teams;
+    private final Competition competition;
+    private final int nPhase;
+    private final Competition.Phase phase;
+    private final List<Team> teams;
+    private final List<TeamRule> teamRules;
 
-    public InitPhaseCommand(Application application) {
+    public InitPhaseCommand(Application application, InitPhaseEvent event) {
         super(application);
+        this.competition = competition(event.competitionId(), event.season());
+        this.nPhase = event.nPhase();
+        this.phase = competition.phase(event.nPhase());
+        this.teams = event.teamIds().stream().map(this::team).toList();
+        this.teamRules = application.rulesManager().get(event.rulesIds());
     }
 
-    @Override
     public void execute() {
-        Competition.Phase phase = competition.phase(nPhase);
         int maxTeams = phase.definition().nGroups() * phase.definition().groupDefinition().nTeams();
         List<Team> teams = (this.teams.isEmpty()) ? teams(teamRules, maxTeams) : this.teams;
         teams.forEach(t -> t.addCompetition(competition.definition().id() + ";" + nPhase));
