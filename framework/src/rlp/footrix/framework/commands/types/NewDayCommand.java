@@ -31,8 +31,9 @@ public class NewDayCommand extends Command {
 
     private void makeTimePassTo(Player player) {
         if (player.isInjured() && !player.recoveryDate().isAfter(newDate)) player.recovery();
-        player.energy(application.energyCalculator().dayRecovery(player));
-        player.mood().individualPerformance(application.moodCalculator().deltaIndividualPerformanceInjuryMood(player)); //TODO Se quitará para modificar el estado de ánimo
+        player.psychophysics().energy(application.psychophysicsCalculator().energyDayRecovery(player));
+        player.psychophysics().physicalCondition(application.psychophysicsCalculator().physicalConditionDayLoss());
+        player.psychophysics().selfConfidence(application.psychophysicsCalculator().deltaDailySelfConfidence(player));
         player.skills().naturalProgress(application.getDate());
         if (application.retireCalculator().decidedToRetire(player)) player.decidedToRetire();
     }
@@ -41,10 +42,10 @@ public class NewDayCommand extends Command {
         //TODO ESTOS SON ENTRENAMIENTOS BÁSICOS. SE DEBERÍA GENERAR CON LO QUE EL MANAGER PONGA EN SU EQUIPO
         //TODO VARIAR LOS ENTRENAMIENTOS
         if (weekDayOf(newDate) != 7) return;
-        application.taskHub().add(nextInstant(newDate, Day), new TrainEvent().teamId(team.definition().id()).minutes(120));
-        application.taskHub().add(nextInstant(newDate, Day, 2), new TrainEvent().teamId(team.definition().id()).minutes(120));
-        application.taskHub().add(nextInstant(newDate, Day, 3), new TrainEvent().teamId(team.definition().id()).minutes(120));
-        application.taskHub().add(nextInstant(newDate, Day, 4), new TrainEvent().teamId(team.definition().id()).minutes(120));
-        application.taskHub().add(nextInstant(newDate, Day, 5), new TrainEvent().teamId(team.definition().id()).minutes(120));
+        application.taskHub().add(nextInstant(newDate, Day), new TrainEvent().teamId(team.definition().id()).type(TrainEvent.TrainType.Technique).minutes(120));
+        application.taskHub().add(nextInstant(newDate, Day, 2), new TrainEvent().teamId(team.definition().id()).type(TrainEvent.TrainType.Technique).minutes(120));
+        application.taskHub().add(nextInstant(newDate, Day, 3), new TrainEvent().teamId(team.definition().id()).type(TrainEvent.TrainType.Technique).minutes(120));
+        application.taskHub().add(nextInstant(newDate, Day, 4), new TrainEvent().teamId(team.definition().id()).type(TrainEvent.TrainType.Technique).minutes(120));
+        application.taskHub().add(nextInstant(newDate, Day, 5), new TrainEvent().teamId(team.definition().id()).type(TrainEvent.TrainType.Technique).minutes(120));
     }
 }

@@ -6,6 +6,7 @@ import io.intino.alexandria.ui.model.datasource.PageDatasource;
 import rlp.footrix.protrix.box.ProtrixBox;
 import rlp.footrix.protrix.model.PlayerRecord;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class TopPlayerRecordDatasource extends PageDatasource<PlayerRecord> {
@@ -48,9 +49,20 @@ public class TopPlayerRecordDatasource extends PageDatasource<PlayerRecord> {
         this.records = box.graph().playerRecordList().stream()
                 .filter(r -> r.competitionId().equals(competition))
                 .filter(r -> r.type() == type)
-                .sorted((r1, r2) -> Integer.compare(r2.amount(), r1.amount()))
+                .filter(r -> filter(r, type))
+                .sorted(sort(type))
                 .limit(5)
                 .toList();
+    }
+
+    private boolean filter(PlayerRecord record, PlayerRecord.Type type) {
+        if (type == PlayerRecord.Type.ReceivedGoals) return record.playedMatches() >= 28;   //TODO DEPENDE DE LOS PARTIDOS
+        return true;
+    }
+
+    private static Comparator<PlayerRecord> sort(PlayerRecord.Type type) {
+        if (type == PlayerRecord.Type.ReceivedGoals) return Comparator.comparingDouble(r -> r.amount() / r.playedMinutes());
+        return (r1, r2) -> Integer.compare(r2.amount(), r1.amount());
     }
 
     public int indexOf(PlayerRecord record) {

@@ -6,6 +6,7 @@ import rlp.footrix.protrix.box.ui.datasources.ClassificationDatasource;
 import rlp.footrix.protrix.box.ui.datasources.TopPlayerRecordDatasource;
 import rlp.footrix.protrix.box.ui.displays.rows.ClassificationTableRow;
 import rlp.footrix.protrix.box.ui.displays.rows.TopAssistersTableRow;
+import rlp.footrix.protrix.box.ui.displays.rows.TopGoalkeepersTableRow;
 import rlp.footrix.protrix.box.ui.displays.rows.TopScorersTableRow;
 import rlp.footrix.protrix.model.Classification;
 import rlp.footrix.protrix.model.PlayerRecord;
@@ -14,12 +15,14 @@ public class OverviewTemplate extends AbstractOverviewTemplate<ProtrixBox> {
     private final ClassificationDatasource classificationDatasource;
     private final TopPlayerRecordDatasource topScorersDatasource;
     private final TopPlayerRecordDatasource topAssistersDatasource;
+    private final TopPlayerRecordDatasource topGoalkeepersDatasource;
 
     public OverviewTemplate(ProtrixBox box) {
         super(box);
         this.classificationDatasource = new ClassificationDatasource(box).filter("ESP-1");
         this.topScorersDatasource = new TopPlayerRecordDatasource(box).filter("ESP-1", PlayerRecord.Type.Goal);
         this.topAssistersDatasource = new TopPlayerRecordDatasource(box).filter("ESP-1", PlayerRecord.Type.Assist);
+        this.topGoalkeepersDatasource = new TopPlayerRecordDatasource(box).filter("ESP-1", PlayerRecord.Type.ReceivedGoals);
     }
 
     @Override
@@ -35,6 +38,7 @@ public class OverviewTemplate extends AbstractOverviewTemplate<ProtrixBox> {
         classificationTable.source(classificationDatasource);
         topScorersTable.source(topScorersDatasource);
         topAssistersTable.source(topAssistersDatasource);
+        topGoalkeepersTable.source(topGoalkeepersDatasource);
     }
 
     private void initTables() {
@@ -46,6 +50,9 @@ public class OverviewTemplate extends AbstractOverviewTemplate<ProtrixBox> {
 
         topAssistersTable.onAddItem(this::addTopAssister);
         topAssistersDatasource.loadData();
+
+        topGoalkeepersTable.onAddItem(this::addTopGoalkeeper);
+        topGoalkeepersDatasource.loadData();
     }
 
     private void addClassification(AddCollectionItemEvent event) {
@@ -81,5 +88,16 @@ public class OverviewTemplate extends AbstractOverviewTemplate<ProtrixBox> {
         //item.topAssistersTeamMold.classificationTeam.value(record.teamName());
         item.topAssistersPlayedMatchesMold.topAssistersPlayedMatches.value(String.valueOf(record.playedMatches()));
         item.topAssistersAssistsMold.topAssistersAssists.value(String.valueOf(record.amount()));
+    }
+
+    private void addTopGoalkeeper(AddCollectionItemEvent event) {
+        PlayerRecord record = event.item();
+        TopGoalkeepersTableRow item = event.component();
+        item.topGoalkeepersPositionMold.topGoalkeepersPosition.value(String.valueOf(topGoalkeepersDatasource.indexOf(record) + 1));
+        item.topGoalkeepersPlayerMold.topGoalkeepersPlayer.title(String.valueOf(record.playerName()));
+        item.topGoalkeepersPlayerMold.topGoalkeepersPlayer.onExecute(l -> notifier.redirect("http://localhost:9001/player-trace/" + record.playerId()));
+        //item.topGoalkeepersTeamMold.classificationTeam.value(record.teamName());
+        item.topGoalkeepersPlayedMinutesMold.topGoalkeepersPlayedMinutes.value(String.valueOf(record.playedMinutes()));
+        item.topGoalkeepersGoalsMold.topGoalkeepersGoals.value(String.valueOf(record.amount()));
     }
 }

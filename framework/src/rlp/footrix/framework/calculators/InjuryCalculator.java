@@ -20,25 +20,8 @@ public class InjuryCalculator extends Calculator {
     }
 
     public int injuryDays(int level) {
-        if (level == 0) return 0;
         double random = 0.99 * Math.random();
         return (int) Math.round(minInjuryDays(level) - meanInjuryDays(level) * Math.log10(1 - random));
-    }
-
-    private int injuryLevel(List<Match.MatchEvent> injuries) {
-        int matchEventLevel = injuries.stream()
-                .filter(i -> i.metaInfo().has("level"))
-                .mapToInt(i -> i.metaInfo().get("level").getAsInt())
-                .max().orElse(0);
-        if (matchEventLevel > 0) return matchEventLevel;
-        return defaultLevel();
-    }
-
-    private int defaultLevel() {
-        double level = Math.random();
-        if (level < 0.4954) return 1;
-        if (level < 0.4954 + 0.4208) return 2;
-        return 3;
     }
 
     private int minInjuryDays(int level) {
@@ -50,7 +33,7 @@ public class InjuryCalculator extends Calculator {
     private int meanInjuryDays(int level) {
         if (level == 1) return 9;
         if (level == 2) return 15;
-        return 190;
+        return 90;
     }
 
     private List<Match.MatchEvent> injuriesOf(Player player, Match match) {
@@ -58,5 +41,12 @@ public class InjuryCalculator extends Calculator {
                 .filter(e -> e.who().equals(player.definition().id()))
                 .filter(e -> e.type() == Match.MatchEvent.Type.Injury)
                 .toList();
+    }
+
+    private int injuryLevel(List<Match.MatchEvent> injuries) {
+        return injuries.stream()
+                .filter(i -> i.metaInfo().has("level"))
+                .mapToInt(i -> i.metaInfo().get("level").getAsInt())
+                .max().orElse(1);
     }
 }

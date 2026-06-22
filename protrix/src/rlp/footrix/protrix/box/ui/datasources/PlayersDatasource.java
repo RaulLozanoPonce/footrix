@@ -85,6 +85,6 @@ public class PlayersDatasource extends PageDatasource<Pes6Player> {
     }
 
     private void sort(List<Pes6Player> result) {
-        result.sort(Comparator.comparing(p -> p.mood().gameTime()));
+        result.sort(Comparator.comparing(p -> p.psychophysics().gameTimeSatisfaction()));
     }
 }

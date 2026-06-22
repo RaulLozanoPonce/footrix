@@ -33,8 +33,8 @@ module.exports = {
 		]
 	},
 	entry : {
-		'playerTraceTemplate' : './gen/apps/PlayerTraceTemplate.js',
 		'playerMatchTraceTemplate' : './gen/apps/PlayerMatchTraceTemplate.js',
+		'playerTraceTemplate' : './gen/apps/PlayerTraceTemplate.js',
 		'traceTemplate' : './gen/apps/TraceTemplate.js',
 		'appTemplate' : './gen/apps/AppTemplate.js'
 	},
@@ -62,16 +62,16 @@ module.exports = {
 		new HtmlWebPackPlugin({
 			hash: true,
 			title: "Test UI",
-			chunks: ['playerTraceTemplate'],
-			template: "./src/playerTraceTemplate.html",
-			filename: "./playerTraceTemplate.html"
+			chunks: ['playerMatchTraceTemplate'],
+			template: "./src/playerMatchTraceTemplate.html",
+			filename: "./playerMatchTraceTemplate.html"
 		}),
 		new HtmlWebPackPlugin({
 			hash: true,
 			title: "Test UI",
-			chunks: ['playerMatchTraceTemplate'],
-			template: "./src/playerMatchTraceTemplate.html",
-			filename: "./playerMatchTraceTemplate.html"
+			chunks: ['playerTraceTemplate'],
+			template: "./src/playerTraceTemplate.html",
+			filename: "./playerTraceTemplate.html"
 		}),
 		new HtmlWebPackPlugin({
 			hash: true,

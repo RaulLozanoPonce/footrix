@@ -33,7 +33,7 @@ public record Match(MatchDefinition definition, Instant date, Map<Player, Intege
         return penalties != null;
     }
 
-    public record PlayerStatistics(Integer minutes, Double score, Double fatigue) {}
+    public record PlayerStatistics(Integer minutes, Double score, Double fatigue, MatchRole matchRole) {}
 
     public record MatchEvent(String team, Type type, int minute, String who, String secondaryWho, JsonObject metaInfo) {
         public enum Type {Goal, RedCard, YellowCard, Substitution, Injury, Expulsion}
@@ -45,5 +45,9 @@ public record Match(MatchDefinition definition, Instant date, Map<Player, Intege
 
     private int goalsForOf(String team) {
         return (int) events().stream().filter(e -> e.type() == Goal).filter(e -> e.team().equals(team)).count();
+    }
+
+    public enum MatchRole {
+        Starter, Substitute, Reserve
     }
 }

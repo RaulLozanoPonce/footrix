@@ -1,10 +1,13 @@
 package rlp.footrix.protrix.box;
 
+import rlp.footrix.framework.events.types.NewDayEvent;
 import rlp.footrix.framework.types.entities.Match;
 import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.framework.types.records.PlayerMatchRecord;
+import rlp.footrix.protrix.PlayerDayRegisterSubscriber;
 import rlp.footrix.protrix.ProtrixAppConfiguration;
 import rlp.footrix.protrix.ProtrixApplication;
+import rlp.footrix.protrix.Var;
 import rlp.footrix.protrix.box.helper.DatamartFeeder;
 import rlp.footrix.protrix.model.ProtrixGraph;
 
@@ -43,6 +46,8 @@ public class ProtrixBox extends AbstractBox {
 		application = new ProtrixApplication(config);
 		application.start();
         datamartFeeder = new DatamartFeeder(this);
+
+        application.eventHub().subscribe(NewDayEvent.class, new PlayerDayRegisterSubscriber(application, this));
 	}
 
 	public void afterStart() {
@@ -53,6 +58,8 @@ public class ProtrixBox extends AbstractBox {
         datamartFeeder.feedPlayerRecords();
 
         System.out.println("Finish");
+
+        Var.showMetrics(application);
 
         //TODO ACTIVAR CUANDO SE JUEGUE UNA TEMPORADA SOLO
         /*double homeWinPct = application.entityStore().matches("ESP-1", 0).stream().filter(m -> m.definition().local().equals(m.winner())).count() / (double) (38 * 10);

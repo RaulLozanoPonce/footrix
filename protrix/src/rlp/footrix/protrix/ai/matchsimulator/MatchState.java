@@ -15,6 +15,7 @@ public class MatchState {
     private final List<Match.MatchEvent> events = new ArrayList<>();
     private final List<Match.MatchEvent> minuteEvents = new ArrayList<>();
 
+    private final Map<String, Match.MatchRole> matchRoles = new HashMap<>();
     private final Map<String, Integer> minutes = new HashMap<>();
     private final Map<String, Double> baseScore = new HashMap<>();
     private final Map<String, Double> fatigue = new HashMap<>();
@@ -35,6 +36,10 @@ public class MatchState {
         this.positions.put(visitant, new HashMap<>());
         localLineup.fieldPlayers().forEach(p -> this.positions.get(local).put(p.definition().id(), localLineup.positionOf(p.definition().id())));
         visitantLineup.fieldPlayers().forEach(p -> this.positions.get(visitant).put(p.definition().id(), visitantLineup.positionOf(p.definition().id())));
+        localLineup.fieldPlayers().forEach(p -> this.matchRoles.put(p.definition().id(), Match.MatchRole.Starter));
+        localLineup.benchPlayers().forEach(p -> this.matchRoles.put(p.definition().id(), Match.MatchRole.Substitute));
+        visitantLineup.fieldPlayers().forEach(p -> this.matchRoles.put(p.definition().id(), Match.MatchRole.Starter));
+        visitantLineup.benchPlayers().forEach(p -> this.matchRoles.put(p.definition().id(), Match.MatchRole.Substitute));
         this.random = new Random();
     }
 
@@ -111,6 +116,10 @@ public class MatchState {
                 .sum();
         score += teamScore(team, player);
         return score;
+    }
+
+    public Match.MatchRole matchRole(String player) {
+        return this.matchRoles.get(player);
     }
 
     private int minutesOf(String player, int currentMinute) {

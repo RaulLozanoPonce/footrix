@@ -7,16 +7,15 @@ import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.framework.types.entities.player.Position;
 import rlp.footrix.framework.types.entities.team.PlayersLineup;
 import rlp.footrix.pes6.types.Pes6Player;
+import rlp.footrix.pes6.types.Positions;
 import rlp.footrix.protrix.ai.matchsimulator.MatchState;
 import rlp.footrix.protrix.ai.matchsimulator.weights.PlayerValue;
-import rlp.footrix.pes6.types.Positions;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static rlp.footrix.framework.generators.LineupGenerator.scoreOfMatch;
-import static rlp.footrix.framework.types.entities.Match.MatchEvent.Type.Injury;
-import static rlp.footrix.framework.types.entities.Match.MatchEvent.Type.Substitution;
+import static rlp.footrix.framework.types.entities.Match.MatchEvent.Type.*;
 
 public class SubstitutionEventSimulator extends EventSimulator {
     private static final double BaseSubChance = 1;
@@ -52,10 +51,12 @@ public class SubstitutionEventSimulator extends EventSimulator {
     }
 
     private Set<String> neededSubstitutions(String team) {
+        Set<String> expelled = state.minuteEvents().stream().filter(e -> e.type() == Expulsion && e.team().equals(team)).map(Match.MatchEvent::who).collect(Collectors.toSet());
         return state.minuteEvents().stream()
                 .filter(e -> e.type() == Injury)
                 .filter(e -> e.team().equals(team))
                 .map(Match.MatchEvent::who)
+                .filter(p -> !expelled.contains(p))
                 .limit(state.lineup(team).remainingSubstitutions(5))
                 .collect(Collectors.toSet());
     }
@@ -75,9 +76,11 @@ public class SubstitutionEventSimulator extends EventSimulator {
     }
 
     private List<String> replaceablePlayers(String team, Set<String> irreplaceablePlayers, int minute) {
+        Set<String> expelled = state.minuteEvents().stream().filter(e -> e.type() == Expulsion && e.team().equals(team)).map(Match.MatchEvent::who).collect(Collectors.toSet());
         return state.lineup(team).fieldPlayers().stream()
+                .filter(p -> !expelled.contains(p.definition().id()))
                 .filter(p -> !irreplaceablePlayers.contains(p.definition().id()))
-                .filter(p -> performance((Pes6Player) p, minute) < 0.6)
+                .filter(p -> performance((Pes6Player) p, minute) < 0.3)
                 .sorted((p1, p2) -> Double.compare(scoreOfMatch(p1, state.lineup(team).positionOf(p1.definition().id()), energy(p1)), scoreOfMatch(p2, state.lineup(team).positionOf(p2.definition().id()), energy(p2))))
                 .map(p -> p.definition().id())
                 .toList();
@@ -97,21 +100,23 @@ public class SubstitutionEventSimulator extends EventSimulator {
     }
 
     private List<Match.MatchEvent> substitutions(String team, Collection<String> substitutions, int minute) {
+        Set<String> noNewPlayers = new HashSet<>();
         List<Match.MatchEvent> events = new ArrayList<>();
         for (String playerId : substitutions) {
             Player playerToSubstitute = state.lineup(team).fieldPlayers().stream().filter(p -> p.definition().id().equals(playerId)).findFirst().orElse(null);
             if (playerToSubstitute == null) continue;
-            Player successful = substitute(team, playerToSubstitute);
+            Player successful = substitute(team, playerToSubstitute, noNewPlayers);
             if (successful == null) continue;
+            noNewPlayers.add(successful.definition().id());
             events.add(new Match.MatchEvent(team, Substitution, minute, successful.definition().id(), playerId, null));
         }
         return events;
     }
 
-    private Player substitute(String team, Player player) {
+    private Player substitute(String team, Player player, Set<String> newPlayers) {
         PlayersLineup lineup = state.lineup(team);
         Position position = lineup.positionOf(player.definition().id());
-        return lineup.substitutes().stream().reduce((p1, p2) -> {
+        return lineup.substitutes().stream().filter(p -> !newPlayers.contains(p.definition().id())).reduce((p1, p2) -> {
             if (LineupGenerator.scoreOfMatch(p1, position, energy(p1)) > LineupGenerator.scoreOfMatch(p2, position, energy(p2))) return p1;
             if (LineupGenerator.scoreOfMatch(p1, position, energy(p1)) < LineupGenerator.scoreOfMatch(p2, position, energy(p2))) return p2;
             if (p1.cache().relativeCache(position) > p2.cache().relativeCache(position)) return p1;
@@ -121,15 +126,15 @@ public class SubstitutionEventSimulator extends EventSimulator {
 
     private double performance(Pes6Player player, int minute) {
         double energyPerformance = 1;
-        if (energy(player) < 0.1) energyPerformance = 0;
-        else if (energy(player) < 0.25) energyPerformance = (energy(player) - 0.1) / 0.15;
+        if (energy(player) < 0.25) energyPerformance = 0;
+        else if (energy(player) < 0.4) energyPerformance = (energy(player) - 0.25) / 0.15;
         double scorePerformance = 1;
-        if (playerValue.score(player, minute) < 5) scorePerformance = 0;
-        else if (playerValue.score(player, minute) < 5.5) scorePerformance = (playerValue.score(player, minute) - 5) / 0.5;
-        return 0.5 * energyPerformance + 0.5 * scorePerformance;
+        if (playerValue.score(player, minute) < 4.5) scorePerformance = 0;
+        else if (playerValue.score(player, minute) < 5.5) scorePerformance = (playerValue.score(player, minute) - 4.5) / 1.0;
+        return energyPerformance * scorePerformance;
     }
 
     private double energy(Player player) {
-        return Math.max(0, player.energy() - state.fatigue(player.definition().id()));
+        return Math.max(0, player.psychophysics().energy() - state.fatigue(player.definition().id()));
     }
 }

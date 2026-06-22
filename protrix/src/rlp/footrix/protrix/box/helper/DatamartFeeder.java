@@ -7,6 +7,7 @@ import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.framework.types.entities.team.Team;
 import rlp.footrix.framework.types.records.PlayerMatchRecord;
 import rlp.footrix.framework.types.records.TeamMatchRecord;
+import rlp.footrix.pes6.types.Positions;
 import rlp.footrix.protrix.box.ProtrixBox;
 import rlp.footrix.protrix.model.PlayerRecord;
 
@@ -61,6 +62,7 @@ public class DatamartFeeder {
             feedPlayerRecords(PlayerRecord.Type.Assist, playerMatchRecord, PlayerMatchRecord::assists, player);
             feedPlayerRecords(PlayerRecord.Type.YellowCard, playerMatchRecord, PlayerMatchRecord::yellowCards, player);
             feedPlayerRecords(PlayerRecord.Type.RedCard, playerMatchRecord, PlayerMatchRecord::redCards, player);
+            if (player.mainPosition() == Positions.PT && playerMatchRecord.playedMinutes() >= 60) feedPlayerRecords(PlayerRecord.Type.ReceivedGoals, playerMatchRecord, PlayerMatchRecord::receivedGoals, player);
             feedPlayerMatchRecord(playerMatchRecord, player);
         }
     }

@@ -7,6 +7,7 @@ import rlp.footrix.pes6.types.Pes6Player;
 import rlp.footrix.protrix.box.ProtrixBox;
 import rlp.footrix.protrix.box.ui.datasources.PlayerTraceDatasource;
 import rlp.footrix.protrix.box.ui.displays.rows.TraceTableRow;
+import rlp.footrix.protrix.model.PlayerDayRecord;
 
 public class PlayerTraceTemplate extends AbstractPlayerTraceTemplate<ProtrixBox> {
 	private Pes6Player player;
@@ -26,10 +27,6 @@ public class PlayerTraceTemplate extends AbstractPlayerTraceTemplate<ProtrixBox>
 		Team playerTeam = box().application().teamManager().get(player.team().definition().id());
 		name.value(player.definition().name());
 		team.value(playerTeam.definition().name());
-		position.value(player.mainPosition().id());
-		role.value(playerTeam.contractOf(player.definition().id()).role().name());
-		stamina.value(player.skills().stamina());
-		injuryResistance.value(player.definition().injuryResistance().name());
 	}
 
 	private void initTable() {
@@ -38,19 +35,17 @@ public class PlayerTraceTemplate extends AbstractPlayerTraceTemplate<ProtrixBox>
 	}
 
 	private void renderTableItem(AddCollectionItemEvent event) {
-		PlayerMatchRecord record = event.item();
+        PlayerDayRecord record = event.item();
 		TraceTableRow row = event.component();
-		//row.matchTraceMold.matchTrace.value(record.match());
-		row.dateTraceMold.dateTrace.value(record.date());
-		//row.positionTraceMold.positionTrace.value(record.position() == null ? "" : record.position().id());
-		row.preEnergyTraceMold.preEnergyTrace.value(record.preEnergy());
-		//row.postEnergyTraceMold.postEnergyTrace.value(record.postEnergy());
-		//row.preHappinessTraceMold.preHappinessTrace.value(record.preHappiness());
-		//row.postHappinessTraceMold.postHappinessTrace.value(record.postHappiness());
-		row.expelledTraceMold.expelledTrace.value(record.expelled() ? "Sí" : "");
+		row.dateTraceMold.dateTrace.value(record.ts());
+        row.energyTraceMold.energyTrace.value(record.energy());
+        row.physicalConditionTraceMold.physicalConditionTrace.value(record.physical());
+        row.selfConfidenceTraceMold.selfConfidenceTrace.value(record.selfConfidence());
+        row.contractSatisfactionTraceMold.contractSatisfactionTrace.value(record.contractSatisfaction());
+        row.gameTimeSatisfactionTraceMold.gameTimeSatisfactionTrace.value(record.gameTimeSatisfaction());
+        row.collectivePerformanceTraceMold.collectivePerformanceTrace.value(record.collectivePerformance());
+        row.minuteTraceMold.minuteTrace.value(record.minutes());
+        row.staminaTraceMold.staminaTrace.value(record.stamina());
 		row.injuredTraceMold.injuredTrace.value(record.injured() ? "Sí" : "");
-		row.enterMinuteTraceMold.enterMinuteTrace.value(record.enterMinute() == null ? "" : String.valueOf(record.enterMinute()));
-		row.exitMinuteTraceMold.exitMinuteTrace.value(record.exitMinute() == null ? "" : String.valueOf(record.exitMinute()));
-		//row.noteTraceMold.noteTrace.value(record.note());
 	}
 }

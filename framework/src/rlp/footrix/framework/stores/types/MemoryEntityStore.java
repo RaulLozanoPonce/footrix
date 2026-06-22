@@ -85,8 +85,8 @@ public class MemoryEntityStore implements EntityStore {
 
     @Override
     public List<Match> matches(String competition, int season) {
-        return matches.get(season)
-                .get(competition).values().stream()
+        return matches.getOrDefault(season, new HashMap<>())
+                .getOrDefault(competition, new HashMap<>()).values().stream()
                 .flatMap(v -> v.values().stream())
                 .flatMap(Collection::stream)
                 .toList();

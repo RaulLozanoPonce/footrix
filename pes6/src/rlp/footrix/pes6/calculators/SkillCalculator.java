@@ -3,6 +3,8 @@ package rlp.footrix.pes6.calculators;
 public class SkillCalculator {
     private static int AgeDays = 365;
     private static int AgeTrains = 200;
+    private static double MeanSkillValue = 78;
+    private static double GradeSkillValue = 6;
 
     //TODO HACER QUE LAS SKILLS SEAN UN ENUMERADO
 
@@ -26,5 +28,9 @@ public class SkillCalculator {
         else if (skillId == 23) trainEvolution = 1.5;
         else trainEvolution = 2;
         return ((trainScore / 10.0) * 10 * (trainEvolution / 26.0)) / AgeTrains;
+    }
+
+    public static double sigmoid(double skill) {
+        return 1 / (1 + Math.exp(- (skill - MeanSkillValue) / GradeSkillValue));
     }
 }

@@ -43,10 +43,9 @@ public abstract class Application {
     private final ModelCloudAccessor models;
 
     private final CacheCalculator cacheCalculator;
-    private final MoodCalculator moodCalculator;
+    private final PsychophysicsCalculator psychophysicsCalculator;
     private final InjuryCalculator injuryCalculator;
     private final RetireCalculator retireCalculator;
-    private final EnergyCalculator energyCalculator;
 
     public Application(GamePlatform platform, FootrixConfiguration configuration) {
         this.platform = platform;
@@ -70,10 +69,9 @@ public abstract class Application {
         this.eloManager = new EloManager();
 
         this.cacheCalculator = new CacheCalculator(this);
-        this.moodCalculator = new MoodCalculator(this);
+        this.psychophysicsCalculator = new PsychophysicsCalculator(this);
         this.injuryCalculator = new InjuryCalculator(this);
         this.retireCalculator = new RetireCalculator(this);
-        this.energyCalculator = new EnergyCalculator(this);
 
         this.taskHub.add(configuration.initDate(), new InitGameEvent()); //TODO SOLO CUANDO ESTÉ INICIALIZADO
         this.tableStore.setup(configuration.initDatabase(this).elos());
@@ -183,8 +181,8 @@ public abstract class Application {
         return cacheCalculator;
     }
 
-    public MoodCalculator moodCalculator() {
-        return moodCalculator;
+    public PsychophysicsCalculator psychophysicsCalculator() {
+        return psychophysicsCalculator;
     }
 
     public InjuryCalculator injuryCalculator() {
@@ -193,10 +191,6 @@ public abstract class Application {
 
     public RetireCalculator retireCalculator() {
         return retireCalculator;
-    }
-
-    public EnergyCalculator energyCalculator() {
-        return energyCalculator;
     }
 
     public abstract Map<Instant, List<Event>> newSeasonTasks(boolean isNewGame);

@@ -28,7 +28,7 @@ Concept PlayerRecord
 	var string teamName
 	var string playerId
 	var string playerName
-	var word:{Goal Assist CleanSheet YellowCard RedCard} type
+	var word:{Goal Assist ReceivedGoals YellowCard RedCard} type
 	var integer amount
 	var integer playedMatches
 	var double playedMinutes
@@ -47,3 +47,17 @@ Concept PlayerMatchRecord
 	var integer redCards
 	var string score
 	var boolean substitute
+
+Concept PlayerDayRecord
+	var instant ts
+	var string playerId
+	var string teamId
+	var double energy
+	var double physical
+	var double selfConfidence
+	var double contractSatisfaction
+	var double gameTimeSatisfaction
+	var double collectivePerformance
+	var integer minutes
+	var double stamina
+	var boolean injured

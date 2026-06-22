@@ -42,6 +42,6 @@ Template(layout=Horizontal Flexible) headerTemplate
 			//Block(layout=Horizontal CenterCenter) as Relative(height=100%, width=100%)
 				//Image(defaultValue="images/logo.png", format=fullHeight)
 
-		Text(value="Protrix: Las meta-ligas de fútbol", format=h3 bold airLeft)
+		Text(value="Tagoror: El metaverso de fútbol", format=h3 bold airLeft)
 	Block(layout=Horizontal EndJustified Center)
 		Text(value="Cargando...") date

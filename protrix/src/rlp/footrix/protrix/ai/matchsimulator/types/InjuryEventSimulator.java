@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 public class InjuryEventSimulator extends EventSimulator {
-    private static final double BaseInjuryChance = 0.014;
+    private static final double BaseInjuryChance = 0.01;
 
     public InjuryEventSimulator(MatchState state, PlayerValue playerValue) {
         super(state, playerValue);
@@ -24,7 +24,7 @@ public class InjuryEventSimulator extends EventSimulator {
     public List<Match.MatchEvent> simulate(int minute) {
         if (Math.random() > BaseInjuryChance) return new ArrayList<>();
         JsonObject metainfo = new JsonObject();
-        metainfo.addProperty("level", 1);   //TODO
+        metainfo.addProperty("level", level());
         if (Math.random() < 0.5) {
             String player = pickPlayerForInjury(localLineup());
             return List.of(new Match.MatchEvent(local(), Match.MatchEvent.Type.Injury, minute, player, null, metainfo));
@@ -56,5 +56,12 @@ public class InjuryEventSimulator extends EventSimulator {
         }
 
         return lineup.fieldPlayers().get((int) (Math.random() * lineup.fieldPlayers().size())).definition().id();
+    }
+
+    private int level() {
+        double random = Math.random();
+        if (random <= 0.8) return 1;
+        if (random <= 0.8 + 0.17) return 2;
+        return 3;
     }
 }

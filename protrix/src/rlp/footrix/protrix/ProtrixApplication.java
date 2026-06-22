@@ -5,6 +5,7 @@ import rlp.footrix.framework.FootrixConfiguration;
 import rlp.footrix.framework.configuration.TeamRule;
 import rlp.footrix.framework.events.Event;
 import rlp.footrix.framework.events.types.InitPhaseEvent;
+import rlp.footrix.framework.events.types.NewDayEvent;
 import rlp.footrix.framework.events.types.NewSeasonEvent;
 import rlp.footrix.framework.events.types.SetPhaseCalendarEvent;
 import rlp.footrix.framework.types.entities.SeasonReference;

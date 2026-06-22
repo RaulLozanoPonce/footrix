@@ -45,10 +45,10 @@ public class TraceTemplate extends AbstractTraceTemplate<ProtrixBox> {
         row.roleMold.role.value(team == null ? "" : team.contractOf(player.definition().id()).role().name());
         row.overallMold.overall.value(player.overall());
         row.positionMold.position.value(player.mainPosition().id());
-        row.happinessGameTimeMold.happinessGameTime.value(Math.round(player.mood().gameTime() * 100.0) / 100.0);
-        row.happinessContractMold.happinessContract.value(Math.round(player.mood().contract() * 100.0) / 100.0);
-        row.happinessIndividualMold.happinessIndividual.value(Math.round(player.mood().individualPerformance() * 100.0) / 100.0);
-        row.happinessCollectiveMold.happinessCollective.value(Math.round(player.mood().collectivePerformance() * 100.0) / 100.0);
+        row.happinessGameTimeMold.happinessGameTime.value(Math.round(player.psychophysics().gameTimeSatisfaction() * 100.0) / 100.0);
+        row.happinessContractMold.happinessContract.value(Math.round(player.psychophysics().contractSatisfaction() * 100.0) / 100.0);
+        row.happinessIndividualMold.happinessIndividual.value(Math.round(player.psychophysics().selfConfidence() * 100.0) / 100.0);
+        row.happinessCollectiveMold.happinessCollective.value(Math.round(player.psychophysics().collectivePerformance() * 100.0) / 100.0);
         row.minutesMold.minutes.value(Math.round(minutes * 100.0) / 100.0);
         row.scoreMold.score.value(Math.round(score * 100.0) / 100.0);
         row.cacheIniMold.cacheIni.value(box().initialCaches().get(player.definition().id()));

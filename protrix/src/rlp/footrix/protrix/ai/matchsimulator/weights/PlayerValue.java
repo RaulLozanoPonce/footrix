@@ -5,6 +5,8 @@ import rlp.footrix.pes6.types.Pes6Player;
 import rlp.footrix.pes6.types.player.Pes6Skills;
 import rlp.footrix.protrix.ai.matchsimulator.MatchState;
 
+import static rlp.footrix.pes6.calculators.SkillCalculator.sigmoid;
+
 public class PlayerValue {
     private final MatchState state;
 
@@ -60,7 +62,7 @@ public class PlayerValue {
     }
 
     public double stamina(Pes6Player player) {
-        return ((Pes6Skills) player.skills()).stamina() / 100.0;
+        return sigmoid(player.skills().stamina());
     }
 
     public double injuryProne(Pes6Player player) {
@@ -72,11 +74,12 @@ public class PlayerValue {
     }
 
     public double form(Pes6Player player) {
-        return player.mood().overall();
+        //TODO REVISAR SI DEBE SER ESTO
+        return player.psychophysics().physicalCondition();
     }
 
     public double energy(Pes6Player player) {
-        return player.energy() - state.fatigue(player.definition().id());
+        return player.psychophysics().energy() - state.fatigue(player.definition().id());
     }
 
     public double score(Pes6Player player, int minute) {

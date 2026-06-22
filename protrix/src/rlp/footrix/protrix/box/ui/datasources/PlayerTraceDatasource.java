@@ -5,25 +5,23 @@ import io.intino.alexandria.ui.model.datasource.Group;
 import io.intino.alexandria.ui.model.datasource.PageDatasource;
 import rlp.footrix.framework.types.records.PlayerMatchRecord;
 import rlp.footrix.protrix.box.ProtrixBox;
+import rlp.footrix.protrix.model.PlayerDayRecord;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class PlayerTraceDatasource extends PageDatasource<PlayerMatchRecord> {
+public class PlayerTraceDatasource extends PageDatasource<PlayerDayRecord> {
 
     //TODO OPTIMIZAR
-    private final List<PlayerMatchRecord> trace;
+    private final List<PlayerDayRecord> trace;
 
     public PlayerTraceDatasource(ProtrixBox box, String player) {
-        this.trace = box.application().recordStore().playerMatchRecords().stream()
-                .filter(r -> r.player().equals(player))
-                .sorted(Comparator.comparing(PlayerMatchRecord::date))
-                .toList();
+        this.trace = box.graph().playerDayRecordList().stream().filter(r -> r.playerId().equals(player)).sorted(Comparator.comparing(PlayerDayRecord::ts)).toList();
     }
 
     @Override
-    public List<PlayerMatchRecord> items(int start, int count, String condition, List<Filter> filters, List<String> sorting) {
+    public List<PlayerDayRecord> items(int start, int count, String condition, List<Filter> filters, List<String> sorting) {
         if (start > trace.size()) return Collections.emptyList();
         int end = Math.min(start + count, trace.size());
         return trace.subList(start, end);

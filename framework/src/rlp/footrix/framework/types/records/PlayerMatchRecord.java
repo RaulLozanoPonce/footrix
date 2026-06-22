@@ -4,7 +4,8 @@ import java.time.Instant;
 
 public record PlayerMatchRecord(String matchId, String player, String team, String competition, int season, Instant date,
                                 Integer enterMinute, Integer exitMinute, int maxMinutes, Double score, boolean injured,
-                                boolean expelled, int goals, int assists, int yellowCards, int redCards, double preEnergy) {
+                                boolean expelled, int goals, int assists, int receivedGoals, int yellowCards, int redCards,
+                                double preEnergy) {
 
     public int playedMinutes() {
         if (enterMinute == null || exitMinute == null) return 0;

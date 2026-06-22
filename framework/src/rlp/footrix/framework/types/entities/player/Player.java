@@ -1,10 +1,7 @@
 package rlp.footrix.framework.types.entities.player;
 
 import rlp.footrix.framework.types.entities.definitions.PlayerDefinition;
-import rlp.footrix.framework.types.entities.player.facets.CacheFacet;
-import rlp.footrix.framework.types.entities.player.facets.EconomyFacet;
-import rlp.footrix.framework.types.entities.player.facets.MoodFacet;
-import rlp.footrix.framework.types.entities.player.facets.SkillsFacet;
+import rlp.footrix.framework.types.entities.player.facets.*;
 import rlp.footrix.framework.types.entities.team.Team;
 import rlp.footrix.framework.types.entities.team_player.PlayerContract;
 
@@ -23,13 +20,10 @@ public class Player {
     protected final Map<Position, Double> otherPositions = new HashMap<>(); //TODO
 
     private SkillsFacet skillsFacet;
-
-    private final MoodFacet mood = new MoodFacet(this);
+    private PsychophysicsFacet psychophysicsFacet = new PsychophysicsFacet(this);
     private final EconomyFacet economy = new EconomyFacet(this);
     private final CacheFacet cache = new CacheFacet(this);
     private PlayerContract contract;
-
-    private double energy = 1.0;
     private Instant recoveryDate = null;
 
     private final Map<String, Integer> accumulatedYellowCards = new HashMap<>();
@@ -72,17 +66,8 @@ public class Player {
         return mainPositions.keySet().stream().filter(p -> p != mainPosition).collect(Collectors.toSet());
     }
 
-    public Player energy(double deltaEnergy) {
-        this.energy = Math.max(0, Math.min(1, energy + deltaEnergy));
-        return this;
-    }
-
-    public double energy() {
-        return energy;
-    }
-
-    public MoodFacet mood() {
-        return mood;
+    public PsychophysicsFacet psychophysics() {
+        return psychophysicsFacet;
     }
 
     public EconomyFacet economy() {

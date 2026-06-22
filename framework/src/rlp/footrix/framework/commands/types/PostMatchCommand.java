@@ -38,7 +38,7 @@ public class PostMatchCommand extends Command {
         adjustCache();
         reduceSanctions();
         registerCardsAndSanctions();
-        registerEnergy();
+        registerEnergyAndPhysicalForm();
         registerInjuries();
     }
 
@@ -81,22 +81,29 @@ public class PostMatchCommand extends Command {
             boolean expelled = available ? has(player, Expulsion) : player.hasSanction(match.definition().competition());
             int goals = available ? count(player, Goal) : 0;
             int assists = available ? assistsOf(player) : 0;
+            int receivedGoals = available ? receivedGoalsOf(team.definition().id(), enterMinute, exitMinute) : 0;
             int yellowCards = available ? count(player, YellowCard) : 0;
             int redCards = available ? count(player, RedCard) : 0;
-            updatePlayerMatchRecord(team, player, enterMinute, exitMinute, maxMinutes, score, injured, expelled, goals, assists, yellowCards, redCards, player.energy());
+            updatePlayerMatchRecord(team, player, enterMinute, exitMinute, maxMinutes, score, injured, expelled, goals, assists, receivedGoals, yellowCards, redCards, player.psychophysics().energy());
         }
         createTeamMatchRecord(team, goalsForOf(team), goalsAgainstOf(team));
     }
 
     private void adjustMood() {
-        local.players().forEach(p -> adjustMood(p, deltaElo, localMatchImportance));
-        visitant.players().forEach(p -> adjustMood(p, -deltaElo, visitantMatchImportance));
+        local.players().forEach(p -> adjustMood(p, deltaElo, localMatchImportance, startingRole(local.definition().id(), p)));
+        visitant.players().forEach(p -> adjustMood(p, -deltaElo, visitantMatchImportance, startingRole(visitant.definition().id(), p)));
     }
 
-    private void adjustMood(Player player, int deltaElo, double matchImportance) {
-        player.mood().gameTime(application.moodCalculator().deltaGameTimeMood(player, match, matchImportance));
-        player.mood().individualPerformance(application.moodCalculator().deltaIndividualPerformanceMatchMood(player, match, matchImportance));
-        player.mood().collectivePerformance(application.moodCalculator().deltaCollectivePerformanceMatchMood(player.team(), deltaElo));
+    private Match.MatchRole startingRole(String team, Player player) {
+        Match.PlayerStatistics playerStatistics = match.playerStatistics().get(team).get(player.definition().id());
+        if (playerStatistics == null) return Match.MatchRole.Reserve;
+        return playerStatistics.matchRole();
+    }
+
+    private void adjustMood(Player player, int deltaElo, double matchImportance, Match.MatchRole matchRole) {
+        player.psychophysics().gameTimeSatisfaction(application.psychophysicsCalculator().deltaGameTimeSatisfaction(player, match, matchImportance, matchRole));
+        player.psychophysics().selfConfidence(application.psychophysicsCalculator().deltaSelfConfidenceMatch(player, match, matchImportance));
+        player.psychophysics().collectivePerformance(application.psychophysicsCalculator().deltaCollectivePerformanceMatchMood(player.team(), deltaElo));
     }
 
     private void adjustCache() {
@@ -159,6 +166,15 @@ public class PostMatchCommand extends Command {
                 .count();
     }
 
+    private int receivedGoalsOf(String team, Integer enterMinute, Integer exitMinute) {
+        if (enterMinute == null && exitMinute == null) return 0;
+        return (int) match.events().stream()
+                .filter(e -> e.type() == Goal)
+                .filter(e -> !e.team().equals(team))
+                .filter(e -> e.minute() >= enterMinute && e.minute() <= exitMinute)
+                .count();
+    }
+
     private void registerCardsAndSanctions() {
         CompetitionDefinition competition = application.competitionManager().get(match.definition().competition()).definition();
         Set<String> players = new HashSet<>();
@@ -201,10 +217,11 @@ public class PostMatchCommand extends Command {
         }
     }
 
-    private void registerEnergy() {
+    private void registerEnergyAndPhysicalForm() {
         for (String team : match.playerStatistics().keySet()) {
             for (String player : match.playerStatistics().get(team).keySet()) {
-                team(team).player(player).energy(- match.playerStatistics().get(team).get(player).fatigue());
+                team(team).player(player).psychophysics().energy(- match.playerStatistics().get(team).get(player).fatigue());
+                team(team).player(player).psychophysics().physicalCondition(application.psychophysicsCalculator().physicalConditionMatchGain(match.playerStatistics().get(team).get(player).minutes()));
             }
         }
     }
@@ -212,12 +229,13 @@ public class PostMatchCommand extends Command {
     private void registerInjuries() {
         for (Player player : match.events().stream().filter(e -> e.type() == Injury).map(e -> application.playerManager().get(e.who())).toList()) {
             int injuryDays = application.injuryCalculator().injuryDays(player, match);
+            if (injuryDays == 0) continue;
             player.addInjury(application.timeManager().future(injuryDays));
         }
     }
 
-    private void updatePlayerMatchRecord(Team team, Player player, Integer enterMinute, Integer exitMinute, int maxMinutes, Double score, boolean injured, boolean expelled, int goals, int assists, int yellowCards, int redCards, double preEnergy) {
-        application.recordStore().create().playerMatchRecord(match.definition().id(), player.definition().id(), team.definition().id(), match.definition().competition(), match.definition().season(), match.date(), enterMinute, exitMinute, maxMinutes, score, injured, expelled, goals, assists, yellowCards, redCards, preEnergy);
+    private void updatePlayerMatchRecord(Team team, Player player, Integer enterMinute, Integer exitMinute, int maxMinutes, Double score, boolean injured, boolean expelled, int goals, int assists, int receivedGoals, int yellowCards, int redCards, double preEnergy) {
+        application.recordStore().create().playerMatchRecord(match.definition().id(), player.definition().id(), team.definition().id(), match.definition().competition(), match.definition().season(), match.date(), enterMinute, exitMinute, maxMinutes, score, injured, expelled, goals, assists, receivedGoals, yellowCards, redCards, preEnergy);
     }
 
     private void createTeamMatchRecord(Team team, int goalsFor, int goalsAgainst) {

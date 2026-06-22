@@ -22,6 +22,7 @@ public class LineupGenerator {
     }
 
     public static double scoreOfMatch(Player player, Position position, double energy) {
+        //TODO REPLANTEAR CRITERIO DE JUEGO
         /*return player.cache().relativeCache(position) *
                 (
                         EnergyFactor * fix(energy) +
@@ -29,7 +30,7 @@ public class LineupGenerator {
                         GameTimeFactor * (1 - player.mood().gameTime()) +
                         IndividualFactor * player.mood().individualPerformance()
                 );*/
-        return player.cache().relativeCache(position) * (0.4 * fix(energy) + 0.6 * (1 - player.mood().gameTime()));
+        return player.cache().relativeCache(position) * (0.4 * fix(energy) + 0.6 * (1 - player.psychophysics().gameTimeSatisfaction()));
     }
 
     private static Map<Player, Integer[]> starters(List<LineupEntry> entries) {
@@ -99,7 +100,7 @@ public class LineupGenerator {
                 Position position = lineup.distribution()[i][j];
                 if (position == null) continue;
                 for (Player player : players) {
-                    entries.add(new LineupEntry(new Integer[]{i, j}, position, player, scoreOfMatch(player, position, player.energy())));
+                    entries.add(new LineupEntry(new Integer[]{i, j}, position, player, scoreOfMatch(player, position, player.psychophysics().energy())));
                 }
             }
         }

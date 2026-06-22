@@ -6,47 +6,41 @@ Template playerTraceTemplate as Relative(height=100%, width=100%)
 	Block(layout=Horizontal, spacing=DP32) as Relative(height=5%)
 		Text name as Labeled("Nombre:")
 		Text team as Labeled("Equipo:")
-		Text position as Labeled("Posicion Ideal:")
-		Text role as Labeled("Rol:")
-		Number stamina as Labeled("Resistencia:")
-		Text injuryResistance as Labeled("Resistencia lesiones:")
+		//Text position as Labeled("Posicion Ideal:")
+		//Text role as Labeled("Rol:")
+		//Number stamina as Labeled("Resistencia:")
+		//Text injuryResistance as Labeled("Resistencia lesiones:")
 	Block as Relative(width=100%, height=95%)
-		Table(itemClass="rlp.footrix.framework.types.records.PlayerMatchRecord", pageSize=38, format=wh100) traceTable
+		Table(itemClass="rlp.footrix.protrix.model.PlayerDayRecord", pageSize=20, format=wh100) traceTable
 			noItemsMessage = "Este jugador no ha jugado partidos"
 			noItemsFoundMessage = "Este jugador no ha jugado partidos con los criterios establecidos"
-			Mold
-				Heading matchTraceHeading > Text(value = "Partido")
-				Item(height=20px, width=20%) matchTraceMold > Text matchTrace
 			Mold
 				Heading dateTraceHeading > Text(value = "Fecha")
 				Item(height=20px, width=5%) dateTraceMold > Date dateTrace
 			Mold
-				Heading positionTraceHeading > Text(value = "Posicion")
-				Item(height=20px, width=5%) positionTraceMold > Text positionTrace
+				Heading energyTraceHeading > Text(value = "Energía")
+				Item(height=20px, width=7%) energyTraceMold > Number(countDecimals=2) energyTrace
 			Mold
-				Heading preEnergyTraceHeading > Text(value = "Energía pre-partido")
-				Item(height=20px, width=7%) preEnergyTraceMold > Number(countDecimals=2) preEnergyTrace
+				Heading physicalConditionTraceHeading > Text(value = "Estado fisico")
+				Item(height=20px, width=7%) physicalConditionTraceMold > Number(countDecimals = 2) physicalConditionTrace
 			Mold
-				Heading postEnergyTraceHeading > Text(value = "Energía post-partido")
-				Item(height=20px, width=7%) postEnergyTraceMold > Number(countDecimals = 2) postEnergyTrace
+				Heading selfConfidenceTraceHeading > Text(value = "Confianza")
+				Item(height=20px, width=7%) selfConfidenceTraceMold > Number(countDecimals = 2) selfConfidenceTrace
 			Mold
-				Heading preHappinessTraceHeading > Text(value = "Felicidad pre-partido")
-				Item(height=20px, width=7%) preHappinessTraceMold > Number(countDecimals = 2) preHappinessTrace
+				Heading contractSatisfactionTraceHeading > Text(value = "Contrato")
+				Item(height=20px, width=7%) contractSatisfactionTraceMold > Number(countDecimals = 2) contractSatisfactionTrace
 			Mold
-				Heading postHappinessTraceHeading > Text(value = "Felicidad post-partido")
-				Item(height=20px, width=7%) postHappinessTraceMold > Number(countDecimals = 2) postHappinessTrace
+				Heading gameTimeSatisfactionTraceHeading > Text(value = "Tiempo de juego")
+				Item(height=20px, width=7%) gameTimeSatisfactionTraceMold > Number(countDecimals = 2) gameTimeSatisfactionTrace
 			Mold
-				Heading expelledTraceHeading > Text(value = "Expulsado")
-				Item(height=20px, width=5%) expelledTraceMold > Text expelledTrace
+				Heading collectivePerformanceTraceHeading > Text(value = "Rendimiento colectivo")
+				Item(height=20px, width=7%) collectivePerformanceTraceMold > Number(countDecimals = 2) collectivePerformanceTrace
+            Mold
+				Heading minuteTraceHeading > Text(value = "Minutos")
+				Item(height=20px, width=8%) minuteTraceMold > Number(countDecimals = 0) minuteTrace
+			Mold
+				Heading staminaTraceHeading > Text(value = "Stamina")
+				Item(height=20px, width=7%) staminaTraceMold > Number(countDecimals = 2) staminaTrace
 			Mold
 				Heading injuredTraceHeading > Text(value = "Lesionado")
 				Item(height=20px, width=5%) injuredTraceMold > Text injuredTrace
-			Mold
-				Heading enterMinuteTraceHeading > Text(value = "Minuto de entrada")
-				Item(height=20px, width=8%) enterMinuteTraceMold > Text enterMinuteTrace
-			Mold
-				Heading exitMinuteTraceHeading > Text(value = "Minuto de salida")
-				Item(height=20px, width=8%) exitMinuteTraceMold > Text exitMinuteTrace
-			Mold
-				Heading noteTraceHeading > Text(value = "Nota")
-				Item(height=20px, width=16%) noteTraceMold > Text noteTrace

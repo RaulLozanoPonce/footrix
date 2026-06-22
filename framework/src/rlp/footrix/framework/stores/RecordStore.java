@@ -51,8 +51,8 @@ public interface RecordStore {
             return analysis;
         }
 
-        public PlayerMatchRecord playerMatchRecord(String matchId, String player, String team, String competition, int season, Instant date, Integer enterMinute, Integer exitMinute, int maxMinutes, Double score, boolean injured, boolean expelled, int goals, int assists, int yellowCards, int redCards, double preEnergy) {
-            PlayerMatchRecord analysis = new PlayerMatchRecord(matchId, player, team, competition, season, date, enterMinute, exitMinute, maxMinutes, score, injured, expelled, goals, assists, yellowCards, redCards, preEnergy);
+        public PlayerMatchRecord playerMatchRecord(String matchId, String player, String team, String competition, int season, Instant date, Integer enterMinute, Integer exitMinute, int maxMinutes, Double score, boolean injured, boolean expelled, int goals, int assists, int receivedGoals, int yellowCards, int redCards, double preEnergy) {
+            PlayerMatchRecord analysis = new PlayerMatchRecord(matchId, player, team, competition, season, date, enterMinute, exitMinute, maxMinutes, score, injured, expelled, goals, assists, receivedGoals, yellowCards, redCards, preEnergy);
             store.playerMatchRecords().add(analysis);
             return analysis;
         }

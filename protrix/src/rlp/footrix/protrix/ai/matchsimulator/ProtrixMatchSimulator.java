@@ -94,7 +94,7 @@ public class ProtrixMatchSimulator implements MatchSimulator {
     }
 
     private Match.PlayerStatistics statistics(String team, String player) {
-        return new Match.PlayerStatistics(state.minutes(player), state.score(team, player, 90), state.fatigue(player));
+        return new Match.PlayerStatistics(state.minutes(player), state.score(team, player, 90), state.fatigue(player), state.matchRole(player));
     }
 
     private void savePlayersState(MatchDefinition match, Instant date, int minute) {
@@ -106,6 +106,6 @@ public class ProtrixMatchSimulator implements MatchSimulator {
 
     private void savePlayerState(Player player, MatchDefinition match, Instant date, int minute) {
         double fatigue = state.fatigue(player.definition().id());
-        application.recordStore().create().playerMinuteRecord(match.id(), player.definition().id(), date, minute, Math.max(0, player.energy() - fatigue), player.skills().stamina());
+        application.recordStore().create().playerMinuteRecord(match.id(), player.definition().id(), date, minute, Math.max(0, player.psychophysics().energy() - fatigue), player.skills().stamina());
     }
 }
