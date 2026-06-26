@@ -33,7 +33,7 @@ public class PostMatchCommand extends Command {
 
     public void execute() {
         adjustTeamElo();
-        adjustStatistics();
+        //adjustStatistics();
         adjustMood();
         adjustCache();
         reduceSanctions();
@@ -65,12 +65,12 @@ public class PostMatchCommand extends Command {
         visitant.players().forEach(p -> p.sanction(- 1, match.definition().competition()));
     }
 
-    private void adjustStatistics() {
+    /*private void adjustStatistics() {
         adjustStatistics(local);
         adjustStatistics(visitant);
-    }
+    }*/
 
-    private void adjustStatistics(Team team) {
+    /*private void adjustStatistics(Team team) {
         for (Player player : team.players()) {
             boolean available = !player.isInjured() && !player.hasSanction(match.definition().competition());
             Integer enterMinute = available ? enterMinuteOf(player) : null;
@@ -87,7 +87,7 @@ public class PostMatchCommand extends Command {
             updatePlayerMatchRecord(team, player, enterMinute, exitMinute, maxMinutes, score, injured, expelled, goals, assists, receivedGoals, yellowCards, redCards, player.psychophysics().energy());
         }
         createTeamMatchRecord(team, goalsForOf(team), goalsAgainstOf(team));
-    }
+    }*/
 
     private void adjustMood() {
         local.players().forEach(p -> adjustMood(p, deltaElo, localMatchImportance, startingRole(local.definition().id(), p)));
@@ -234,13 +234,13 @@ public class PostMatchCommand extends Command {
         }
     }
 
-    private void updatePlayerMatchRecord(Team team, Player player, Integer enterMinute, Integer exitMinute, int maxMinutes, Double score, boolean injured, boolean expelled, int goals, int assists, int receivedGoals, int yellowCards, int redCards, double preEnergy) {
+    /*private void updatePlayerMatchRecord(Team team, Player player, Integer enterMinute, Integer exitMinute, int maxMinutes, Double score, boolean injured, boolean expelled, int goals, int assists, int receivedGoals, int yellowCards, int redCards, double preEnergy) {
         application.recordStore().create().playerMatchRecord(match.definition().id(), player.definition().id(), team.definition().id(), match.definition().competition(), match.definition().season(), match.date(), enterMinute, exitMinute, maxMinutes, score, injured, expelled, goals, assists, receivedGoals, yellowCards, redCards, preEnergy);
     }
 
     private void createTeamMatchRecord(Team team, int goalsFor, int goalsAgainst) {
         application.recordStore().create().teamMatchRecord(team.definition().id(), match.definition().competition(), match.definition().season(), match.date(), goalsFor, goalsAgainst);
-    }
+    }*/
 
     private TeamElo eloOf(String teamId) {
         TeamElo analysis = application.tableStore().teamElo(teamId);

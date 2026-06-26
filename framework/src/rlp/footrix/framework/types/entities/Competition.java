@@ -24,6 +24,11 @@ public class Competition {
         return this.phases.get(nPhase);
     }
 
+    public boolean compete(Team team) {
+        if (team == null) return false;
+        return phases.stream().anyMatch(p -> p.compete(team));
+    }
+
     public static class Phase {
         private final CompetitionDefinition.PhaseDefinition definition;
         private List<Group> groups;
@@ -57,6 +62,15 @@ public class Competition {
             return this.groups.get(nGroup);
         }
 
-        public record Group(GroupDefinition definition, List<Team> teams) {}
+        public boolean compete(Team team) {
+            return groups.stream().anyMatch(g -> g.compete(team));
+        }
+
+        public record Group(GroupDefinition definition, List<Team> teams) {
+
+            public boolean compete(Team team) {
+                return teams.stream().anyMatch(t -> t.definition().id().equals(team.definition().id()));
+            }
+        }
     }
 }

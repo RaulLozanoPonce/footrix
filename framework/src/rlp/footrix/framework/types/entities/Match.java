@@ -14,26 +14,46 @@ public record Match(MatchDefinition definition, Instant date, Map<Player, Intege
 
     public String winner() {
         if (penalties != null) return penalties.winner();
-        int localGoals = goalsForOf(definition().local());
-        int visitantGoals = goalsForOf(definition().visitant());
+        int localGoals = goalsFor(definition().local());
+        int visitantGoals = goalsFor(definition().visitant());
         if (localGoals > visitantGoals) return definition.local();
         if (visitantGoals > localGoals) return definition.visitant();
         return null;
     }
 
     public int localGoals() {
-        return goalsForOf(definition.local());
+        return goalsFor(definition.local());
     }
 
     public int visitantGoals() {
-        return goalsForOf(definition.visitant());
+        return goalsFor(definition.visitant());
     }
 
     public boolean withPenalties() {
         return penalties != null;
     }
 
-    public record PlayerStatistics(Integer minutes, Double score, Double fatigue, MatchRole matchRole) {}
+    public int streak(String team) {
+        if (team.equals(definition.local())) {
+            return Integer.compare(localGoals(), visitantGoals());
+        } else {
+            return Integer.compare(visitantGoals(), localGoals());
+        }
+    }
+
+    public int goalsFor(String team) {
+        return (int) events().stream().filter(e -> e.type() == Goal).filter(e -> e.team().equals(team)).count();
+    }
+
+    public int goalsAgainst(String team) {
+        return (int) events().stream().filter(e -> e.type() == Goal).filter(e -> !e.team().equals(team)).count();
+    }
+
+    public enum MatchRole {
+        Starter, Substitute, Reserve
+    }
+
+    public record PlayerStatistics(Integer minutes, Double score, Double fatigue, MatchRole matchRole, Integer enterMinute, Integer exitMinute, Integer goals, Integer assists, Integer yellowCards, Integer redCards, Integer receivedGoals) {}
 
     public record MatchEvent(String team, Type type, int minute, String who, String secondaryWho, JsonObject metaInfo) {
         public enum Type {Goal, RedCard, YellowCard, Substitution, Injury, Expulsion}
@@ -41,13 +61,5 @@ public record Match(MatchDefinition definition, Instant date, Map<Player, Intege
 
     public record Penalties(String winner) {
         //TODO DETALLAR MÁS
-    }
-
-    private int goalsForOf(String team) {
-        return (int) events().stream().filter(e -> e.type() == Goal).filter(e -> e.team().equals(team)).count();
-    }
-
-    public enum MatchRole {
-        Starter, Substitute, Reserve
     }
 }

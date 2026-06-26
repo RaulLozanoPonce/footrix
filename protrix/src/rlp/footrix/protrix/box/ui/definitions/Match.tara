@@ -1,6 +1,7 @@
 dsl konos
 
-use Common
+use CompetitionCommon
+use MatchCommon
 use Theme
 
 Template(layout=Vertical Flexible) matchTemplate as Relative(height=100%, width=100%)
@@ -136,37 +137,4 @@ Template(layout=Horizontal Flexible) matchCompetitionTemplate as Relative(height
 	Block(layout=Vertical, format=rightSpaced rightBordered) as Absolute(width=500px)
 		TemplateStamp(template=matchesTemplate) matchesStamp
 	Block(layout=Vertical Flexible, format=leftSpaced)
-		Text(value="Clasificación", format=h2 airBottom)
-		Table(itemClass="rlp.footrix.protrix.model.Classification", pageSize=20) matchCompetitionClassificationTable
-			noItemsMessage = "No existen partidos para esta competición"
-			noItemsFoundMessage = "No existen partidos para esta competición"
-			Mold
-				Heading matchCompetitionClassificationPositionHeading > Text(value = "Pos.", format=bold)
-				Item(height=30px, width=10%) matchCompetitionClassificationPositionMold > Text matchCompetitionClassificationPosition
-			Mold
-				Heading matchCompetitionClassificationTeamHeading > Text(value = "Equipo", format=bold)
-				Item(height=30px, width=30%) matchCompetitionClassificationTeamMold > Text matchCompetitionClassificationTeam
-			Mold
-				Heading matchCompetitionClassificationPlayedMatchesHeading > Text(value = "PJ", format=bold)
-				Item(height=30px, width=10%) matchCompetitionClassificationPlayedMatchesMold > Text matchCompetitionClassificationPlayedMatches
-			Mold
-				Heading matchCompetitionClassificationWinMatchesHeading > Text(value = "V", format=bold)
-				Item(height=30px, width=10%) matchCompetitionClassificationWinMatchesMold > Text matchCompetitionClassificationWinMatches
-			Mold
-				Heading matchCompetitionClassificationDrawMatchesHeading > Text(value = "E", format=bold)
-				Item(height=30px, width=10%) matchCompetitionClassificationDrawMatchesMold > Text matchCompetitionClassificationDrawMatches
-			Mold
-				Heading matchCompetitionClassificationLostMatchesHeading > Text(value = "D", format=bold)
-				Item(height=30px, width=10%) matchCompetitionClassificationLostMatchesMold > Text matchCompetitionClassificationLostMatches
-			Mold
-				Heading matchCompetitionClassificationGoalsForHeading > Text(value = "GF", format=bold)
-				Item(height=30px, width=10%) matchCompetitionClassificationGoalsForMold > Text matchCompetitionClassificationGoalsFor
-			Mold
-				Heading matchCompetitionClassificationGoalsAgainstHeading > Text(value = "GC", format=bold)
-				Item(height=30px, width=10%) matchCompetitionClassificationGoalsAgainstMold > Text matchCompetitionClassificationGoalsAgainst
-			Mold
-				Heading matchCompetitionClassificationGoalsDifferenceHeading > Text(value = "DG", format=bold)
-				Item(height=30px, width=10%) matchCompetitionClassificationGoalsDifferenceMold > Text matchCompetitionClassificationGoalsDifference
-			Mold
-				Heading matchCompetitionClassificationPointsHeading > Text(value = "Pts.", format=bold)
-				Item(height=30px, width=10%) matchCompetitionClassificationPointsMold > Text matchCompetitionClassificationPoints
+		TemplateStamp(template=competitionClassificationTemplate) classificationStamp

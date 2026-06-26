@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Intino: com.sparkjava:spark-core:2.9.4">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/sparkjava/spark-core/2.9.4/spark-core-2.9.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/sparkjava/spark-core/2.9.4/spark-core-2.9.4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -4,12 +4,13 @@ Concept Match
 	var string matchId
 	var string competitionName
 	var instant date
+	var string matchDay
 	var string localName
 	var string visitantName
-	var integer localGoals
-	var integer visitantGoals
+	var string localGoals
+	var string visitantGoals
 
-Concept Classification
+Concept Classification is decorable
 	var string competitionId
 	var integer phase
 	var string team
@@ -20,8 +21,6 @@ Concept Classification
 	var integer lostGames
 	var integer goalsFor
 	var integer goalsAgainst
-	var integer goalsDifference
-	var integer points
 
 Concept PlayerRecord
 	var string competitionId

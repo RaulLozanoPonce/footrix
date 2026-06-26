@@ -17,6 +17,12 @@ public class MemoryEntityStore implements EntityStore {
     private final Map<Integer, Map<String, Map<Integer, Map<String, List<Match>>>>> matches = new HashMap<>();
 
     @Override
+    public List<Competition> competitions(int season) {
+        if (!competitions.containsKey(season)) return new ArrayList<>();
+        return new ArrayList<>(competitions.get(season).values());
+    }
+
+    @Override
     public Competition competition(String id, int season) {
         return competitions.get(season).get(id);
     }
@@ -25,6 +31,11 @@ public class MemoryEntityStore implements EntityStore {
     public void competition(Competition competition, int season) {
         this.competitions.putIfAbsent(season, new HashMap<>());
         this.competitions.get(season).put(competition.definition().id(), competition);
+    }
+
+    @Override
+    public List<Team> teams() {
+        return new ArrayList<>(teams.values());
     }
 
     @Override
@@ -58,6 +69,34 @@ public class MemoryEntityStore implements EntityStore {
     }
 
     @Override
+    public List<Match> matches(String competition, int season) {
+        return matches.getOrDefault(season, new HashMap<>())
+                .getOrDefault(competition, new HashMap<>()).values().stream()
+                .flatMap(v -> v.values().stream())
+                .flatMap(Collection::stream)
+                .toList();
+    }
+
+    @Override
+    public List<Match> matches(Team team) {
+        List<Match> matches = new ArrayList<>();
+        for (Integer season : this.matches.keySet()) {
+            for (String competition : this.matches.get(season).keySet()) {
+                for (Integer phase : this.matches.get(season).get(competition).keySet()) {
+                    for (String matchDay : this.matches.get(season).get(competition).get(phase).keySet()) {
+                        for (Match match : this.matches.get(season).get(competition).get(phase).get(matchDay)) {
+                            if (match.definition().local().equals(team.definition().id()) || match.definition().visitant().equals(team.definition().id())) {
+                                matches.add(match);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return matches;
+    }
+
+    @Override
     public Match match(String id) {
         for (Integer season : matches.keySet()) {
             for (String competition : matches.get(season).keySet()) {
@@ -81,15 +120,6 @@ public class MemoryEntityStore implements EntityStore {
                 .get(definition.matchDay()).stream()
                 .filter(m -> m.definition().equals(definition))
                 .findFirst().orElse(null);
-    }
-
-    @Override
-    public List<Match> matches(String competition, int season) {
-        return matches.getOrDefault(season, new HashMap<>())
-                .getOrDefault(competition, new HashMap<>()).values().stream()
-                .flatMap(v -> v.values().stream())
-                .flatMap(Collection::stream)
-                .toList();
     }
 
     @Override

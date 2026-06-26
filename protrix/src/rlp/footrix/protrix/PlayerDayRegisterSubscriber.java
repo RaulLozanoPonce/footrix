@@ -20,9 +20,10 @@ public class PlayerDayRegisterSubscriber implements Subscriber<NewDayEvent> {
 
     @Override
     public void receive(NewDayEvent newDayEvent) {
-        for (Player player : application.entityStore().players()) {
+        //TODO ACTIVAR
+        /*for (Player player : application.entityStore().players()) {
             register(newDayEvent.date(), player);
-        }
+        }*/
     }
 
     private void register(Instant ts, Player player) {

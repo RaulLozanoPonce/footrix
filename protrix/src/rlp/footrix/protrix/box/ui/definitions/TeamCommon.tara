@@ -1,0 +1,21 @@
+dsl konos
+
+use Theme
+
+Template teamsTemplate as Relative(height=100%, width=100%)
+	Block(layout=Horizontal Justified, format=w100)
+		Text(value="Equipos", format=h2 airBottom)
+		Block(layout=Horizontal)
+			MaterialIcon(icon="Search", format=middleAirRight centeredVertically)
+			Text(format=doubleFieldWidth mt16) search as Editable
+	List(itemClass="rlp.footrix.pes6.types.Pes6Team", pageSize=10, format=wh100) teamsTable as Selectable
+		noItemsMessage = "No existen equipos registrados"
+		noItemsFoundMessage = "No existen equipos registrados"
+		Mold
+			Item(height=90px) teamsTableMold
+				Block(layout=Horizontal CenterCenter, format=darkGreyBackground rounded) as Absolute(height=80px)
+					Block(layout=Horizontal, format=wh100)
+						Block(format=doubleAirLeft doubleAirRight)
+							Icon(icon="/icons/flags/0.png", format=middleAirRight centeredVertically)
+						Block(layout=Flexible)
+							Text(format=h3) teamName

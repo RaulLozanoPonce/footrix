@@ -34,7 +34,8 @@ public class TraceTemplate extends AbstractTraceTemplate<ProtrixBox> {
         Pes6Player player = event.item();
         PlayersTableRow row = event.component();
         Team team = player.team();
-        List<PlayerMatchRecord> records = team == null ? new ArrayList<>() : box().application().recordStore().playerMatchRecords(player.definition().id(), team.definition().id(), "ESP-1", 0);
+        //List<PlayerMatchRecord> records = team == null ? new ArrayList<>() : box().application().recordStore().playerMatchRecords(player.definition().id(), team.definition().id(), "ESP-1", 0);
+        List<PlayerMatchRecord> records= new ArrayList<>(); //TODO
         double score = records.stream().filter(e -> e.score() != null).mapToDouble(PlayerMatchRecord::score).average().orElse(0);
         double minutes = records.stream().filter(r -> r.playedAvailableMinutesPercent() != null).mapToDouble(PlayerMatchRecord::playedAvailableMinutesPercent).average().orElse(0.0);
         row.idMold.id.value(player.definition().id());

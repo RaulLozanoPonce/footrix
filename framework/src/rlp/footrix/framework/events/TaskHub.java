@@ -49,4 +49,8 @@ public class TaskHub {
     public void add(Map<Instant, List<Event>> tasks) {
         this.tasks.putAll(tasks);
     }
+
+    public List<Event> tasksFrom(Instant date) {
+        return this.tasks.keySet().stream().filter(i -> !i.isBefore(date)).flatMap(i -> this.tasks.get(i).stream()).toList();
+    }
 }

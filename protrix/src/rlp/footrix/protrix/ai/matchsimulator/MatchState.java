@@ -4,12 +4,12 @@ import rlp.footrix.framework.types.entities.Match;
 import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.framework.types.entities.player.Position;
 import rlp.footrix.framework.types.entities.team.PlayersLineup;
+import rlp.footrix.pes6.types.Positions;
 import rlp.footrix.protrix.ai.matchsimulator.weights.PositionWeight;
 
 import java.util.*;
 
-import static rlp.footrix.framework.types.entities.Match.MatchEvent.Type.Goal;
-import static rlp.footrix.framework.types.entities.Match.MatchEvent.Type.Substitution;
+import static rlp.footrix.framework.types.entities.Match.MatchEvent.Type.*;
 
 public class MatchState {
     private final List<Match.MatchEvent> events = new ArrayList<>();
@@ -24,6 +24,14 @@ public class MatchState {
     private final String local;
     private final String visitant;
     private final Map<String, Map<String, Position>> positions = new HashMap<>();
+
+    private final Map<String, Integer> enterMinute = new HashMap<>();
+    private final Map<String, Integer> exitMinute = new HashMap<>();
+    private final Map<String, Integer> goals = new HashMap<>();
+    private final Map<String, Integer> assists = new HashMap<>();
+    private final Map<String, Integer> yellowCards = new HashMap<>();
+    private final Map<String, Integer> redCards = new HashMap<>();
+    private final Map<String, Integer> receivedGoals = new HashMap<>();
 
     private final Random random;
 
@@ -43,16 +51,47 @@ public class MatchState {
         this.random = new Random();
     }
 
-    public String local() {
-        return local;
+    public void registerMinuteStatistics() {
+        for (Match.MatchEvent event : minuteEvents()) {
+            if (event.type() == Substitution) {
+                this.enterMinute.put(event.who(), event.minute());
+                this.exitMinute.put(event.secondaryWho(), event.minute());
+            } else if (event.type() == Goal) {
+                this.goals.put(event.who(), this.goals.getOrDefault(event.who(), 0) + 1);
+                this.assists.put(event.secondaryWho(), this.assists.getOrDefault(event.secondaryWho(), 0) + 1);
+                this.receivedGoals.put(goalKeeperOf(otherTeam(event.team())), this.receivedGoals.getOrDefault(event.secondaryWho(), 0) + 1);
+            } else if (event.type() == YellowCard) {
+                this.yellowCards.put(event.who(), this.yellowCards.getOrDefault(event.who(), 0) + 1);
+            } else if (event.type() == RedCard) {
+                this.redCards.put(event.who(), this.redCards.getOrDefault(event.who(), 0) + 1);
+            }
+        }
+
+        this.receivedGoals.putIfAbsent(goalKeeperOf(local), 0);
+        this.receivedGoals.putIfAbsent(goalKeeperOf(visitant), 0);
     }
 
-    public String visitant() {
-        return visitant;
+    public void addMinute(String player) {
+        this.minutes.putIfAbsent(player, 0);
+        this.minutes.put(player, this.minutes.get(player) + 1);
     }
 
-    public PlayersLineup lineup(String team) {
-        return lineups.get(team);
+    public double score(String team, String player, int minute) {
+        this.baseScore.putIfAbsent(player, 5.8 + 0.5 * random.nextGaussian());
+        double baseScore = this.baseScore.get(player);
+        double minuteFactor = (minutesOf(player, minute) / (double) minute);
+        double score = baseScore * (0.8 + 0.2 * minuteFactor);
+        score += events().stream()
+                .filter(e -> e.who().equals(player) || (e.secondaryWho() != null && e.secondaryWho().equals(player)))
+                .mapToDouble(e -> bonusOf(e, team, player))
+                .sum();
+        score += teamScore(team, player);
+        return score;
+    }
+
+    public void addFatigue(String player, Double delta) {
+        fatigue.putIfAbsent(player, 0.0);
+        fatigue.put(player, Math.min(1, fatigue.get(player) + delta));
     }
 
     public PlayersLineup localLineup() {
@@ -84,51 +123,9 @@ public class MatchState {
         lineup.expelled().add(out);
     }
 
-    public List<Match.MatchEvent> events() {
-        return events;
-    }
-
-    public List<Match.MatchEvent> minuteEvents() {
-        return minuteEvents;
-    }
-
-    public Position positionOf(String team, String player) {
-        return positions.get(team).get(player);
-    }
-
-    public void addFatigue(String player, Double delta) {
-        fatigue.putIfAbsent(player, 0.0);
-        fatigue.put(player, Math.min(1, fatigue.get(player) + delta));
-    }
-
-    public double fatigue(String player) {
-        return fatigue.getOrDefault(player, 0.0);
-    }
-
-    public double score(String team, String player, int currentMinute) {
-        this.baseScore.putIfAbsent(player, 5.8 + 0.5 * random.nextGaussian());
-        double baseScore = this.baseScore.get(player);
-        double minuteFactor = (minutesOf(player, currentMinute) / (double) currentMinute);
-        double score = baseScore * (0.8 + 0.2 * minuteFactor);
-        score += events().stream()
-                .filter(e -> e.who().equals(player) || (e.secondaryWho() != null && e.secondaryWho().equals(player)))
-                .mapToDouble(e -> bonusOf(e, team, player))
-                .sum();
-        score += teamScore(team, player);
-        return score;
-    }
-
-    public Match.MatchRole matchRole(String player) {
-        return this.matchRoles.get(player);
-    }
-
     private int minutesOf(String player, int currentMinute) {
-        int enterMinute = events().stream()
-                .filter(e -> e.type() == Substitution).filter(e -> e.who().equals(player))
-                .map(Match.MatchEvent::minute).findFirst().orElse(0);
-        int exitMinute = events().stream()
-                .filter(e -> e.type() == Substitution).filter(e -> e.secondaryWho().equals(player))
-                .map(Match.MatchEvent::minute).findFirst().orElse(currentMinute);
+        int enterMinute = this.enterMinute.getOrDefault(player, 0);
+        int exitMinute = this.exitMinute.getOrDefault(player, currentMinute);
         return exitMinute - enterMinute;
     }
 
@@ -176,12 +173,76 @@ public class MatchState {
         return PositionWeight.bonusOfCleanSheet(position);
     }
 
-    public void addMinute(String player) {
-        this.minutes.putIfAbsent(player, 0);
-        this.minutes.put(player, this.minutes.get(player) + 1);
+    private String otherTeam(String team) {
+        if (team.equals(local)) return visitant;
+        return local;
+    }
+
+    private String goalKeeperOf(String team) {
+        return lineup(team).fieldPlayers().stream().map(p -> p.definition().id()).filter(p -> positionOf(team, p) == Positions.PT).findFirst().orElse(null);
+    }
+
+    public List<Match.MatchEvent> events() {
+        return events;
+    }
+
+    public List<Match.MatchEvent> minuteEvents() {
+        return minuteEvents;
+    }
+
+    public Match.MatchRole matchRole(String player) {
+        return this.matchRoles.get(player);
     }
 
     public Integer minutes(String player) {
         return this.minutes.get(player);
+    }
+
+    public double fatigue(String player) {
+        return fatigue.getOrDefault(player, 0.0);
+    }
+
+    public PlayersLineup lineup(String team) {
+        return lineups.get(team);
+    }
+
+    public String local() {
+        return local;
+    }
+
+    public String visitant() {
+        return visitant;
+    }
+
+    public Position positionOf(String team, String player) {
+        return positions.get(team).get(player);
+    }
+
+    public Integer enterMinute(String player) {
+        return this.enterMinute.get(player);
+    }
+
+    public Integer exitMinute(String player) {
+        return this.exitMinute.get(player);
+    }
+
+    public Integer goals(String player) {
+        return this.goals.getOrDefault(player, 0);
+    }
+
+    public Integer assists(String player) {
+        return this.assists.getOrDefault(player, 0);
+    }
+
+    public Integer yellowCards(String player) {
+        return this.yellowCards.getOrDefault(player, 0);
+    }
+
+    public Integer redCards(String player) {
+        return this.redCards.getOrDefault(player, 0);
+    }
+
+    public Integer receivedGoals(String player) {
+        return this.receivedGoals.get(player);
     }
 }

@@ -1,0 +1,57 @@
+package rlp.footrix.protrix.box.ui.displays.items;
+
+import io.intino.alexandria.core.Box;
+import io.intino.alexandria.exceptions.*;
+import io.intino.alexandria.ui.displays.components.*;
+import rlp.footrix.protrix.box.ui.*;
+
+import rlp.footrix.protrix.box.ProtrixBox;
+
+import rlp.footrix.protrix.box.ui.displays.templates.*;
+
+
+
+
+
+
+import rlp.footrix.protrix.box.ui.displays.items.*;
+import rlp.footrix.protrix.box.ui.displays.rows.*;
+import io.intino.alexandria.ui.displays.notifiers.ItemNotifier;
+
+public class ClassificationDrawMatchesMold extends io.intino.alexandria.ui.displays.components.Item<ItemNotifier, rlp.footrix.protrix.model.Classification, ProtrixBox> {
+	public ClassificationDrawMatches classificationDrawMatches;
+
+	public ClassificationDrawMatchesMold(ProtrixBox box) {
+		super(box);
+		id("a484345125");
+	}
+
+	@Override
+	public void init() {
+		super.init();
+		if (classificationDrawMatches == null) classificationDrawMatches = register(new ClassificationDrawMatches(box()).<ClassificationDrawMatches>id("a274133231").owner(ClassificationDrawMatchesMold.this));
+	}
+
+	@Override
+	public void remove() {
+		super.remove();
+		if (classificationDrawMatches != null) classificationDrawMatches.unregister();
+	}
+
+	public class ClassificationDrawMatches extends io.intino.alexandria.ui.displays.components.Text<io.intino.alexandria.ui.displays.notifiers.TextNotifier, ProtrixBox>  {
+
+		public ClassificationDrawMatches(ProtrixBox box) {
+			super(box);
+		}
+
+		@Override
+		public void init() {
+			super.init();
+		}
+
+		@Override
+		public void unregister() {
+			super.unregister();
+		}
+	}
+}

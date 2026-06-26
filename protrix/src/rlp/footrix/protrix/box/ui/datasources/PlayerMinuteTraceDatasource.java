@@ -7,6 +7,7 @@ import rlp.footrix.framework.types.records.PlayerMatchRecord;
 import rlp.footrix.framework.types.records.PlayerMinuteRecord;
 import rlp.footrix.protrix.box.ProtrixBox;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -17,11 +18,12 @@ public class PlayerMinuteTraceDatasource extends PageDatasource<PlayerMinuteReco
     private final List<PlayerMinuteRecord> trace;
 
     public PlayerMinuteTraceDatasource(ProtrixBox box, String player) {
-        this.trace = box.application().recordStore().playerMinuteRecords().stream()
+        /*this.trace = box.application().recordStore().playerMinuteRecords().stream()
                 .filter(r -> r.player().equals(player))
                 .sorted(Comparator.comparing(PlayerMinuteRecord::minute))
                 .sorted(Comparator.comparing(PlayerMinuteRecord::date))
-                .toList();
+                .toList();*/
+        this.trace = new ArrayList<>();
     }
 
     @Override

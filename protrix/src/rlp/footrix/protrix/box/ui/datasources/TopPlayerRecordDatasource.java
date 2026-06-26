@@ -11,8 +11,8 @@ import java.util.List;
 
 public class TopPlayerRecordDatasource extends PageDatasource<PlayerRecord> {
     private final ProtrixBox box;
-
-    private String competition;
+    private String competitionId;
+    private int season;
     private PlayerRecord.Type type;
 
     private List<PlayerRecord> records;
@@ -39,15 +39,9 @@ public class TopPlayerRecordDatasource extends PageDatasource<PlayerRecord> {
         return List.of();
     }
 
-    public TopPlayerRecordDatasource filter(String competition, PlayerRecord.Type type) {
-        this.competition = competition;
-        this.type = type;
-        return this;
-    }
-
     public void loadData() {
         this.records = box.graph().playerRecordList().stream()
-                .filter(r -> r.competitionId().equals(competition))
+                .filter(r -> r.competitionId().equals(competitionId))
                 .filter(r -> r.type() == type)
                 .filter(r -> filter(r, type))
                 .sorted(sort(type))
@@ -67,5 +61,11 @@ public class TopPlayerRecordDatasource extends PageDatasource<PlayerRecord> {
 
     public int indexOf(PlayerRecord record) {
         return records.indexOf(record);
+    }
+
+    public void setup(String competitionId, int season, PlayerRecord.Type type) {
+        this.competitionId = competitionId;
+        this.season = season;
+        this.type = type;
     }
 }

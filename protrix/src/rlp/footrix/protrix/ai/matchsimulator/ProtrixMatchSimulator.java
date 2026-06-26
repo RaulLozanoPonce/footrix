@@ -39,7 +39,6 @@ public class ProtrixMatchSimulator implements MatchSimulator {
         FatigueSimulator fatigueSimulator = new FatigueSimulator(state, playerValue);
 
         for (int i = 1; i <= 90; i++) {
-            savePlayersState(definition, date, i);
             state.minuteEvents().addAll(goalSimulator.simulate(i));
             state.minuteEvents().addAll(cardSimulator.simulate(i));
             state.minuteEvents().addAll(injurySimulator.simulate(i));
@@ -48,6 +47,7 @@ public class ProtrixMatchSimulator implements MatchSimulator {
             fatigueSimulator.simulate(i);
             addMinutes();
             handle(state.minuteEvents(), state, i);
+            state.registerMinuteStatistics();
             state.minuteEvents().clear();
         }
         return new Match(definition, date, firstLocalLineup, firstVisitantLineup, statistics(), state.events(), 90, null);
@@ -94,18 +94,18 @@ public class ProtrixMatchSimulator implements MatchSimulator {
     }
 
     private Match.PlayerStatistics statistics(String team, String player) {
-        return new Match.PlayerStatistics(state.minutes(player), state.score(team, player, 90), state.fatigue(player), state.matchRole(player));
-    }
-
-    private void savePlayersState(MatchDefinition match, Instant date, int minute) {
-        state.localLineup().fieldPlayers().forEach(p -> savePlayerState(p, match, date, minute));
-        state.localLineup().benchPlayers().forEach(p -> savePlayerState(p, match, date, minute));
-        state.visitantLineup().fieldPlayers().forEach(p -> savePlayerState(p, match, date, minute));
-        state.visitantLineup().benchPlayers().forEach(p -> savePlayerState(p, match, date, minute));
-    }
-
-    private void savePlayerState(Player player, MatchDefinition match, Instant date, int minute) {
-        double fatigue = state.fatigue(player.definition().id());
-        application.recordStore().create().playerMinuteRecord(match.id(), player.definition().id(), date, minute, Math.max(0, player.psychophysics().energy() - fatigue), player.skills().stamina());
+        return new Match.PlayerStatistics(
+                state.minutes(player),
+                state.score(team, player, 90),
+                state.fatigue(player),
+                state.matchRole(player),
+                state.enterMinute(player),
+                state.exitMinute(player),
+                state.goals(player),
+                state.assists(player),
+                state.yellowCards(player),
+                state.redCards(player),
+                state.receivedGoals(player)
+        );
     }
 }

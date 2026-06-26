@@ -14,6 +14,26 @@ public class RouteDispatcher extends AbstractRouteDispatcher {
     }
 
     @Override
+    public void dispatchCompetitions(Soul soul) {
+        soul.display(AppTemplate.class).openCompetitions();
+    }
+
+    @Override
+    public void dispatchCompetition(Soul soul, String competitionId, String season) {
+        soul.display(AppTemplate.class).openCompetition(competitionId, Integer.parseInt(season));
+    }
+
+    @Override
+    public void dispatchTeams(Soul soul) {
+        soul.display(AppTemplate.class).openTeams();
+    }
+
+    @Override
+    public void dispatchTeam(Soul soul, String teamId) {
+        soul.display(AppTemplate.class).openTeam(teamId);
+    }
+
+    @Override
     public void dispatchMatch(Soul soul, String matchId) {
         soul.display(AppTemplate.class).openMatch(matchId);
     }

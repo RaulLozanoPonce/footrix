@@ -1,0 +1,94 @@
+dsl konos
+
+use Theme
+
+Template competitionClassificationTemplate as Relative(height=100%, width=100%)
+	Text(value="Clasificación", format=h2 airBottom)
+	Table(itemClass="rlp.footrix.protrix.model.Classification", pageSize=20) matchCompetitionClassificationTable
+		noItemsMessage = "No existen partidos para esta competición"
+		noItemsFoundMessage = "No existen partidos para esta competición"
+		Mold
+			Heading matchCompetitionClassificationPositionHeading > Text(value = "Pos.", format=bold)
+			Item(height=30px, width=10%) matchCompetitionClassificationPositionMold > Text matchCompetitionClassificationPosition
+		Mold
+			Heading matchCompetitionClassificationTeamHeading > Text(value = "Equipo", format=bold)
+			Item(height=30px, width=30%) matchCompetitionClassificationTeamMold > Text matchCompetitionClassificationTeam
+		Mold
+			Heading matchCompetitionClassificationPlayedMatchesHeading > Text(value = "PJ", format=bold)
+			Item(height=30px, width=10%) matchCompetitionClassificationPlayedMatchesMold > Text matchCompetitionClassificationPlayedMatches
+		Mold
+			Heading matchCompetitionClassificationWinMatchesHeading > Text(value = "V", format=bold)
+			Item(height=30px, width=10%) matchCompetitionClassificationWinMatchesMold > Text matchCompetitionClassificationWinMatches
+		Mold
+			Heading matchCompetitionClassificationDrawMatchesHeading > Text(value = "E", format=bold)
+			Item(height=30px, width=10%) matchCompetitionClassificationDrawMatchesMold > Text matchCompetitionClassificationDrawMatches
+		Mold
+			Heading matchCompetitionClassificationLostMatchesHeading > Text(value = "D", format=bold)
+			Item(height=30px, width=10%) matchCompetitionClassificationLostMatchesMold > Text matchCompetitionClassificationLostMatches
+		Mold
+			Heading matchCompetitionClassificationGoalsForHeading > Text(value = "GF", format=bold)
+			Item(height=30px, width=10%) matchCompetitionClassificationGoalsForMold > Text matchCompetitionClassificationGoalsFor
+		Mold
+			Heading matchCompetitionClassificationGoalsAgainstHeading > Text(value = "GC", format=bold)
+			Item(height=30px, width=10%) matchCompetitionClassificationGoalsAgainstMold > Text matchCompetitionClassificationGoalsAgainst
+		Mold
+			Heading matchCompetitionClassificationGoalsDifferenceHeading > Text(value = "DG", format=bold)
+			Item(height=30px, width=10%) matchCompetitionClassificationGoalsDifferenceMold > Text matchCompetitionClassificationGoalsDifference
+		Mold
+			Heading matchCompetitionClassificationPointsHeading > Text(value = "Pts.", format=bold)
+			Item(height=30px, width=10%) matchCompetitionClassificationPointsMold > Text matchCompetitionClassificationPoints
+
+
+Template competitionGoalRankingTemplate as Relative(height=100%, width=100%)
+	Text(value="Máximos Goleadores", format=h2 airBottom)
+	Table(itemClass="rlp.footrix.protrix.model.PlayerRecord", pageSize=5) topScorersTable
+		noItemsMessage = "No existen goleadores en esta competición"
+		noItemsFoundMessage = "No existen goleadores en esta competición"
+		Mold
+			Heading topScorersPositionHeading > Text(value = "Pos.", format=bold)
+			Item(height=25px, width=10%) topScorersPositionMold > Text topScorersPosition
+		Mold
+			Heading topScorersPlayerHeading > Text(value = "Jugador", format=bold)
+			Item(height=25px, width=70%) topScorersPlayerMold > Link(title="Cargando...", color="white") topScorersPlayer
+		Mold
+			Heading topScorersGoalsHeading > Text(value = "Goles", format=bold)
+			Item(height=25px, width=10%) topScorersGoalsMold > Text topScorersGoals
+		Mold
+			Heading topScorersPlayedMatchesHeading > Text(value = "PJ", format=bold)
+			Item(height=25px, width=10%) topScorersPlayedMatchesMold > Text topScorersPlayedMatches
+
+Template competitionAssistRankingTemplate as Relative(height=100%, width=100%)
+	Text(value="Máximos Asistentes", format=h2 airBottom)
+	Table(itemClass="rlp.footrix.protrix.model.PlayerRecord", pageSize=5) topAssistersTable
+		noItemsMessage = "No existen asistentes en esta competición"
+		noItemsFoundMessage = "No existen asistentes en esta competición"
+		Mold
+			Heading topAssistersPositionHeading > Text(value = "Pos.", format=bold)
+			Item(height=25px, width=10%) topAssistersPositionMold > Text topAssistersPosition
+		Mold
+			Heading topAssistersPlayerHeading > Text(value = "Jugador", format=bold)
+			Item(height=25px, width=70%) topAssistersPlayerMold > Link(title="Cargando...", color="white") topAssistersPlayer
+		Mold
+			Heading topAssistersAssistsHeading > Text(value = "Asist.", format=bold)
+			Item(height=25px, width=10%) topAssistersAssistsMold > Text topAssistersAssists
+		Mold
+			Heading topAssistersPlayedMatchesHeading > Text(value = "PJ", format=bold)
+			Item(height=25px, width=10%) topAssistersPlayedMatchesMold > Text topAssistersPlayedMatches
+
+Template competitionReceivedGoalRankingTemplate as Relative(height=100%, width=100%)
+	Text(value="Porteros menos goleados", format=h2 airBottom)
+	Table(itemClass="rlp.footrix.protrix.model.PlayerRecord", pageSize=5) topGoalkeepersTable
+		noItemsMessage = "No existen porteros en esta competición"
+		noItemsFoundMessage = "No existen porteros en esta competición"
+		Mold
+			Heading topGoalkeepersPositionHeading > Text(value = "Pos.", format=bold)
+			Item(height=25px, width=10%) topGoalkeepersPositionMold > Text topGoalkeepersPosition
+		Mold
+			Heading topGoalkeepersPlayerHeading > Text(value = "Jugador", format=bold)
+			Item(height=25px, width=70%) topGoalkeepersPlayerMold > Link(title="Cargando...", color="white") topGoalkeepersPlayer
+		Mold
+			Heading topGoalkeepersGoalsHeading > Text(value = "Goles", format=bold)
+			Item(height=25px, width=10%) topGoalkeepersGoalsMold > Text topGoalkeepersGoals
+		Mold
+			Heading topGoalkeepersPlayedMinutesHeading > Text(value = "MJ", format=bold)
+			Item(height=25px, width=10%) topGoalkeepersPlayedMinutesMold > Text topGoalkeepersPlayedMinutes

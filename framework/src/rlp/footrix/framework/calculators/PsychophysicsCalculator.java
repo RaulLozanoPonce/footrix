@@ -103,9 +103,9 @@ public class PsychophysicsCalculator extends Calculator {
     }
 
     private int streak(Team team) {
-        return application.recordStore().teamMatchRecords(team.definition().id()).stream()
+        return application.entityStore().matches(team).stream()
                 .sorted((r1, r2) -> r2.date().compareTo(r1.date()))
                 .limit(5)
-                .mapToInt(TeamMatchRecord::streak).sum();
+                .mapToInt(m -> m.streak(team.definition().id())).sum();
     }
 }

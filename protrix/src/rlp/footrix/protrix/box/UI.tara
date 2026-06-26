@@ -1,15 +1,24 @@
 dsl konos
 
 use Overview
+use Competitions
+use Teams
+use TeamCommon
 use Match
+use Theme
+
 use App
 use PlayerTrace
 use PlayerMatchTrace
-use Theme
 
 Service protrixUi as UI(port = "{port}", title = "Protrix", favicon = "")
 	Resource("/") home as Page(appTemplate) Main
+	Resource("/competitions") competitions as Page(appTemplate)
+	Resource("/competitions/:competitionId/:season") competition as Page(appTemplate)
+	Resource("/teams") teams as Page(appTemplate)
+	Resource("/teams/:teamId") team as Page(appTemplate)
 	Resource("/matches/:matchId") match as Page(appTemplate)
+
 	Resource("/trace") trace as Page(traceTemplate)
 	Resource("/player-trace/:playerId") playerTrace as Page(playerTraceTemplate)
 	Resource("/minute-player-trace/:playerId") playerMatchTrace as Page(playerMatchTraceTemplate)
@@ -25,6 +34,12 @@ Template(layout=Horizontal Flexible) appTemplate as Relative(height=100%, width=
 					Block(layout=Horizontal) overviewOpt as Option
 						MaterialIcon(icon="Home", format=middleAirRight centeredVertically, color="white")
 						Text(value="Inicio", format=h4 centeredVertically, color="white")
+					Block(layout=Horizontal) competitionsOpt as Option
+						Icon(icon="/icons/menu/leaderboard.png", format=middleAirRight centeredVertically, color="white")
+						Text(value="Competiciones", format=h4 centeredVertically, color="white")
+					Block(layout=Horizontal) teamsOpt as Option
+						Icon(icon="/icons/menu/shield.png", format=middleAirRight centeredVertically, color="white")
+						Text(value="Equipos", format=h4 centeredVertically, color="white")
 			Block(layout=Vertical Flexible, format=spaced) as Relative(width=100%)
 				Block(layout=Vertical Flexible CenterCenter) loading > Spinner(format=secondary)
 
@@ -33,6 +48,10 @@ Template(layout=Horizontal Flexible) appTemplate as Relative(height=100%, width=
 					Link(title="Intentar de nuevo", format=airTop) reloadPage as Action
 
 				Block(layout=Vertical Flexible) overviewPage as Conditional > TemplateStamp(template=overviewTemplate) overviewStamp
+				Block(layout=Vertical Flexible) competitionsPage as Conditional > TemplateStamp(template=competitionsTemplate) competitionsStamp
+				Block(layout=Vertical Flexible) competitionPage as Conditional > TemplateStamp(template=competitionTemplate) competitionStamp
+				Block(layout=Vertical Flexible) teamsPage as Conditional > TemplateStamp(template=teamsTemplate) teamsStamp
+				Block(layout=Vertical Flexible) teamPage as Conditional > TemplateStamp(template=teamTemplate) teamStamp
 				Block(layout=Vertical Flexible) matchPage as Conditional > TemplateStamp(template=matchTemplate) matchStamp
 
 Template(layout=Horizontal Flexible) headerTemplate

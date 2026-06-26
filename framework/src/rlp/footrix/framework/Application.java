@@ -161,9 +161,9 @@ public abstract class Application {
         return entityStore;
     }
 
-    public RecordStore recordStore() {
+    /*public RecordStore recordStore() {
         return recordStore;
-    }
+    }*/
 
     public TableStore tableStore() {
         return tableStore;

@@ -1,0 +1,49 @@
+dsl konos
+
+use CompetitionCommon
+use TeamCommon
+use MatchCommon
+use Theme
+
+Template competitionsTemplate as Relative(height=100%, width=100%)
+	Block(layout=Horizontal Justified, format=w100)
+		Text(value="Competiciones", format=h2 airBottom)
+		Block(layout=Horizontal)
+			MaterialIcon(icon="Search", format=middleAirRight centeredVertically)
+			Text(format=doubleFieldWidth mt16) search as Editable
+	List(itemClass="rlp.footrix.framework.types.entities.Competition", pageSize=10, format=wh100) competitionsTable as Selectable
+		noItemsMessage = "No existen competiciones registradas"
+		noItemsFoundMessage = "No existen competiciones registradas"
+		Mold
+			Item(height=80px) competitionsTableMold
+				Block(layout=Horizontal CenterCenter, format=darkGreyBackground rounded) as Absolute(height=80px)
+					Block(layout=Horizontal, format=wh100)
+						Block(format=doubleAirLeft doubleAirRight)
+							Icon(icon="/icons/flags/0.png", format=middleAirRight centeredVertically)
+						Block(layout=Flexible)
+							Text(format=h3) competitionName
+
+Template competitionTemplate as Relative(height=100%, width=100%)
+	Block(layout=Horizontal, format=darkGreyBackground) as Absolute(height=64px)
+		Text(format=h2 airLeft) competitionName
+	Block(format=darkGreyBackground)
+		Selector tabs as Tabs
+			Text(value="Clasificación") classificationOpt as Option
+			Text(value="Equipos") teamsOpt as Option
+			Text(value="Partidos") matchesOpt as Option
+			Text(value="Rankings") rankingsOpt as Option
+
+	Block(layout=Vertical Flexible, format=wh100) competitionClassificationBlock as Conditional
+		TemplateStamp(template=competitionClassificationTemplate) competitionClassificationStamp
+	Block(layout=Vertical Flexible, format=wh100) competitionTeamsBlock as Conditional
+		TemplateStamp(template=teamsTemplate) competitionTeamsStamp
+	Block(layout=Vertical Flexible, format=wh100) competitionMatchesBlock as Conditional
+		TemplateStamp(template=matchesTemplate) competitionMatchesStamp
+	Block(layout=Vertical Flexible, format=wh100) competitionRankingsBlock as Conditional
+		TemplateStamp(template=competitionRankingsTemplate) competitionRankingsStamp
+
+Template competitionRankingsTemplate as Relative(height=100%, width=100%)
+	Block(layout=Horizontal, format=airTop) as Absolute(height=244px)
+		Block as Relative(width=33%) > TemplateStamp(template=competitionGoalRankingTemplate) competitionGoalRankingStamp
+		Block(format=doubleAirLeft doubleAirRight) as Relative(width=33%) > TemplateStamp(template=competitionAssistRankingTemplate) competitionAssistRankingStamp
+		Block as Relative(width=33%) > TemplateStamp(template=competitionReceivedGoalRankingTemplate) competitionReceivedGoalRankingStamp

@@ -3,17 +3,20 @@ dsl konos
 use Theme
 
 Template matchesTemplate as Relative(height=100%, width=100%)
-	Text(value="Partidos", format=h2 airBottom)
+	Block(layout=Horizontal Justified, format=w100)
+		Text(value="Partidos", format=h2 airBottom)
+		Date(pattern="DD/MM/YYYY") date as Editable
 	List(itemClass="rlp.footrix.protrix.model.Match", pageSize=10, format=wh100) matchTable as Selectable
 		noItemsMessage = "No se juegan partidos este día"
 		noItemsFoundMessage = "No se juegan partidos este día"
 		Mold
-			Item(height=80px) matchTableMold
+			Item(height=90px) matchTableMold
 				Block(layout=Horizontal CenterCenter, format=darkGreyBackground rounded) as Absolute(height=80px)
 					Block(layout=Vertical, format=wh100)
-						Block(layout=Horizontal CenterJustified, format=w100 airBottom) as Relative(height=33%)
-							Block(format=airLeft) as Relative(width=50%) > Text(format=h6) day
-							Block(layout=Horizontal EndJustified, format=airRight) as Relative(width=50%) > Text(format=h6) competition
+						Block(layout=Horizontal CenterJustified, format=airLeft airRight airBottom h33)
+							Block as Relative(width=40%) > Text(format=h6) day
+							Block(layout=Horizontal CenterCenter) as Relative(width=20%) > Text(format=h6) matchDay
+							Block(layout=Horizontal EndJustified) as Relative(width=40%) > Link(title="Cargando...", format=airRight h6, color="white") competitionLink
 						Block(layout=Horizontal AroundJustified, format=w100) as Relative(height=67%)
 							Block(layout=Horizontal CenterCenter, format=hauto) as Relative(width=40%) > Link(title="Cargando...", format=airRight h3, color="white") localLink
 							Block(layout=Horizontal CenterCenter, format=hauto) as Relative(width=20%) > Text(format=h3) match

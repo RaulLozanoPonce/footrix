@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Intino: org.glassfish.grizzly:grizzly-http-server:4.0.2">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/glassfish/grizzly/grizzly-http-server/4.0.2/grizzly-http-server-4.0.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

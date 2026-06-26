@@ -12,6 +12,7 @@ public class ClassificationDatasource extends PageDatasource<Classification> {
     private final ProtrixBox box;
 
     private String competitionId;
+    private int season;
 
     private List<Classification> classifications;
 
@@ -36,18 +37,19 @@ public class ClassificationDatasource extends PageDatasource<Classification> {
 
     public ClassificationDatasource loadData() {
         this.classifications = box.graph().classificationList().stream()
-                .filter(c -> c.competitionId().equals(competitionId))
+                .filter(c -> c.competitionId().equals(competitionId))   //TODO HABRA QUE DEFINIR SEASON EN EL GRAPH
                 .sorted((c1, c2) -> Integer.compare(c2.points(), c1.points()))
                 .toList();
         return this;
     }
 
-    public ClassificationDatasource filter(String competitionId) {
-        this.competitionId = competitionId;
-        return this;
-    }
-
     public int indexOf(Classification classification) {
         return classifications.indexOf(classification);
+    }
+
+    public ClassificationDatasource setup(String competitionId, int season) {
+        this.competitionId = competitionId;
+        this.season = season;
+        return this;
     }
 }

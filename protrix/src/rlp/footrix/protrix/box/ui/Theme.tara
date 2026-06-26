@@ -60,6 +60,8 @@ Format("overflowY:'auto'") overflow
 Format("height:'16px',width:'16px'") matchEventIcon
 Format("padding:'0px 5px', width:'35px', textAlign:'center'") positionChip
 Format("padding:'0px 2px', width:'22px', textAlign:'center'") positionChipSmall
+Format("width:'200px'") fieldWidth
+Format("width:'400px'") doubleFieldWidth
 
 
 Format("position:'relative', height:'388d px', minHeight:'388px', width:'588px', minWidth:'588px'") field
@@ -105,9 +107,12 @@ Format("position:'absolute', backgroundColor:'black', width:'12px', textAlign:'c
 Format("position:'absolute', backgroundColor:'red', width:'12px', textAlign:'center', borderRadius:'1000px', left:'-4px', top:'8px'") matchLineupPinAssists
 
 
+Format("marginTop:'16px'") mt16
+
 Format("width:'100%',height:'100&'") wh100
 Format("width:'100%'") w100
-Format("height:'100&'") h100
+Format("height:'33%'") h33
+Format("height:'100%'") h100
 Format("height:'auto'") hauto
 
 //BACKGROUNDS

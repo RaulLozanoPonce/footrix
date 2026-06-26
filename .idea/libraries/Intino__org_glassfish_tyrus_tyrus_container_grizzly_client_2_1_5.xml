@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Intino: org.glassfish.tyrus:tyrus-container-grizzly-client:2.1.5">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/glassfish/tyrus/tyrus-container-grizzly-client/2.1.5/tyrus-container-grizzly-client-2.1.5.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
