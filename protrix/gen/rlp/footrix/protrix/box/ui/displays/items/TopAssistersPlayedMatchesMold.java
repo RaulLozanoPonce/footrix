@@ -23,13 +23,13 @@ public class TopAssistersPlayedMatchesMold extends io.intino.alexandria.ui.displ
 
 	public TopAssistersPlayedMatchesMold(ProtrixBox box) {
 		super(box);
-		id("a_1006909128");
+		id("a1176767799");
 	}
 
 	@Override
 	public void init() {
 		super.init();
-		if (topAssistersPlayedMatches == null) topAssistersPlayedMatches = register(new TopAssistersPlayedMatches(box()).<TopAssistersPlayedMatches>id("a_835056911").owner(TopAssistersPlayedMatchesMold.this));
+		if (topAssistersPlayedMatches == null) topAssistersPlayedMatches = register(new TopAssistersPlayedMatches(box()).<TopAssistersPlayedMatches>id("a_1115406800").owner(TopAssistersPlayedMatchesMold.this));
 	}
 
 	@Override

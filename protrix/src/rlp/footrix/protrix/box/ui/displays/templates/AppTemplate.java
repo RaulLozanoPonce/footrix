@@ -3,7 +3,8 @@ package rlp.footrix.protrix.box.ui.displays.templates;
 import io.intino.alexandria.Base64;
 import io.intino.alexandria.ui.displays.components.BlockConditional;
 import rlp.footrix.framework.types.entities.Competition;
-import rlp.footrix.framework.types.entities.Match;
+import rlp.footrix.framework.types.entities.definitions.MatchDefinition;
+import rlp.footrix.framework.types.entities.match.Match;
 import rlp.footrix.pes6.types.Pes6Team;
 import rlp.footrix.protrix.box.ProtrixBox;
 
@@ -67,13 +68,9 @@ public class AppTemplate extends AbstractAppTemplate<ProtrixBox> {
 
     public void openMatch(String matchId) {
         openView(View.Match);
-        Match match = box().application().entityStore().match(decode(matchId));
-        if (match == null) {
-            notifier.redirect("http://localhost:9001/");
-        } else {
-            matchStamp.setup(match);
-            matchStamp.refresh();
-        }
+        MatchDefinition definition = MatchDefinition.of(decode(matchId));
+        matchStamp.setup(definition);
+        matchStamp.refresh();
     }
 
     private void openView(View view) {

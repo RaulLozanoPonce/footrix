@@ -3,15 +3,19 @@ package rlp.footrix.framework.commands.types;
 import rlp.footrix.framework.Application;
 import rlp.footrix.framework.commands.Command;
 import rlp.footrix.framework.events.types.PlayedMatchEvent;
-import rlp.footrix.framework.types.entities.Match;
 import rlp.footrix.framework.types.entities.definitions.CompetitionDefinition;
+import rlp.footrix.framework.types.entities.match.Match;
+import rlp.footrix.framework.types.entities.match.MatchEvent;
 import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.framework.types.entities.team.Team;
 import rlp.footrix.framework.types.tables.TeamElo;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
-import static rlp.footrix.framework.types.entities.Match.MatchEvent.Type.*;
+import static rlp.footrix.framework.types.entities.match.MatchEvent.Type.Injury;
 
 public class PostMatchCommand extends Command {
     private final Match match;
@@ -45,7 +49,7 @@ public class PostMatchCommand extends Command {
     private int deltaElo() {
         TeamElo localElo = eloOf(match.definition().local());
         TeamElo visitantElo = eloOf(match.definition().visitant());
-        return application.eloManager().deltaElo(localElo.elo(), visitantElo.elo(), match.definition().competition() + "-" + match.definition().phase(), pointsOf(match.definition().local(), match.winner()), match.withPenalties());
+        return application.eloManager().deltaElo(localElo.elo(), visitantElo.elo(), match.definition().competition() + "-" + match.definition().phase(), pointsOf(match.definition().local()), match.withPenalties());
     }
 
     private double matchImportance(String team, String other) {
@@ -64,30 +68,6 @@ public class PostMatchCommand extends Command {
         local.players().forEach(p -> p.sanction(- 1, match.definition().competition()));
         visitant.players().forEach(p -> p.sanction(- 1, match.definition().competition()));
     }
-
-    /*private void adjustStatistics() {
-        adjustStatistics(local);
-        adjustStatistics(visitant);
-    }*/
-
-    /*private void adjustStatistics(Team team) {
-        for (Player player : team.players()) {
-            boolean available = !player.isInjured() && !player.hasSanction(match.definition().competition());
-            Integer enterMinute = available ? enterMinuteOf(player) : null;
-            Integer exitMinute = available ? exitMinuteOf(player) : null;
-            int maxMinutes = available ? maxMinutesOf(player, (enterMinute == null || exitMinute == null) ? 0 : exitMinute - enterMinute) : 0;
-            Double score = available ? scoreOf(player) : null;
-            boolean injured = available ? has(player, Injury) : player.isInjured();
-            boolean expelled = available ? has(player, Expulsion) : player.hasSanction(match.definition().competition());
-            int goals = available ? count(player, Goal) : 0;
-            int assists = available ? assistsOf(player) : 0;
-            int receivedGoals = available ? receivedGoalsOf(team.definition().id(), enterMinute, exitMinute) : 0;
-            int yellowCards = available ? count(player, YellowCard) : 0;
-            int redCards = available ? count(player, RedCard) : 0;
-            updatePlayerMatchRecord(team, player, enterMinute, exitMinute, maxMinutes, score, injured, expelled, goals, assists, receivedGoals, yellowCards, redCards, player.psychophysics().energy());
-        }
-        createTeamMatchRecord(team, goalsForOf(team), goalsAgainstOf(team));
-    }*/
 
     private void adjustMood() {
         local.players().forEach(p -> adjustMood(p, deltaElo, localMatchImportance, startingRole(local.definition().id(), p)));
@@ -111,76 +91,12 @@ public class PostMatchCommand extends Command {
         visitant.players().forEach(p -> p.cache().absoluteCache(application.cacheCalculator().deltaAbsoluteCache(p, match, visitantMatchImportance)));
     }
 
-    private Integer enterMinuteOf(Player player) {
-        Match.PlayerStatistics statistics = match.playerStatistics().get(player.team().definition().id()).get(player.definition().id());
-        if (statistics == null) return null;
-        return match.events().stream()
-                .filter(e -> e.type() == Substitution)
-                .filter(e -> e.who().equals(player.definition().id()))
-                .map(Match.MatchEvent::minute)
-                .findFirst().orElse(0);
-    }
-
-    private Integer exitMinuteOf(Player player) {
-        Match.PlayerStatistics statistics = match.playerStatistics().get(player.team().definition().id()).get(player.definition().id());
-        if (statistics == null) return null;
-        return match.events().stream()
-                .filter(e -> (e.type() == Substitution && e.secondaryWho().equals(player.definition().id())) || (e.type() == Expulsion && e.who().equals(player.definition().id())))
-                .map(Match.MatchEvent::minute)
-                .findFirst().orElse(90);
-    }
-
-    private int maxMinutesOf(Player player, int playedMinutes) {
-        List<Integer> minutes = match.events().stream()
-                .filter(e -> e.type() == Injury || e.type() == Match.MatchEvent.Type.Expulsion)
-                .filter(e -> e.who().equals(player.definition().id()))
-                .map(Match.MatchEvent::minute)
-                .toList();
-        if (minutes.isEmpty()) return match.duration();
-        return Math.max(playedMinutes, minutes.stream().mapToInt(m -> m).max().orElse(0));
-    }
-
-    private Double scoreOf(Player player) {
-        Match.PlayerStatistics statistics = match.playerStatistics().get(player.team().definition().id()).get(player.definition().id());
-        if (statistics == null) return null;
-        return statistics.score();
-    }
-
-    private boolean has(Player player, Match.MatchEvent.Type type) {
-        return match.events().stream()
-                .filter(e -> e.who().equals(player.definition().id()))
-                .anyMatch(e -> e.type() == type);
-    }
-
-    private int count(Player player, Match.MatchEvent.Type type) {
-        return (int) match.events().stream()
-                .filter(e -> e.who().equals(player.definition().id()))
-                .filter(e -> e.type() == type)
-                .count();
-    }
-
-    private int assistsOf(Player player) {
-        return (int) match.events().stream()
-                .filter(e -> e.secondaryWho() != null && e.secondaryWho().equals(player.definition().id()))
-                .filter(e -> e.type() == Goal)
-                .count();
-    }
-
-    private int receivedGoalsOf(String team, Integer enterMinute, Integer exitMinute) {
-        if (enterMinute == null && exitMinute == null) return 0;
-        return (int) match.events().stream()
-                .filter(e -> e.type() == Goal)
-                .filter(e -> !e.team().equals(team))
-                .filter(e -> e.minute() >= enterMinute && e.minute() <= exitMinute)
-                .count();
-    }
-
     private void registerCardsAndSanctions() {
         CompetitionDefinition competition = application.competitionManager().get(match.definition().competition()).definition();
         Set<String> players = new HashSet<>();
         Map<String, Integer> yellowCardsMap = new HashMap<>();
         Set<String> expelledPlayers = new HashSet<>();
-        for (Match.MatchEvent event : match.events()) fill(event, players, yellowCardsMap, expelledPlayers);
+        for (MatchEvent event : match.events()) fill(event, players, yellowCardsMap, expelledPlayers);
         for (String playerId : players) {
             Player player = application.playerManager().get(playerId);
             int yellowCards = yellowCardsMap.getOrDefault(playerId, 0);
@@ -206,12 +122,12 @@ public class PostMatchCommand extends Command {
         }
     }
 
-    private static void fill(Match.MatchEvent event, Set<String> players, Map<String, Integer> yellowCards, Set<String> expelledPlayers) {
-        if (event.type() == Match.MatchEvent.Type.YellowCard) {
+    private static void fill(MatchEvent event, Set<String> players, Map<String, Integer> yellowCards, Set<String> expelledPlayers) {
+        if (event.type() == MatchEvent.Type.YellowCard) {
             players.add(event.who());
             yellowCards.putIfAbsent(event.who(), 0);
             yellowCards.put(event.who(), yellowCards.get(event.who()) + 1);
-        } else if (event.type() == Match.MatchEvent.Type.Expulsion) {
+        } else if (event.type() == MatchEvent.Type.Expulsion) {
             players.add(event.who());
             expelledPlayers.add(event.who());
         }
@@ -234,31 +150,15 @@ public class PostMatchCommand extends Command {
         }
     }
 
-    /*private void updatePlayerMatchRecord(Team team, Player player, Integer enterMinute, Integer exitMinute, int maxMinutes, Double score, boolean injured, boolean expelled, int goals, int assists, int receivedGoals, int yellowCards, int redCards, double preEnergy) {
-        application.recordStore().create().playerMatchRecord(match.definition().id(), player.definition().id(), team.definition().id(), match.definition().competition(), match.definition().season(), match.date(), enterMinute, exitMinute, maxMinutes, score, injured, expelled, goals, assists, receivedGoals, yellowCards, redCards, preEnergy);
-    }
-
-    private void createTeamMatchRecord(Team team, int goalsFor, int goalsAgainst) {
-        application.recordStore().create().teamMatchRecord(team.definition().id(), match.definition().competition(), match.definition().season(), match.date(), goalsFor, goalsAgainst);
-    }*/
-
     private TeamElo eloOf(String teamId) {
         TeamElo analysis = application.tableStore().teamElo(teamId);
         if (analysis == null) analysis = application.tableStore().create().teamElo(teamId);
         return analysis;
     }
 
-    private int pointsOf(String team, String winner) {
-        if (winner == null) return 1;
-        if (winner.equals(team)) return 3;
+    private int pointsOf(String team) {
+        if (match.goalsFor(team) > match.goalsAgainst(team)) return 3;
+        if (match.goalsFor(team) == match.goalsAgainst(team)) return 1;
         return 0;
-    }
-
-    private int goalsForOf(Team team) {
-        return (int) match.events().stream().filter(e -> e.type() == Goal).filter(e -> e.team().equals(team.definition().id())).count();
-    }
-
-    private int goalsAgainstOf(Team team) {
-        return (int) match.events().stream().filter(e -> e.type() == Goal).filter(e -> !e.team().equals(team.definition().id())).count();
     }
 }

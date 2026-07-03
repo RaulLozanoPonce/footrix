@@ -1,7 +1,7 @@
 package rlp.footrix.protrix.ai.matchsimulator.types;
 
 import com.google.gson.JsonObject;
-import rlp.footrix.framework.types.entities.Match;
+import rlp.footrix.framework.types.entities.match.MatchEvent;
 import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.framework.types.entities.team.PlayersLineup;
 import rlp.footrix.pes6.types.Pes6Player;
@@ -21,16 +21,16 @@ public class InjuryEventSimulator extends EventSimulator {
     }
 
     @Override
-    public List<Match.MatchEvent> simulate(int minute) {
+    public List<MatchEvent> simulate(int minute) {
         if (Math.random() > BaseInjuryChance) return new ArrayList<>();
         JsonObject metainfo = new JsonObject();
         metainfo.addProperty("level", level());
         if (Math.random() < 0.5) {
             String player = pickPlayerForInjury(localLineup());
-            return List.of(new Match.MatchEvent(local(), Match.MatchEvent.Type.Injury, minute, player, null, metainfo));
+            return List.of(new MatchEvent(local(), MatchEvent.Type.Injury, minute, player, null, metainfo));
         } else {
             String player = pickPlayerForInjury(visitantLineup());
-            return List.of(new Match.MatchEvent(visitant(), Match.MatchEvent.Type.Injury, minute, player, null, metainfo));
+            return List.of(new MatchEvent(visitant(), MatchEvent.Type.Injury, minute, player, null, metainfo));
         }
     }
 

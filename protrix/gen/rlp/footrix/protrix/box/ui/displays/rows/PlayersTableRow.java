@@ -37,7 +37,7 @@ public class PlayersTableRow extends io.intino.alexandria.ui.displays.components
 
 	public PlayersTableRow(ProtrixBox box) {
 		super(box);
-		id("a666447536");
+		id("a_590690427");
 	}
 
 	@Override

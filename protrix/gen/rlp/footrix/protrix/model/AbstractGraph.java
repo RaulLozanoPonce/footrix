@@ -4,11 +4,11 @@ import io.intino.magritte.framework.Graph;
 
 public class AbstractGraph extends io.intino.magritte.framework.GraphWrapper {
 	protected io.intino.magritte.framework.Graph graph;
-	private java.util.List<rlp.footrix.protrix.model.Match> matchList = new java.util.ArrayList<>();
 	private java.util.List<rlp.footrix.protrix.model.Classification> classificationList = new java.util.ArrayList<>();
 	private java.util.List<rlp.footrix.protrix.model.PlayerRecord> playerRecordList = new java.util.ArrayList<>();
 	private java.util.List<rlp.footrix.protrix.model.PlayerMatchRecord> playerMatchRecordList = new java.util.ArrayList<>();
 	private java.util.List<rlp.footrix.protrix.model.PlayerDayRecord> playerDayRecordList = new java.util.ArrayList<>();
+	private java.util.List<rlp.footrix.protrix.model.TeamOut> teamOutList = new java.util.ArrayList<>();
 
 	private java.util.Map<String, Indexer> _index = _fillIndex();
 
@@ -20,11 +20,11 @@ public class AbstractGraph extends io.intino.magritte.framework.GraphWrapper {
 	public AbstractGraph(io.intino.magritte.framework.Graph graph, AbstractGraph wrapper) {
 		this.graph = graph;
 		this.graph.i18n().register("protrix");
-		this.matchList = new java.util.ArrayList<>(wrapper.matchList);
 		this.classificationList = new java.util.ArrayList<>(wrapper.classificationList);
 		this.playerRecordList = new java.util.ArrayList<>(wrapper.playerRecordList);
 		this.playerMatchRecordList = new java.util.ArrayList<>(wrapper.playerMatchRecordList);
 		this.playerDayRecordList = new java.util.ArrayList<>(wrapper.playerDayRecordList);
+		this.teamOutList = new java.util.ArrayList<>(wrapper.teamOutList);
 	}
 
 	public <T extends io.intino.magritte.framework.GraphWrapper> T a$(Class<T> t) {
@@ -53,10 +53,6 @@ public class AbstractGraph extends io.intino.magritte.framework.GraphWrapper {
 		return graph.loadResource(graph.i18n().message(language, key));
 	}
 
-	public java.util.List<rlp.footrix.protrix.model.Match> matchList() {
-		return matchList;
-	}
-
 	public java.util.List<rlp.footrix.protrix.model.Classification> classificationList() {
 		return classificationList;
 	}
@@ -73,12 +69,8 @@ public class AbstractGraph extends io.intino.magritte.framework.GraphWrapper {
 		return playerDayRecordList;
 	}
 
-	public java.util.stream.Stream<rlp.footrix.protrix.model.Match> matchList(java.util.function.Predicate<rlp.footrix.protrix.model.Match> filter) {
-		return matchList.stream().filter(filter);
-	}
-
-	public rlp.footrix.protrix.model.Match match(int index) {
-		return matchList.get(index);
+	public java.util.List<rlp.footrix.protrix.model.TeamOut> teamOutList() {
+		return teamOutList;
 	}
 
 	public java.util.stream.Stream<rlp.footrix.protrix.model.Classification> classificationList(java.util.function.Predicate<rlp.footrix.protrix.model.Classification> filter) {
@@ -113,6 +105,14 @@ public class AbstractGraph extends io.intino.magritte.framework.GraphWrapper {
 		return playerDayRecordList.get(index);
 	}
 
+	public java.util.stream.Stream<rlp.footrix.protrix.model.TeamOut> teamOutList(java.util.function.Predicate<rlp.footrix.protrix.model.TeamOut> filter) {
+		return teamOutList.stream().filter(filter);
+	}
+
+	public rlp.footrix.protrix.model.TeamOut teamOut(int index) {
+		return teamOutList.get(index);
+	}
+
 	public io.intino.magritte.framework.Graph core$() {
 		return graph;
 	}
@@ -144,19 +144,6 @@ public class AbstractGraph extends io.intino.magritte.framework.GraphWrapper {
 		public Create(String stash, String name) {
 			this.stash = stash;
 			this.name = name;
-		}
-
-		public rlp.footrix.protrix.model.Match match(java.lang.String matchId, java.lang.String competitionName, java.time.Instant date, java.lang.String matchDay, java.lang.String localName, java.lang.String visitantName, java.lang.String localGoals, java.lang.String visitantGoals) {
-			rlp.footrix.protrix.model.Match newElement = AbstractGraph.this.graph.createRoot(rlp.footrix.protrix.model.Match.class, stash, this.name).a$(rlp.footrix.protrix.model.Match.class);
-			newElement.core$().set(newElement, "matchId", java.util.Collections.singletonList(matchId));
-			newElement.core$().set(newElement, "competitionName", java.util.Collections.singletonList(competitionName));
-			newElement.core$().set(newElement, "date", java.util.Collections.singletonList(date));
-			newElement.core$().set(newElement, "matchDay", java.util.Collections.singletonList(matchDay));
-			newElement.core$().set(newElement, "localName", java.util.Collections.singletonList(localName));
-			newElement.core$().set(newElement, "visitantName", java.util.Collections.singletonList(visitantName));
-			newElement.core$().set(newElement, "localGoals", java.util.Collections.singletonList(localGoals));
-			newElement.core$().set(newElement, "visitantGoals", java.util.Collections.singletonList(visitantGoals));
-			return newElement;
 		}
 
 		public rlp.footrix.protrix.model.Classification classification(java.lang.String competitionId, int phase, java.lang.String team, java.lang.String teamName, int playedGames, int wonGames, int drawGames, int lostGames, int goalsFor, int goalsAgainst) {
@@ -221,13 +208,22 @@ public class AbstractGraph extends io.intino.magritte.framework.GraphWrapper {
 			newElement.core$().set(newElement, "injured", java.util.Collections.singletonList(injured));
 			return newElement;
 		}
+
+		public rlp.footrix.protrix.model.TeamOut teamOut(java.time.Instant from, java.time.Instant to, java.lang.String teamId, java.lang.String playerId, boolean closed, rlp.footrix.protrix.model.TeamOut.Type type, java.lang.String competition, int matches) {
+			rlp.footrix.protrix.model.TeamOut newElement = AbstractGraph.this.graph.createRoot(rlp.footrix.protrix.model.TeamOut.class, stash, this.name).a$(rlp.footrix.protrix.model.TeamOut.class);
+			newElement.core$().set(newElement, "from", java.util.Collections.singletonList(from));
+			newElement.core$().set(newElement, "to", java.util.Collections.singletonList(to));
+			newElement.core$().set(newElement, "teamId", java.util.Collections.singletonList(teamId));
+			newElement.core$().set(newElement, "playerId", java.util.Collections.singletonList(playerId));
+			newElement.core$().set(newElement, "closed", java.util.Collections.singletonList(closed));
+			newElement.core$().set(newElement, "type", java.util.Collections.singletonList(type));
+			newElement.core$().set(newElement, "competition", java.util.Collections.singletonList(competition));
+			newElement.core$().set(newElement, "matches", java.util.Collections.singletonList(matches));
+			return newElement;
+		}
 	}
 
 	public class Clear {
-	    public void match(java.util.function.Predicate<rlp.footrix.protrix.model.Match> filter) {
-	    	new java.util.ArrayList<>(AbstractGraph.this.matchList()).stream().filter(filter).forEach(io.intino.magritte.framework.Layer::delete$);
-	    }
-
 	    public void classification(java.util.function.Predicate<rlp.footrix.protrix.model.Classification> filter) {
 	    	new java.util.ArrayList<>(AbstractGraph.this.classificationList()).stream().filter(filter).forEach(io.intino.magritte.framework.Layer::delete$);
 	    }
@@ -243,16 +239,20 @@ public class AbstractGraph extends io.intino.magritte.framework.GraphWrapper {
 	    public void playerDayRecord(java.util.function.Predicate<rlp.footrix.protrix.model.PlayerDayRecord> filter) {
 	    	new java.util.ArrayList<>(AbstractGraph.this.playerDayRecordList()).stream().filter(filter).forEach(io.intino.magritte.framework.Layer::delete$);
 	    }
+
+	    public void teamOut(java.util.function.Predicate<rlp.footrix.protrix.model.TeamOut> filter) {
+	    	new java.util.ArrayList<>(AbstractGraph.this.teamOutList()).stream().filter(filter).forEach(io.intino.magritte.framework.Layer::delete$);
+	    }
 	}
 
 
 	private java.util.HashMap<String, Indexer> _fillIndex() {
 		java.util.HashMap<String, Indexer> map = new java.util.HashMap<>();
-		map.put("Match", new Indexer(node -> matchList.add(node.as(rlp.footrix.protrix.model.Match.class)), node -> matchList.remove(node.as(rlp.footrix.protrix.model.Match.class)), () -> matchList.clear()));
 		map.put("Classification", new Indexer(node -> classificationList.add(node.as(rlp.footrix.protrix.model.Classification.class)), node -> classificationList.remove(node.as(rlp.footrix.protrix.model.Classification.class)), () -> classificationList.clear()));
 		map.put("PlayerRecord", new Indexer(node -> playerRecordList.add(node.as(rlp.footrix.protrix.model.PlayerRecord.class)), node -> playerRecordList.remove(node.as(rlp.footrix.protrix.model.PlayerRecord.class)), () -> playerRecordList.clear()));
 		map.put("PlayerMatchRecord", new Indexer(node -> playerMatchRecordList.add(node.as(rlp.footrix.protrix.model.PlayerMatchRecord.class)), node -> playerMatchRecordList.remove(node.as(rlp.footrix.protrix.model.PlayerMatchRecord.class)), () -> playerMatchRecordList.clear()));
 		map.put("PlayerDayRecord", new Indexer(node -> playerDayRecordList.add(node.as(rlp.footrix.protrix.model.PlayerDayRecord.class)), node -> playerDayRecordList.remove(node.as(rlp.footrix.protrix.model.PlayerDayRecord.class)), () -> playerDayRecordList.clear()));
+		map.put("TeamOut", new Indexer(node -> teamOutList.add(node.as(rlp.footrix.protrix.model.TeamOut.class)), node -> teamOutList.remove(node.as(rlp.footrix.protrix.model.TeamOut.class)), () -> teamOutList.clear()));
 		return map;
 	}
 
@@ -266,7 +266,7 @@ public class AbstractGraph extends io.intino.magritte.framework.GraphWrapper {
 	}
 
 	private static String stash0() {
-		return "gAEAamF2YS51dGlsLkFycmF5TGlz9IYBAWlvLmludGluby5tYWdyaXR0ZS5pby5tb2RlbC5Db25jZXD0AHJscC5mb290cml4LnByb3RyaXgubW9kZWwuTWF0Y+gBAAEAAAEATWF0Y+gBAAEBAAGAAQACQ29uY2Vw9AEAAalybHAuZm9vdHJpeC5wcm90cml4Lm1vZGVsLkNsYXNzaWZpY2F0aW9uAQABAAABAENsYXNzaWZpY2F0aW/uAQABAQABgAEAAkNvbmNlcPQBAAGncmxwLmZvb3RyaXgucHJvdHJpeC5tb2RlbC5QbGF5ZXJSZWNvcmQBAAEAAAEAUGxheWVyUmVjb3LkAQABAQABgAEAAkNvbmNlcPQBAAGscmxwLmZvb3RyaXgucHJvdHJpeC5tb2RlbC5QbGF5ZXJNYXRjaFJlY29yZAEAAQAAAQBQbGF5ZXJNYXRjaFJlY29y5AEAAQEAAYABAAJDb25jZXD0AQABqnJscC5mb290cml4LnByb3RyaXgubW9kZWwuUGxheWVyRGF5UmVjb3JkAQABAAABAFBsYXllckRheVJlY29y5AEAAQEAAYABAAJDb25jZXD0AQABAQCGAQJpby5pbnRpbm8ubWFncml0dGUuaW8ubW9kZWwuQ29uY2VwdCRDb250ZW70AP7///8PAE1hdGPo/v///w8AQ2xhc3NpZmljYXRpb+7+////DwBQbGF5ZXJSZWNvcuT+////DwBQbGF5ZXJNYXRjaFJlY29y5P7///8PAFBsYXllckRheVJlY29y5FByb3Rl7wEAAU1vZGVsLnN0YXPoAQABgA==";
+		return "gAEAamF2YS51dGlsLkFycmF5TGlz9IYBAWlvLmludGluby5tYWdyaXR0ZS5pby5tb2RlbC5Db25jZXD0AKlybHAuZm9vdHJpeC5wcm90cml4Lm1vZGVsLkNsYXNzaWZpY2F0aW9uAQABAAABAENsYXNzaWZpY2F0aW/uAQABAQABgAEAAkNvbmNlcPQBAAGncmxwLmZvb3RyaXgucHJvdHJpeC5tb2RlbC5QbGF5ZXJSZWNvcmQBAAEAAAEAUGxheWVyUmVjb3LkAQABAQABgAEAAkNvbmNlcPQBAAGscmxwLmZvb3RyaXgucHJvdHJpeC5tb2RlbC5QbGF5ZXJNYXRjaFJlY29yZAEAAQAAAQBQbGF5ZXJNYXRjaFJlY29y5AEAAQEAAYABAAJDb25jZXD0AQABqnJscC5mb290cml4LnByb3RyaXgubW9kZWwuUGxheWVyRGF5UmVjb3JkAQABAAABAFBsYXllckRheVJlY29y5AEAAQEAAYABAAJDb25jZXD0AQABonJscC5mb290cml4LnByb3RyaXgubW9kZWwuVGVhbU91dAEAAQAAAQBUZWFtT3X0AQABAQABgAEAAkNvbmNlcPQBAAEBAIYBAmlvLmludGluby5tYWdyaXR0ZS5pby5tb2RlbC5Db25jZXB0JENvbnRlbvQA/v///w8AQ2xhc3NpZmljYXRpb+7+////DwBQbGF5ZXJSZWNvcuT+////DwBQbGF5ZXJNYXRjaFJlY29y5P7///8PAFBsYXllckRheVJlY29y5P7///8PAFRlYW1PdfRQcm90Ze8BAAFNb2RlbC5zdGFz6AEAAYA=";
 	}
 
 	public static class Indexer {

@@ -23,13 +23,13 @@ public class TopScorersPositionMold extends io.intino.alexandria.ui.displays.com
 
 	public TopScorersPositionMold(ProtrixBox box) {
 		super(box);
-		id("a_859844011");
+		id("a_890863818");
 	}
 
 	@Override
 	public void init() {
 		super.init();
-		if (topScorersPosition == null) topScorersPosition = register(new TopScorersPosition(box()).<TopScorersPosition>id("a36818609").owner(TopScorersPositionMold.this));
+		if (topScorersPosition == null) topScorersPosition = register(new TopScorersPosition(box()).<TopScorersPosition>id("a1737559088").owner(TopScorersPositionMold.this));
 	}
 
 	@Override

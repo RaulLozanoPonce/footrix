@@ -19,16 +19,18 @@ import rlp.footrix.protrix.box.ui.displays.rows.*;
 import io.intino.alexandria.ui.displays.notifiers.TemplateNotifier;
 
 public abstract class AbstractCompetitionTemplate<B extends Box> extends io.intino.alexandria.ui.displays.components.Template<TemplateNotifier, java.lang.Void, B> {
-	public _27_1_0435423044 _27_1_0435423044;
-	public CompetitionTemplate._27_1_0435423044. CompetitionName competitionName;
-	public _29_1_1566634046 _29_1_1566634046;
-	public CompetitionTemplate._29_1_1566634046. Tabs tabs;
-	public CompetitionTemplate._29_1_1566634046.Tabs. ClassificationOpt classificationOpt;
-	public CompetitionTemplate._29_1_1566634046.Tabs. TeamsOpt teamsOpt;
-	public CompetitionTemplate._29_1_1566634046.Tabs. MatchesOpt matchesOpt;
-	public CompetitionTemplate._29_1_1566634046.Tabs. RankingsOpt rankingsOpt;
+	public _27_1_0958286533 _27_1_0958286533;
+	public CompetitionTemplate._27_1_0958286533. _28_2_1176987340 _28_2_1176987340;
+	public CompetitionTemplate._27_1_0958286533._28_2_1176987340. _28_38_1598024365 _28_38_1598024365;
+	public CompetitionTemplate._27_1_0958286533. CompetitionName competitionName;
+	public _30_1_1566634046 _30_1_1566634046;
+	public CompetitionTemplate._30_1_1566634046. Tabs tabs;
+	public CompetitionTemplate._30_1_1566634046.Tabs. ClassificationOpt classificationOpt;
+	public CompetitionTemplate._30_1_1566634046.Tabs. TeamsOpt teamsOpt;
+	public CompetitionTemplate._30_1_1566634046.Tabs. MatchesOpt matchesOpt;
+	public CompetitionTemplate._30_1_1566634046.Tabs. RankingsOpt rankingsOpt;
 	public CompetitionClassificationBlock competitionClassificationBlock;
-	public CompetitionClassificationTemplate competitionClassificationStamp;
+	public FullClassificationTemplate competitionClassificationStamp;
 	public CompetitionTeamsBlock competitionTeamsBlock;
 	public TeamsTemplate competitionTeamsStamp;
 	public CompetitionMatchesBlock competitionMatchesBlock;
@@ -44,14 +46,16 @@ public abstract class AbstractCompetitionTemplate<B extends Box> extends io.inti
 	@Override
 	public void init() {
 		super.init();
-		if (_27_1_0435423044 == null) _27_1_0435423044 = register(new _27_1_0435423044(box()).<_27_1_0435423044>id("a2114948943").owner(AbstractCompetitionTemplate.this));
-		if (_27_1_0435423044 != null) competitionName = _27_1_0435423044.competitionName;
-		if (_29_1_1566634046 == null) _29_1_1566634046 = register(new _29_1_1566634046(box()).<_29_1_1566634046>id("a979042731").owner(AbstractCompetitionTemplate.this));
-		if (_29_1_1566634046 != null) tabs = _29_1_1566634046.tabs;
-		if (tabs != null) classificationOpt = _29_1_1566634046.tabs.classificationOpt;
-		if (tabs != null) teamsOpt = _29_1_1566634046.tabs.teamsOpt;
-		if (tabs != null) matchesOpt = _29_1_1566634046.tabs.matchesOpt;
-		if (tabs != null) rankingsOpt = _29_1_1566634046.tabs.rankingsOpt;
+		if (_27_1_0958286533 == null) _27_1_0958286533 = register(new _27_1_0958286533(box()).<_27_1_0958286533>id("a_825814689").owner(AbstractCompetitionTemplate.this));
+		if (_27_1_0958286533 != null) _28_2_1176987340 = _27_1_0958286533._28_2_1176987340;
+		if (_28_2_1176987340 != null) _28_38_1598024365 = _27_1_0958286533._28_2_1176987340._28_38_1598024365;
+		if (_27_1_0958286533 != null) competitionName = _27_1_0958286533.competitionName;
+		if (_30_1_1566634046 == null) _30_1_1566634046 = register(new _30_1_1566634046(box()).<_30_1_1566634046>id("a_1553312427").owner(AbstractCompetitionTemplate.this));
+		if (_30_1_1566634046 != null) tabs = _30_1_1566634046.tabs;
+		if (tabs != null) classificationOpt = _30_1_1566634046.tabs.classificationOpt;
+		if (tabs != null) teamsOpt = _30_1_1566634046.tabs.teamsOpt;
+		if (tabs != null) matchesOpt = _30_1_1566634046.tabs.matchesOpt;
+		if (tabs != null) rankingsOpt = _30_1_1566634046.tabs.rankingsOpt;
 		if (competitionClassificationBlock == null) competitionClassificationBlock = register(new CompetitionClassificationBlock(box()).<CompetitionClassificationBlock>id("a2108965965").owner(AbstractCompetitionTemplate.this));
 		if (competitionClassificationBlock != null) competitionClassificationStamp = competitionClassificationBlock.competitionClassificationStamp;
 		if (competitionTeamsBlock == null) competitionTeamsBlock = register(new CompetitionTeamsBlock(box()).<CompetitionTeamsBlock>id("a_117470799").owner(AbstractCompetitionTemplate.this));
@@ -65,31 +69,72 @@ public abstract class AbstractCompetitionTemplate<B extends Box> extends io.inti
 	@Override
 	public void remove() {
 		super.remove();
-		if (_27_1_0435423044 != null) _27_1_0435423044.unregister();
-		if (_29_1_1566634046 != null) _29_1_1566634046.unregister();
+		if (_27_1_0958286533 != null) _27_1_0958286533.unregister();
+		if (_30_1_1566634046 != null) _30_1_1566634046.unregister();
 		if (competitionClassificationBlock != null) competitionClassificationBlock.unregister();
 		if (competitionTeamsBlock != null) competitionTeamsBlock.unregister();
 		if (competitionMatchesBlock != null) competitionMatchesBlock.unregister();
 		if (competitionRankingsBlock != null) competitionRankingsBlock.unregister();
 	}
 
-	public class _27_1_0435423044 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, B>  {
-		public CompetitionTemplate._27_1_0435423044. CompetitionName competitionName;
+	public class _27_1_0958286533 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, B>  {
+		public CompetitionTemplate._27_1_0958286533. _28_2_1176987340 _28_2_1176987340;
+		public CompetitionTemplate._27_1_0958286533. CompetitionName competitionName;
 
-		public _27_1_0435423044(B box) {
+		public _27_1_0958286533(B box) {
 			super(box);
 		}
 
 		@Override
 		public void init() {
 			super.init();
+			if (_28_2_1176987340 == null) _28_2_1176987340 = register(new _28_2_1176987340(box()).<_28_2_1176987340>id("a331471930").owner(AbstractCompetitionTemplate.this));
 			if (competitionName == null) competitionName = register(new CompetitionName(box()).<CompetitionName>id("a1389280781").owner(AbstractCompetitionTemplate.this));
 		}
 
 		@Override
 		public void unregister() {
 			super.unregister();
+			if (_28_2_1176987340 != null) _28_2_1176987340.unregister();
 			if (competitionName != null) competitionName.unregister();
+		}
+
+		public class _28_2_1176987340 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, B>  {
+			public CompetitionTemplate._27_1_0958286533._28_2_1176987340. _28_38_1598024365 _28_38_1598024365;
+
+			public _28_2_1176987340(B box) {
+				super(box);
+			}
+
+			@Override
+			public void init() {
+				super.init();
+				if (_28_38_1598024365 == null) _28_38_1598024365 = register(new _28_38_1598024365(box()).<_28_38_1598024365>id("a_1903191448").owner(AbstractCompetitionTemplate.this));
+			}
+
+			@Override
+			public void unregister() {
+				super.unregister();
+				if (_28_38_1598024365 != null) _28_38_1598024365.unregister();
+			}
+
+			public class _28_38_1598024365 extends io.intino.alexandria.ui.displays.components.Icon<io.intino.alexandria.ui.displays.notifiers.IconNotifier, B>  {
+
+				public _28_38_1598024365(B box) {
+					super(box);
+					_icon(AbstractCompetitionTemplate.class.getResource("/icons/flags/0.png"));
+				}
+
+				@Override
+				public void init() {
+					super.init();
+				}
+
+				@Override
+				public void unregister() {
+					super.unregister();
+				}
+			}
 		}
 
 		public class CompetitionName extends io.intino.alexandria.ui.displays.components.Text<io.intino.alexandria.ui.displays.notifiers.TextNotifier, B>  {
@@ -110,17 +155,17 @@ public abstract class AbstractCompetitionTemplate<B extends Box> extends io.inti
 		}
 	}
 
-	public class _29_1_1566634046 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, B>  {
-		public CompetitionTemplate._29_1_1566634046. Tabs tabs;
+	public class _30_1_1566634046 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, B>  {
+		public CompetitionTemplate._30_1_1566634046. Tabs tabs;
 
-		public _29_1_1566634046(B box) {
+		public _30_1_1566634046(B box) {
 			super(box);
 		}
 
 		@Override
 		public void init() {
 			super.init();
-			if (tabs == null) tabs = register(new Tabs(box()).<Tabs>id("a_1801113607").owner(AbstractCompetitionTemplate.this));
+			if (tabs == null) tabs = register(new Tabs(box()).<Tabs>id("a_2113991901").owner(AbstractCompetitionTemplate.this));
 		}
 
 		@Override
@@ -130,10 +175,10 @@ public abstract class AbstractCompetitionTemplate<B extends Box> extends io.inti
 		}
 
 		public class Tabs extends io.intino.alexandria.ui.displays.components.SelectorTabs<io.intino.alexandria.ui.displays.notifiers.SelectorTabsNotifier, B>  {
-			public CompetitionTemplate._29_1_1566634046.Tabs. ClassificationOpt classificationOpt;
-			public CompetitionTemplate._29_1_1566634046.Tabs. TeamsOpt teamsOpt;
-			public CompetitionTemplate._29_1_1566634046.Tabs. MatchesOpt matchesOpt;
-			public CompetitionTemplate._29_1_1566634046.Tabs. RankingsOpt rankingsOpt;
+			public CompetitionTemplate._30_1_1566634046.Tabs. ClassificationOpt classificationOpt;
+			public CompetitionTemplate._30_1_1566634046.Tabs. TeamsOpt teamsOpt;
+			public CompetitionTemplate._30_1_1566634046.Tabs. MatchesOpt matchesOpt;
+			public CompetitionTemplate._30_1_1566634046.Tabs. RankingsOpt rankingsOpt;
 
 			public Tabs(B box) {
 				super(box);
@@ -143,10 +188,10 @@ public abstract class AbstractCompetitionTemplate<B extends Box> extends io.inti
 			@Override
 			public void init() {
 				super.init();
-				if (classificationOpt == null) classificationOpt = register(new ClassificationOpt(box()).<ClassificationOpt>id("a_289268185").owner(AbstractCompetitionTemplate.this));
-				if (teamsOpt == null) teamsOpt = register(new TeamsOpt(box()).<TeamsOpt>id("a_1909640541").owner(AbstractCompetitionTemplate.this));
-				if (matchesOpt == null) matchesOpt = register(new MatchesOpt(box()).<MatchesOpt>id("a1270930566").owner(AbstractCompetitionTemplate.this));
-				if (rankingsOpt == null) rankingsOpt = register(new RankingsOpt(box()).<RankingsOpt>id("a501849904").owner(AbstractCompetitionTemplate.this));
+				if (classificationOpt == null) classificationOpt = register(new ClassificationOpt(box()).<ClassificationOpt>id("a393167569").owner(AbstractCompetitionTemplate.this));
+				if (teamsOpt == null) teamsOpt = register(new TeamsOpt(box()).<TeamsOpt>id("a2093369017").owner(AbstractCompetitionTemplate.this));
+				if (matchesOpt == null) matchesOpt = register(new MatchesOpt(box()).<MatchesOpt>id("a_127581412").owner(AbstractCompetitionTemplate.this));
+				if (rankingsOpt == null) rankingsOpt = register(new RankingsOpt(box()).<RankingsOpt>id("a97651546").owner(AbstractCompetitionTemplate.this));
 			}
 
 			@Override
@@ -241,7 +286,7 @@ public abstract class AbstractCompetitionTemplate<B extends Box> extends io.inti
 	}
 
 	public class CompetitionClassificationBlock extends io.intino.alexandria.ui.displays.components.BlockConditional<io.intino.alexandria.ui.displays.notifiers.BlockConditionalNotifier, B>  {
-		public CompetitionClassificationTemplate competitionClassificationStamp;
+		public FullClassificationTemplate competitionClassificationStamp;
 
 		public CompetitionClassificationBlock(B box) {
 			super(box);
@@ -250,7 +295,7 @@ public abstract class AbstractCompetitionTemplate<B extends Box> extends io.inti
 		@Override
 		public void initConditional() {
 			super.init();
-			if (competitionClassificationStamp == null) competitionClassificationStamp = AbstractCompetitionTemplate.this.competitionClassificationStamp = register(new CompetitionClassificationTemplate((ProtrixBox)box()).id("a1536321904"));
+			if (competitionClassificationStamp == null) competitionClassificationStamp = AbstractCompetitionTemplate.this.competitionClassificationStamp = register(new FullClassificationTemplate((ProtrixBox)box()).id("a1536321904"));
 			if (AbstractCompetitionTemplate.this.competitionClassificationStamp == null) AbstractCompetitionTemplate.this.competitionClassificationStamp = competitionClassificationBlock.competitionClassificationStamp;
 		}
 

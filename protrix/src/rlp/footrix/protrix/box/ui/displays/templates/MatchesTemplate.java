@@ -3,22 +3,27 @@ package rlp.footrix.protrix.box.ui.displays.templates;
 import io.intino.alexandria.Base64;
 import io.intino.alexandria.ui.displays.events.AddCollectionItemEvent;
 import io.intino.alexandria.ui.displays.events.SelectionEvent;
+import rlp.footrix.framework.events.Event;
+import rlp.footrix.framework.events.types.ScheduledMatchEvent;
 import rlp.footrix.framework.types.entities.Competition;
 import rlp.footrix.framework.types.entities.definitions.MatchDefinition;
+import rlp.footrix.framework.types.entities.match.Match;
 import rlp.footrix.framework.utils.TimeHelper;
+import rlp.footrix.pes6.types.Pes6Team;
 import rlp.footrix.protrix.box.ProtrixBox;
 import rlp.footrix.protrix.box.ui.datasources.MatchDatasource;
 import rlp.footrix.protrix.box.ui.displays.items.MatchTableMold;
-import rlp.footrix.protrix.model.Match;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.util.Set;
 
 public class MatchesTemplate extends AbstractMatchesTemplate<ProtrixBox> {
     private final MatchDatasource matchDatasource;
 
     private Competition competition;
     private Integer season;
+    private Pes6Team team;
 
     public MatchesTemplate(ProtrixBox box) {
 		super(box);
@@ -33,21 +38,26 @@ public class MatchesTemplate extends AbstractMatchesTemplate<ProtrixBox> {
     }
 
     public MatchesTemplate setup(Competition competition, int season) {
+        return setup(competition, season, null);
+    }
+
+    public MatchesTemplate setup(Competition competition, int season, Pes6Team team) {
         this.competition = competition;
         this.season = season;
+        this.team = team;
         return this;
     }
 
     @Override
     public void refresh() {
         super.refresh();
+        refreshTable(box().application().game().date());
         matchTable.source(matchDatasource);
     }
 
     private void initDate() {
         date.value(box().application().game().date());
         date.onChange(v -> refreshTable(v.value()));
-        refreshTable(box().application().game().date());
     }
 
     private void initTable() {
@@ -56,23 +66,46 @@ public class MatchesTemplate extends AbstractMatchesTemplate<ProtrixBox> {
     }
 
     private void refreshTable(Instant date) {
-        matchDatasource.setup(competition, season, date);
+        matchDatasource.setup(competition, season, team, date);
         matchDatasource.loadData();
         matchTable.reload();
     }
 
     private void addMatch(AddCollectionItemEvent event) {
-        Match match = event.item();
+        MatchDefinition definition = event.item();
+        Match match = box().application().entityStore().match(definition);
+        String competitionName = box().application().competitionManager().definition(definition.competition()).name();
+        String localName = box().application().teamManager().definition(definition.local()).name();
+        String visitantName = box().application().teamManager().definition(definition.visitant()).name();
         MatchTableMold item = event.component();
-        item.day.value(TimeHelper.shortDayStyled(match.date()));
-        item.matchDay.value(match.matchDay());
-        item.competitionLink.title(match.competitionName());
-        item.competitionLink.onExecute(e -> selectCompetition(MatchDefinition.of(match.matchId())));
-        item.localLink.title(match.localName());
-        item.localLink.onExecute(e -> selectTeam(MatchDefinition.of(match.matchId()).local()));
-        item.match.value(match.localGoals() + " - " + match.visitantGoals());
-        item.visitantLink.title(match.visitantName());
-        item.visitantLink.onExecute(e -> selectTeam(MatchDefinition.of(match.matchId()).visitant()));
+        if (team != null && match != null) item.matchBlock.formats(colorOfMatch(match));
+        item.day.value(TimeHelper.shortDayStyled(dateOf(definition, match)));
+        item.matchDay.value(definition.matchDay());
+        item.competitionLink.title(competitionName);
+        item.competitionLink.onExecute(e -> selectCompetition(definition));
+        item.localLink.title(localName);
+        item.localLink.onExecute(e -> selectTeam(definition.local()));
+        item.match.value(resultOf(match));
+        item.visitantLink.title(visitantName);
+        item.visitantLink.onExecute(e -> selectTeam(definition.visitant()));
+    }
+
+    private Set<String> colorOfMatch(Match match) {
+        if (match.isDraw()) return Set.of("greyBackground", "rounded");
+        if (match.winner().equals(team.definition().id())) return Set.of("greenBackground", "rounded");
+        return Set.of("redBackground", "rounded");
+    }
+
+    private Instant dateOf(MatchDefinition definition, Match match) {
+        if (match != null) return match.date();
+
+        for (Event event : box().application().taskHub().tasksFrom(box().application().game().date())) {
+            if (event instanceof ScheduledMatchEvent scheduled) {
+                if (scheduled.definition().id().equals(definition.id())) return scheduled.date();
+            }
+        }
+
+        return null;
     }
 
     private void selectCompetition(MatchDefinition definition) {
@@ -85,7 +118,12 @@ public class MatchesTemplate extends AbstractMatchesTemplate<ProtrixBox> {
 
     private void selectMatch(SelectionEvent event) {
         if (event.first() == null) return;
-        notifier.redirect("/matches/" + encode(((Match) event.first()).matchId()));
+        notifier.redirect("/matches/" + encode(((MatchDefinition) event.first()).id()));
+    }
+
+    private String resultOf(Match match) {
+        if (match != null) return match.localGoals() + " - " + match.visitantGoals();
+        return "-";
     }
 
     private String encode(String text) {

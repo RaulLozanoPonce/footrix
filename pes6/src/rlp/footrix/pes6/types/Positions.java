@@ -25,4 +25,8 @@ public class Positions {
     public static Position of(String positionId) {
         return values().stream().filter(v -> v.id().equals(positionId)).findFirst().orElse(null);
     }
+
+    public static int compare(Position p1, Position p2) {
+        return Integer.compare(values().indexOf(p1), values().indexOf(p2));
+    }
 }

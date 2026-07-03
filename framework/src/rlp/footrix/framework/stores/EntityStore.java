@@ -1,13 +1,15 @@
 package rlp.footrix.framework.stores;
 
 import rlp.footrix.framework.types.entities.Competition;
-import rlp.footrix.framework.types.entities.Match;
+import rlp.footrix.framework.types.entities.match.Match;
 import rlp.footrix.framework.types.entities.definitions.MatchDefinition;
 import rlp.footrix.framework.types.entities.definitions.PlayerDefinition;
 import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.framework.types.entities.team.Team;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.function.Predicate;
 
 public interface EntityStore {
     List<Competition> competitions(int season);
@@ -22,6 +24,7 @@ public interface EntityStore {
     void player(Player player);
     List<Match> matches(String competition, int season);
     List<Match> matches(Team team);
+    List<Match> matches(Instant from, Instant to, Integer season, String competition, List<Predicate<MatchDefinition>> predicates);
     Match match(String id);
     Match match(MatchDefinition definition);
     void match(Match match);

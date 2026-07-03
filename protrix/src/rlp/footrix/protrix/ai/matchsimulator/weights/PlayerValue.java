@@ -82,6 +82,10 @@ public class PlayerValue {
         return player.psychophysics().energy() - state.fatigue(player.definition().id());
     }
 
+    public double selfConfidence(Pes6Player player) {
+        return player.psychophysics().selfConfidence();
+    }
+
     public double score(Pes6Player player, int minute) {
         return state.score(player.team().definition().id(), player.definition().id(), minute);
     }

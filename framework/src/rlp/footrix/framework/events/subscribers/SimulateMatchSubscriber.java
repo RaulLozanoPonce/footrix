@@ -5,7 +5,7 @@ import rlp.footrix.framework.events.Subscriber;
 import rlp.footrix.framework.events.types.PlayedMatchEvent;
 import rlp.footrix.framework.events.types.SimulateMatchEvent;
 import rlp.footrix.framework.types.entities.Competition;
-import rlp.footrix.framework.types.entities.Match;
+import rlp.footrix.framework.types.entities.match.Match;
 import rlp.footrix.framework.types.entities.definitions.MatchDefinition;
 import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.framework.types.entities.team.PlayersLineup;

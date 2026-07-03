@@ -1,8 +1,8 @@
 package rlp.footrix.protrix.ai.matchsimulator.types;
 
 import rlp.footrix.framework.generators.LineupGenerator;
-import rlp.footrix.framework.types.entities.Match;
 import rlp.footrix.framework.types.entities.definitions.MatchDefinition;
+import rlp.footrix.framework.types.entities.match.MatchEvent;
 import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.framework.types.entities.player.Position;
 import rlp.footrix.framework.types.entities.team.PlayersLineup;
@@ -15,7 +15,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static rlp.footrix.framework.generators.LineupGenerator.scoreOfMatch;
-import static rlp.footrix.framework.types.entities.Match.MatchEvent.Type.*;
+import static rlp.footrix.framework.types.entities.match.MatchEvent.Type.*;
 
 public class SubstitutionEventSimulator extends EventSimulator {
     private static final double BaseSubChance = 1;
@@ -27,13 +27,12 @@ public class SubstitutionEventSimulator extends EventSimulator {
     }
 
     @Override
-    public List<Match.MatchEvent> simulate(int minute) {
+    public List<MatchEvent> simulate(int minute) {
         Set<String> localNeededSubstitutions = neededSubstitutions(local());
         Set<String> visitantNeededSubstitutions = neededSubstitutions(visitant());
         if (!localNeededSubstitutions.isEmpty() || !visitantNeededSubstitutions.isEmpty())
             return simulateNeededSubstitutions(localNeededSubstitutions, visitantNeededSubstitutions, minute);
 
-        //TODO ESTUDIAR SUSTITUCIONES CON UNA NORMAL
         if (minute < 45) return new ArrayList<>();
         if (Math.random() > BaseSubChance) return new ArrayList<>();
         if (Math.random() < 0.5) {
@@ -43,19 +42,19 @@ public class SubstitutionEventSimulator extends EventSimulator {
         }
     }
 
-    private List<Match.MatchEvent> simulateNeededSubstitutions(Set<String> localNeededSubstitutions, Set<String> visitantNeededSubstitutions, int minute) {
-        List<Match.MatchEvent> events = new ArrayList<>();
+    private List<MatchEvent> simulateNeededSubstitutions(Set<String> localNeededSubstitutions, Set<String> visitantNeededSubstitutions, int minute) {
+        List<MatchEvent> events = new ArrayList<>();
         events.addAll(substitutions(local(), localNeededSubstitutions, minute));
         events.addAll(substitutions(visitant(), visitantNeededSubstitutions, minute));
         return events;
     }
 
     private Set<String> neededSubstitutions(String team) {
-        Set<String> expelled = state.minuteEvents().stream().filter(e -> e.type() == Expulsion && e.team().equals(team)).map(Match.MatchEvent::who).collect(Collectors.toSet());
+        Set<String> expelled = state.minuteEvents().stream().filter(e -> e.type() == Expulsion && e.team().equals(team)).map(MatchEvent::who).collect(Collectors.toSet());
         return state.minuteEvents().stream()
                 .filter(e -> e.type() == Injury)
                 .filter(e -> e.team().equals(team))
-                .map(Match.MatchEvent::who)
+                .map(MatchEvent::who)
                 .filter(p -> !expelled.contains(p))
                 .limit(state.lineup(team).remainingSubstitutions(5))
                 .collect(Collectors.toSet());
@@ -76,7 +75,7 @@ public class SubstitutionEventSimulator extends EventSimulator {
     }
 
     private List<String> replaceablePlayers(String team, Set<String> irreplaceablePlayers, int minute) {
-        Set<String> expelled = state.minuteEvents().stream().filter(e -> e.type() == Expulsion && e.team().equals(team)).map(Match.MatchEvent::who).collect(Collectors.toSet());
+        Set<String> expelled = state.minuteEvents().stream().filter(e -> e.type() == Expulsion && e.team().equals(team)).map(MatchEvent::who).collect(Collectors.toSet());
         return state.lineup(team).fieldPlayers().stream()
                 .filter(p -> !expelled.contains(p.definition().id()))
                 .filter(p -> !irreplaceablePlayers.contains(p.definition().id()))
@@ -94,21 +93,21 @@ public class SubstitutionEventSimulator extends EventSimulator {
         state.events().stream()
                 .filter(e -> e.type() == Substitution)
                 .filter(e -> e.team().equals(team))
-                .map(Match.MatchEvent::who)
+                .map(MatchEvent::who)
                 .forEach(players::add);
         return players;
     }
 
-    private List<Match.MatchEvent> substitutions(String team, Collection<String> substitutions, int minute) {
+    private List<MatchEvent> substitutions(String team, Collection<String> substitutions, int minute) {
         Set<String> noNewPlayers = new HashSet<>();
-        List<Match.MatchEvent> events = new ArrayList<>();
+        List<MatchEvent> events = new ArrayList<>();
         for (String playerId : substitutions) {
             Player playerToSubstitute = state.lineup(team).fieldPlayers().stream().filter(p -> p.definition().id().equals(playerId)).findFirst().orElse(null);
             if (playerToSubstitute == null) continue;
             Player successful = substitute(team, playerToSubstitute, noNewPlayers);
             if (successful == null) continue;
             noNewPlayers.add(successful.definition().id());
-            events.add(new Match.MatchEvent(team, Substitution, minute, successful.definition().id(), playerId, null));
+            events.add(new MatchEvent(team, Substitution, minute, successful.definition().id(), playerId, null));
         }
         return events;
     }

@@ -41,7 +41,7 @@ public class ProtrixUiService extends io.intino.alexandria.ui.UI {
 
 	public static void initDisplays(UISpark spark, PushService pushService) {
 		initTraceTemplate(spark, pushService);
-		initCompetitionClassificationTemplate(spark, pushService);
+		initFullClassificationTemplate(spark, pushService);
 		initCompetitionGoalRankingTemplate(spark, pushService);
 		initCompetitionAssistRankingTemplate(spark, pushService);
 		initCompetitionReceivedGoalRankingTemplate(spark, pushService);
@@ -59,6 +59,8 @@ public class ProtrixUiService extends io.intino.alexandria.ui.UI {
 		initPlayerTraceTemplate(spark, pushService);
 		initTeamsTemplate(spark, pushService);
 		initTeamTemplate(spark, pushService);
+		initSquadTeamTemplate(spark, pushService);
+		initOutTeamTemplate(spark, pushService);
 		initAppTemplate(spark, pushService);
 		initHeaderTemplate(spark, pushService);
 		initIdMold(spark, pushService);
@@ -76,16 +78,16 @@ public class ProtrixUiService extends io.intino.alexandria.ui.UI {
 		initScoreMold(spark, pushService);
 		initCacheIniMold(spark, pushService);
 		initCacheMold(spark, pushService);
-		initMatchCompetitionClassificationPositionMold(spark, pushService);
-		initMatchCompetitionClassificationTeamMold(spark, pushService);
-		initMatchCompetitionClassificationPlayedMatchesMold(spark, pushService);
-		initMatchCompetitionClassificationWinMatchesMold(spark, pushService);
-		initMatchCompetitionClassificationDrawMatchesMold(spark, pushService);
-		initMatchCompetitionClassificationLostMatchesMold(spark, pushService);
-		initMatchCompetitionClassificationGoalsForMold(spark, pushService);
-		initMatchCompetitionClassificationGoalsAgainstMold(spark, pushService);
-		initMatchCompetitionClassificationGoalsDifferenceMold(spark, pushService);
-		initMatchCompetitionClassificationPointsMold(spark, pushService);
+		initFullClassificationPositionMold(spark, pushService);
+		initFullClassificationTeamMold(spark, pushService);
+		initFullClassificationPlayedMatchesMold(spark, pushService);
+		initFullClassificationWinMatchesMold(spark, pushService);
+		initFullClassificationDrawMatchesMold(spark, pushService);
+		initFullClassificationLostMatchesMold(spark, pushService);
+		initFullClassificationGoalsForMold(spark, pushService);
+		initFullClassificationGoalsAgainstMold(spark, pushService);
+		initFullClassificationGoalsDifferenceMold(spark, pushService);
+		initFullClassificationPointsMold(spark, pushService);
 		initTopScorersPositionMold(spark, pushService);
 		initTopScorersPlayerMold(spark, pushService);
 		initTopScorersGoalsMold(spark, pushService);
@@ -137,8 +139,23 @@ public class ProtrixUiService extends io.intino.alexandria.ui.UI {
 		initStaminaTraceMold(spark, pushService);
 		initInjuredTraceMold(spark, pushService);
 		initTeamsTableMold(spark, pushService);
+		initSquadTeamNumberMold(spark, pushService);
+		initSquadTeamPositionMold(spark, pushService);
+		initSquadTeamNameMold(spark, pushService);
+		initSquadTeamCountryMold(spark, pushService);
+		initSquadTeamMatchesMold(spark, pushService);
+		initSquadTeamMinutesMold(spark, pushService);
+		initSquadTeamGoalsMold(spark, pushService);
+		initSquadTeamAssistsMold(spark, pushService);
+		initSquadTeamYellowCardsMold(spark, pushService);
+		initSquadTeamRedCardsMold(spark, pushService);
+		initOutTeamPositionMold(spark, pushService);
+		initOutTeamNameMold(spark, pushService);
+		initOutTeamFromMold(spark, pushService);
+		initOutTeamToMold(spark, pushService);
+		initOutTeamDescriptionMold(spark, pushService);
 		initPlayersTableRow(spark, pushService);
-		initMatchCompetitionClassificationTableRow(spark, pushService);
+		initFullClassificationTableRow(spark, pushService);
 		initTopScorersTableRow(spark, pushService);
 		initTopAssistersTableRow(spark, pushService);
 		initTopGoalkeepersTableRow(spark, pushService);
@@ -147,12 +164,14 @@ public class ProtrixUiService extends io.intino.alexandria.ui.UI {
 		initClassificationTableRow(spark, pushService);
 		initMinuteTraceTableRow(spark, pushService);
 		initTraceTableRow(spark, pushService);
+		initSquadTeamTableRow(spark, pushService);
+		initOutTeamTableRow(spark, pushService);
 		registerNotifiers();
 	}
 
 	private static void registerNotifiers() {
 		register(io.intino.alexandria.ui.displays.notifiers.TemplateNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.templates.TraceTemplate.class);
-		register(io.intino.alexandria.ui.displays.notifiers.TemplateNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.templates.CompetitionClassificationTemplate.class);
+		register(io.intino.alexandria.ui.displays.notifiers.TemplateNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.templates.FullClassificationTemplate.class);
 		register(io.intino.alexandria.ui.displays.notifiers.TemplateNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.templates.CompetitionGoalRankingTemplate.class);
 		register(io.intino.alexandria.ui.displays.notifiers.TemplateNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.templates.CompetitionAssistRankingTemplate.class);
 		register(io.intino.alexandria.ui.displays.notifiers.TemplateNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.templates.CompetitionReceivedGoalRankingTemplate.class);
@@ -170,6 +189,8 @@ public class ProtrixUiService extends io.intino.alexandria.ui.UI {
 		register(io.intino.alexandria.ui.displays.notifiers.TemplateNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.templates.PlayerTraceTemplate.class);
 		register(io.intino.alexandria.ui.displays.notifiers.TemplateNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.templates.TeamsTemplate.class);
 		register(io.intino.alexandria.ui.displays.notifiers.TemplateNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.templates.TeamTemplate.class);
+		register(io.intino.alexandria.ui.displays.notifiers.TemplateNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.templates.SquadTeamTemplate.class);
+		register(io.intino.alexandria.ui.displays.notifiers.TemplateNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.templates.OutTeamTemplate.class);
 		register(io.intino.alexandria.ui.displays.notifiers.TemplateNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.templates.AppTemplate.class);
 		register(io.intino.alexandria.ui.displays.notifiers.TemplateNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.templates.HeaderTemplate.class);
 		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.IdMold.class);
@@ -187,16 +208,16 @@ public class ProtrixUiService extends io.intino.alexandria.ui.UI {
 		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.ScoreMold.class);
 		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.CacheIniMold.class);
 		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.CacheMold.class);
-		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.MatchCompetitionClassificationPositionMold.class);
-		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.MatchCompetitionClassificationTeamMold.class);
-		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.MatchCompetitionClassificationPlayedMatchesMold.class);
-		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.MatchCompetitionClassificationWinMatchesMold.class);
-		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.MatchCompetitionClassificationDrawMatchesMold.class);
-		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.MatchCompetitionClassificationLostMatchesMold.class);
-		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.MatchCompetitionClassificationGoalsForMold.class);
-		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.MatchCompetitionClassificationGoalsAgainstMold.class);
-		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.MatchCompetitionClassificationGoalsDifferenceMold.class);
-		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.MatchCompetitionClassificationPointsMold.class);
+		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.FullClassificationPositionMold.class);
+		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.FullClassificationTeamMold.class);
+		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.FullClassificationPlayedMatchesMold.class);
+		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.FullClassificationWinMatchesMold.class);
+		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.FullClassificationDrawMatchesMold.class);
+		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.FullClassificationLostMatchesMold.class);
+		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.FullClassificationGoalsForMold.class);
+		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.FullClassificationGoalsAgainstMold.class);
+		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.FullClassificationGoalsDifferenceMold.class);
+		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.FullClassificationPointsMold.class);
 		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.TopScorersPositionMold.class);
 		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.TopScorersPlayerMold.class);
 		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.TopScorersGoalsMold.class);
@@ -248,8 +269,23 @@ public class ProtrixUiService extends io.intino.alexandria.ui.UI {
 		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.StaminaTraceMold.class);
 		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.InjuredTraceMold.class);
 		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.TeamsTableMold.class);
+		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.SquadTeamNumberMold.class);
+		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.SquadTeamPositionMold.class);
+		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.SquadTeamNameMold.class);
+		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.SquadTeamCountryMold.class);
+		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.SquadTeamMatchesMold.class);
+		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.SquadTeamMinutesMold.class);
+		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.SquadTeamGoalsMold.class);
+		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.SquadTeamAssistsMold.class);
+		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.SquadTeamYellowCardsMold.class);
+		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.SquadTeamRedCardsMold.class);
+		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.OutTeamPositionMold.class);
+		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.OutTeamNameMold.class);
+		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.OutTeamFromMold.class);
+		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.OutTeamToMold.class);
+		register(io.intino.alexandria.ui.displays.notifiers.ItemNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.items.OutTeamDescriptionMold.class);
 		register(io.intino.alexandria.ui.displays.notifiers.RowNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.rows.PlayersTableRow.class);
-		register(io.intino.alexandria.ui.displays.notifiers.RowNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.rows.MatchCompetitionClassificationTableRow.class);
+		register(io.intino.alexandria.ui.displays.notifiers.RowNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.rows.FullClassificationTableRow.class);
 		register(io.intino.alexandria.ui.displays.notifiers.RowNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.rows.TopScorersTableRow.class);
 		register(io.intino.alexandria.ui.displays.notifiers.RowNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.rows.TopAssistersTableRow.class);
 		register(io.intino.alexandria.ui.displays.notifiers.RowNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.rows.TopGoalkeepersTableRow.class);
@@ -258,6 +294,8 @@ public class ProtrixUiService extends io.intino.alexandria.ui.UI {
 		register(io.intino.alexandria.ui.displays.notifiers.RowNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.rows.ClassificationTableRow.class);
 		register(io.intino.alexandria.ui.displays.notifiers.RowNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.rows.MinuteTraceTableRow.class);
 		register(io.intino.alexandria.ui.displays.notifiers.RowNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.rows.TraceTableRow.class);
+		register(io.intino.alexandria.ui.displays.notifiers.RowNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.rows.SquadTeamTableRow.class);
+		register(io.intino.alexandria.ui.displays.notifiers.RowNotifier.class).forDisplay(rlp.footrix.protrix.box.ui.displays.rows.OutTeamTableRow.class);
 	}
 
 	private static void initTraceTemplate(UISpark spark, PushService pushService) {
@@ -267,11 +305,11 @@ public class ProtrixUiService extends io.intino.alexandria.ui.UI {
 		pushService.register("tracetemplate", new io.intino.alexandria.ui.displays.requesters.TemplatePushRequester());
 
 	}
-	private static void initCompetitionClassificationTemplate(UISpark spark, PushService pushService) {
-		spark.route("/competitionclassificationtemplate/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
-		spark.route("/competitionclassificationtemplate/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.TemplateRequester(manager, notifierProvider()).execute());
-		spark.route("/competitionclassificationtemplate/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
-		pushService.register("competitionclassificationtemplate", new io.intino.alexandria.ui.displays.requesters.TemplatePushRequester());
+	private static void initFullClassificationTemplate(UISpark spark, PushService pushService) {
+		spark.route("/fullclassificationtemplate/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/fullclassificationtemplate/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.TemplateRequester(manager, notifierProvider()).execute());
+		spark.route("/fullclassificationtemplate/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("fullclassificationtemplate", new io.intino.alexandria.ui.displays.requesters.TemplatePushRequester());
 
 	}
 	private static void initCompetitionGoalRankingTemplate(UISpark spark, PushService pushService) {
@@ -393,6 +431,20 @@ public class ProtrixUiService extends io.intino.alexandria.ui.UI {
 		pushService.register("teamtemplate", new io.intino.alexandria.ui.displays.requesters.TemplatePushRequester());
 
 	}
+	private static void initSquadTeamTemplate(UISpark spark, PushService pushService) {
+		spark.route("/squadteamtemplate/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/squadteamtemplate/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.TemplateRequester(manager, notifierProvider()).execute());
+		spark.route("/squadteamtemplate/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("squadteamtemplate", new io.intino.alexandria.ui.displays.requesters.TemplatePushRequester());
+
+	}
+	private static void initOutTeamTemplate(UISpark spark, PushService pushService) {
+		spark.route("/outteamtemplate/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/outteamtemplate/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.TemplateRequester(manager, notifierProvider()).execute());
+		spark.route("/outteamtemplate/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("outteamtemplate", new io.intino.alexandria.ui.displays.requesters.TemplatePushRequester());
+
+	}
 	private static void initAppTemplate(UISpark spark, PushService pushService) {
 		spark.route("/apptemplate/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
 		spark.route("/apptemplate/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.TemplateRequester(manager, notifierProvider()).execute());
@@ -512,74 +564,74 @@ public class ProtrixUiService extends io.intino.alexandria.ui.UI {
 		pushService.register("cachemold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
 
 	}
-	private static void initMatchCompetitionClassificationPositionMold(UISpark spark, PushService pushService) {
-		spark.route("/matchcompetitionclassificationpositionmold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
-		spark.route("/matchcompetitionclassificationpositionmold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
-		spark.route("/matchcompetitionclassificationpositionmold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
-		pushService.register("matchcompetitionclassificationpositionmold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
+	private static void initFullClassificationPositionMold(UISpark spark, PushService pushService) {
+		spark.route("/fullclassificationpositionmold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/fullclassificationpositionmold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
+		spark.route("/fullclassificationpositionmold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("fullclassificationpositionmold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
 
 	}
-	private static void initMatchCompetitionClassificationTeamMold(UISpark spark, PushService pushService) {
-		spark.route("/matchcompetitionclassificationteammold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
-		spark.route("/matchcompetitionclassificationteammold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
-		spark.route("/matchcompetitionclassificationteammold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
-		pushService.register("matchcompetitionclassificationteammold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
+	private static void initFullClassificationTeamMold(UISpark spark, PushService pushService) {
+		spark.route("/fullclassificationteammold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/fullclassificationteammold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
+		spark.route("/fullclassificationteammold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("fullclassificationteammold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
 
 	}
-	private static void initMatchCompetitionClassificationPlayedMatchesMold(UISpark spark, PushService pushService) {
-		spark.route("/matchcompetitionclassificationplayedmatchesmold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
-		spark.route("/matchcompetitionclassificationplayedmatchesmold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
-		spark.route("/matchcompetitionclassificationplayedmatchesmold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
-		pushService.register("matchcompetitionclassificationplayedmatchesmold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
+	private static void initFullClassificationPlayedMatchesMold(UISpark spark, PushService pushService) {
+		spark.route("/fullclassificationplayedmatchesmold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/fullclassificationplayedmatchesmold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
+		spark.route("/fullclassificationplayedmatchesmold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("fullclassificationplayedmatchesmold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
 
 	}
-	private static void initMatchCompetitionClassificationWinMatchesMold(UISpark spark, PushService pushService) {
-		spark.route("/matchcompetitionclassificationwinmatchesmold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
-		spark.route("/matchcompetitionclassificationwinmatchesmold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
-		spark.route("/matchcompetitionclassificationwinmatchesmold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
-		pushService.register("matchcompetitionclassificationwinmatchesmold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
+	private static void initFullClassificationWinMatchesMold(UISpark spark, PushService pushService) {
+		spark.route("/fullclassificationwinmatchesmold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/fullclassificationwinmatchesmold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
+		spark.route("/fullclassificationwinmatchesmold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("fullclassificationwinmatchesmold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
 
 	}
-	private static void initMatchCompetitionClassificationDrawMatchesMold(UISpark spark, PushService pushService) {
-		spark.route("/matchcompetitionclassificationdrawmatchesmold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
-		spark.route("/matchcompetitionclassificationdrawmatchesmold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
-		spark.route("/matchcompetitionclassificationdrawmatchesmold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
-		pushService.register("matchcompetitionclassificationdrawmatchesmold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
+	private static void initFullClassificationDrawMatchesMold(UISpark spark, PushService pushService) {
+		spark.route("/fullclassificationdrawmatchesmold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/fullclassificationdrawmatchesmold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
+		spark.route("/fullclassificationdrawmatchesmold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("fullclassificationdrawmatchesmold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
 
 	}
-	private static void initMatchCompetitionClassificationLostMatchesMold(UISpark spark, PushService pushService) {
-		spark.route("/matchcompetitionclassificationlostmatchesmold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
-		spark.route("/matchcompetitionclassificationlostmatchesmold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
-		spark.route("/matchcompetitionclassificationlostmatchesmold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
-		pushService.register("matchcompetitionclassificationlostmatchesmold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
+	private static void initFullClassificationLostMatchesMold(UISpark spark, PushService pushService) {
+		spark.route("/fullclassificationlostmatchesmold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/fullclassificationlostmatchesmold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
+		spark.route("/fullclassificationlostmatchesmold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("fullclassificationlostmatchesmold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
 
 	}
-	private static void initMatchCompetitionClassificationGoalsForMold(UISpark spark, PushService pushService) {
-		spark.route("/matchcompetitionclassificationgoalsformold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
-		spark.route("/matchcompetitionclassificationgoalsformold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
-		spark.route("/matchcompetitionclassificationgoalsformold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
-		pushService.register("matchcompetitionclassificationgoalsformold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
+	private static void initFullClassificationGoalsForMold(UISpark spark, PushService pushService) {
+		spark.route("/fullclassificationgoalsformold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/fullclassificationgoalsformold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
+		spark.route("/fullclassificationgoalsformold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("fullclassificationgoalsformold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
 
 	}
-	private static void initMatchCompetitionClassificationGoalsAgainstMold(UISpark spark, PushService pushService) {
-		spark.route("/matchcompetitionclassificationgoalsagainstmold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
-		spark.route("/matchcompetitionclassificationgoalsagainstmold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
-		spark.route("/matchcompetitionclassificationgoalsagainstmold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
-		pushService.register("matchcompetitionclassificationgoalsagainstmold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
+	private static void initFullClassificationGoalsAgainstMold(UISpark spark, PushService pushService) {
+		spark.route("/fullclassificationgoalsagainstmold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/fullclassificationgoalsagainstmold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
+		spark.route("/fullclassificationgoalsagainstmold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("fullclassificationgoalsagainstmold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
 
 	}
-	private static void initMatchCompetitionClassificationGoalsDifferenceMold(UISpark spark, PushService pushService) {
-		spark.route("/matchcompetitionclassificationgoalsdifferencemold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
-		spark.route("/matchcompetitionclassificationgoalsdifferencemold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
-		spark.route("/matchcompetitionclassificationgoalsdifferencemold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
-		pushService.register("matchcompetitionclassificationgoalsdifferencemold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
+	private static void initFullClassificationGoalsDifferenceMold(UISpark spark, PushService pushService) {
+		spark.route("/fullclassificationgoalsdifferencemold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/fullclassificationgoalsdifferencemold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
+		spark.route("/fullclassificationgoalsdifferencemold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("fullclassificationgoalsdifferencemold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
 
 	}
-	private static void initMatchCompetitionClassificationPointsMold(UISpark spark, PushService pushService) {
-		spark.route("/matchcompetitionclassificationpointsmold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
-		spark.route("/matchcompetitionclassificationpointsmold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
-		spark.route("/matchcompetitionclassificationpointsmold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
-		pushService.register("matchcompetitionclassificationpointsmold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
+	private static void initFullClassificationPointsMold(UISpark spark, PushService pushService) {
+		spark.route("/fullclassificationpointsmold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/fullclassificationpointsmold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
+		spark.route("/fullclassificationpointsmold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("fullclassificationpointsmold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
 
 	}
 	private static void initTopScorersPositionMold(UISpark spark, PushService pushService) {
@@ -939,6 +991,111 @@ public class ProtrixUiService extends io.intino.alexandria.ui.UI {
 		pushService.register("teamstablemold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
 
 	}
+	private static void initSquadTeamNumberMold(UISpark spark, PushService pushService) {
+		spark.route("/squadteamnumbermold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/squadteamnumbermold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
+		spark.route("/squadteamnumbermold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("squadteamnumbermold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
+
+	}
+	private static void initSquadTeamPositionMold(UISpark spark, PushService pushService) {
+		spark.route("/squadteampositionmold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/squadteampositionmold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
+		spark.route("/squadteampositionmold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("squadteampositionmold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
+
+	}
+	private static void initSquadTeamNameMold(UISpark spark, PushService pushService) {
+		spark.route("/squadteamnamemold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/squadteamnamemold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
+		spark.route("/squadteamnamemold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("squadteamnamemold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
+
+	}
+	private static void initSquadTeamCountryMold(UISpark spark, PushService pushService) {
+		spark.route("/squadteamcountrymold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/squadteamcountrymold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
+		spark.route("/squadteamcountrymold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("squadteamcountrymold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
+
+	}
+	private static void initSquadTeamMatchesMold(UISpark spark, PushService pushService) {
+		spark.route("/squadteammatchesmold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/squadteammatchesmold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
+		spark.route("/squadteammatchesmold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("squadteammatchesmold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
+
+	}
+	private static void initSquadTeamMinutesMold(UISpark spark, PushService pushService) {
+		spark.route("/squadteamminutesmold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/squadteamminutesmold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
+		spark.route("/squadteamminutesmold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("squadteamminutesmold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
+
+	}
+	private static void initSquadTeamGoalsMold(UISpark spark, PushService pushService) {
+		spark.route("/squadteamgoalsmold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/squadteamgoalsmold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
+		spark.route("/squadteamgoalsmold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("squadteamgoalsmold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
+
+	}
+	private static void initSquadTeamAssistsMold(UISpark spark, PushService pushService) {
+		spark.route("/squadteamassistsmold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/squadteamassistsmold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
+		spark.route("/squadteamassistsmold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("squadteamassistsmold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
+
+	}
+	private static void initSquadTeamYellowCardsMold(UISpark spark, PushService pushService) {
+		spark.route("/squadteamyellowcardsmold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/squadteamyellowcardsmold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
+		spark.route("/squadteamyellowcardsmold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("squadteamyellowcardsmold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
+
+	}
+	private static void initSquadTeamRedCardsMold(UISpark spark, PushService pushService) {
+		spark.route("/squadteamredcardsmold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/squadteamredcardsmold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
+		spark.route("/squadteamredcardsmold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("squadteamredcardsmold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
+
+	}
+	private static void initOutTeamPositionMold(UISpark spark, PushService pushService) {
+		spark.route("/outteampositionmold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/outteampositionmold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
+		spark.route("/outteampositionmold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("outteampositionmold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
+
+	}
+	private static void initOutTeamNameMold(UISpark spark, PushService pushService) {
+		spark.route("/outteamnamemold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/outteamnamemold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
+		spark.route("/outteamnamemold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("outteamnamemold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
+
+	}
+	private static void initOutTeamFromMold(UISpark spark, PushService pushService) {
+		spark.route("/outteamfrommold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/outteamfrommold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
+		spark.route("/outteamfrommold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("outteamfrommold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
+
+	}
+	private static void initOutTeamToMold(UISpark spark, PushService pushService) {
+		spark.route("/outteamtomold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/outteamtomold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
+		spark.route("/outteamtomold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("outteamtomold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
+
+	}
+	private static void initOutTeamDescriptionMold(UISpark spark, PushService pushService) {
+		spark.route("/outteamdescriptionmold/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/outteamdescriptionmold/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.ItemRequester(manager, notifierProvider()).execute());
+		spark.route("/outteamdescriptionmold/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("outteamdescriptionmold", new io.intino.alexandria.ui.displays.requesters.ItemPushRequester());
+
+	}
 	private static void initPlayersTableRow(UISpark spark, PushService pushService) {
 		spark.route("/playerstablerow/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
 		spark.route("/playerstablerow/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.RowRequester(manager, notifierProvider()).execute());
@@ -946,11 +1103,11 @@ public class ProtrixUiService extends io.intino.alexandria.ui.UI {
 		pushService.register("playerstablerow", new io.intino.alexandria.ui.displays.requesters.RowPushRequester());
 
 	}
-	private static void initMatchCompetitionClassificationTableRow(UISpark spark, PushService pushService) {
-		spark.route("/matchcompetitionclassificationtablerow/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
-		spark.route("/matchcompetitionclassificationtablerow/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.RowRequester(manager, notifierProvider()).execute());
-		spark.route("/matchcompetitionclassificationtablerow/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
-		pushService.register("matchcompetitionclassificationtablerow", new io.intino.alexandria.ui.displays.requesters.RowPushRequester());
+	private static void initFullClassificationTableRow(UISpark spark, PushService pushService) {
+		spark.route("/fullclassificationtablerow/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/fullclassificationtablerow/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.RowRequester(manager, notifierProvider()).execute());
+		spark.route("/fullclassificationtablerow/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("fullclassificationtablerow", new io.intino.alexandria.ui.displays.requesters.RowPushRequester());
 
 	}
 	private static void initTopScorersTableRow(UISpark spark, PushService pushService) {
@@ -1007,6 +1164,20 @@ public class ProtrixUiService extends io.intino.alexandria.ui.UI {
 		spark.route("/tracetablerow/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.RowRequester(manager, notifierProvider()).execute());
 		spark.route("/tracetablerow/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
 		pushService.register("tracetablerow", new io.intino.alexandria.ui.displays.requesters.RowPushRequester());
+
+	}
+	private static void initSquadTeamTableRow(UISpark spark, PushService pushService) {
+		spark.route("/squadteamtablerow/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/squadteamtablerow/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.RowRequester(manager, notifierProvider()).execute());
+		spark.route("/squadteamtablerow/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("squadteamtablerow", new io.intino.alexandria.ui.displays.requesters.RowPushRequester());
+
+	}
+	private static void initOutTeamTableRow(UISpark spark, PushService pushService) {
+		spark.route("/outteamtablerow/:displayId").before(manager -> new BeforeDisplayRequest(manager).execute());
+		spark.route("/outteamtablerow/:displayId").post(manager -> new io.intino.alexandria.ui.displays.requesters.RowRequester(manager, notifierProvider()).execute());
+		spark.route("/outteamtablerow/:displayId").after(manager -> new AfterDisplayRequest(manager).execute());
+		pushService.register("outteamtablerow", new io.intino.alexandria.ui.displays.requesters.RowPushRequester());
 
 	}
 }

@@ -1,6 +1,6 @@
 package rlp.footrix.protrix.ai.matchsimulator.types;
 
-import rlp.footrix.framework.types.entities.Match;
+import rlp.footrix.framework.types.entities.match.MatchEvent;
 import rlp.footrix.framework.types.entities.team.PlayersLineup;
 import rlp.footrix.protrix.ai.matchsimulator.MatchState;
 import rlp.footrix.protrix.ai.matchsimulator.weights.PlayerValue;
@@ -32,5 +32,5 @@ public abstract class EventSimulator {
         return state.visitant();
     }
 
-    public abstract List<Match.MatchEvent> simulate(int minute);
+    public abstract List<MatchEvent> simulate(int minute);
 }

@@ -18,23 +18,23 @@ import rlp.footrix.protrix.box.ui.displays.items.*;
 import rlp.footrix.protrix.box.ui.displays.rows.*;
 import io.intino.alexandria.ui.displays.notifiers.ItemNotifier;
 
-public class MatchTableMold extends io.intino.alexandria.ui.displays.components.Item<ItemNotifier, rlp.footrix.protrix.model.Match, ProtrixBox> {
-	public _14_4_1505764404 _14_4_1505764404;
-	public MatchTableMold._14_4_1505764404. _15_5_1549340999 _15_5_1549340999;
-	public MatchTableMold._14_4_1505764404._15_5_1549340999. _16_6_0308402801 _16_6_0308402801;
-	public MatchTableMold._14_4_1505764404._15_5_1549340999._16_6_0308402801. _17_7_0896608022 _17_7_0896608022;
-	public MatchTableMold._14_4_1505764404._15_5_1549340999._16_6_0308402801._17_7_0896608022. Day day;
-	public MatchTableMold._14_4_1505764404._15_5_1549340999._16_6_0308402801. _18_7_11567399895 _18_7_11567399895;
-	public MatchTableMold._14_4_1505764404._15_5_1549340999._16_6_0308402801._18_7_11567399895. MatchDay matchDay;
-	public MatchTableMold._14_4_1505764404._15_5_1549340999._16_6_0308402801. _19_7_11303616147 _19_7_11303616147;
-	public MatchTableMold._14_4_1505764404._15_5_1549340999._16_6_0308402801._19_7_11303616147. CompetitionLink competitionLink;
-	public MatchTableMold._14_4_1505764404._15_5_1549340999. _20_6_01319919341 _20_6_01319919341;
-	public MatchTableMold._14_4_1505764404._15_5_1549340999._20_6_01319919341. _21_7_11016386267 _21_7_11016386267;
-	public MatchTableMold._14_4_1505764404._15_5_1549340999._20_6_01319919341._21_7_11016386267. LocalLink localLink;
-	public MatchTableMold._14_4_1505764404._15_5_1549340999._20_6_01319919341. _22_7_11132785025 _22_7_11132785025;
-	public MatchTableMold._14_4_1505764404._15_5_1549340999._20_6_01319919341._22_7_11132785025. Match match;
-	public MatchTableMold._14_4_1505764404._15_5_1549340999._20_6_01319919341. _23_7_01940714705 _23_7_01940714705;
-	public MatchTableMold._14_4_1505764404._15_5_1549340999._20_6_01319919341._23_7_01940714705. VisitantLink visitantLink;
+public class MatchTableMold extends io.intino.alexandria.ui.displays.components.Item<ItemNotifier, rlp.footrix.framework.types.entities.definitions.MatchDefinition, ProtrixBox> {
+	public MatchBlock matchBlock;
+	public MatchTableMold.MatchBlock. _15_5_1549340999 _15_5_1549340999;
+	public MatchTableMold.MatchBlock._15_5_1549340999. _16_6_0308402801 _16_6_0308402801;
+	public MatchTableMold.MatchBlock._15_5_1549340999._16_6_0308402801. _17_7_0896608022 _17_7_0896608022;
+	public MatchTableMold.MatchBlock._15_5_1549340999._16_6_0308402801._17_7_0896608022. Day day;
+	public MatchTableMold.MatchBlock._15_5_1549340999._16_6_0308402801. _18_7_11567399895 _18_7_11567399895;
+	public MatchTableMold.MatchBlock._15_5_1549340999._16_6_0308402801._18_7_11567399895. MatchDay matchDay;
+	public MatchTableMold.MatchBlock._15_5_1549340999._16_6_0308402801. _19_7_11303616147 _19_7_11303616147;
+	public MatchTableMold.MatchBlock._15_5_1549340999._16_6_0308402801._19_7_11303616147. CompetitionLink competitionLink;
+	public MatchTableMold.MatchBlock._15_5_1549340999. _20_6_01319919341 _20_6_01319919341;
+	public MatchTableMold.MatchBlock._15_5_1549340999._20_6_01319919341. _21_7_11016386267 _21_7_11016386267;
+	public MatchTableMold.MatchBlock._15_5_1549340999._20_6_01319919341._21_7_11016386267. LocalLink localLink;
+	public MatchTableMold.MatchBlock._15_5_1549340999._20_6_01319919341. _22_7_11132785025 _22_7_11132785025;
+	public MatchTableMold.MatchBlock._15_5_1549340999._20_6_01319919341._22_7_11132785025. Match match;
+	public MatchTableMold.MatchBlock._15_5_1549340999._20_6_01319919341. _23_7_01940714705 _23_7_01940714705;
+	public MatchTableMold.MatchBlock._15_5_1549340999._20_6_01319919341._23_7_01940714705. VisitantLink visitantLink;
 
 	public MatchTableMold(ProtrixBox box) {
 		super(box);
@@ -44,41 +44,41 @@ public class MatchTableMold extends io.intino.alexandria.ui.displays.components.
 	@Override
 	public void init() {
 		super.init();
-		if (_14_4_1505764404 == null) _14_4_1505764404 = register(new _14_4_1505764404(box()).<_14_4_1505764404>id("a1766560084").owner(MatchTableMold.this));
-		if (_14_4_1505764404 != null) _15_5_1549340999 = _14_4_1505764404._15_5_1549340999;
-		if (_15_5_1549340999 != null) _16_6_0308402801 = _14_4_1505764404._15_5_1549340999._16_6_0308402801;
-		if (_16_6_0308402801 != null) _17_7_0896608022 = _14_4_1505764404._15_5_1549340999._16_6_0308402801._17_7_0896608022;
-		if (_17_7_0896608022 != null) day = _14_4_1505764404._15_5_1549340999._16_6_0308402801._17_7_0896608022.day;
-		if (_16_6_0308402801 != null) _18_7_11567399895 = _14_4_1505764404._15_5_1549340999._16_6_0308402801._18_7_11567399895;
-		if (_18_7_11567399895 != null) matchDay = _14_4_1505764404._15_5_1549340999._16_6_0308402801._18_7_11567399895.matchDay;
-		if (_16_6_0308402801 != null) _19_7_11303616147 = _14_4_1505764404._15_5_1549340999._16_6_0308402801._19_7_11303616147;
-		if (_19_7_11303616147 != null) competitionLink = _14_4_1505764404._15_5_1549340999._16_6_0308402801._19_7_11303616147.competitionLink;
-		if (_15_5_1549340999 != null) _20_6_01319919341 = _14_4_1505764404._15_5_1549340999._20_6_01319919341;
-		if (_20_6_01319919341 != null) _21_7_11016386267 = _14_4_1505764404._15_5_1549340999._20_6_01319919341._21_7_11016386267;
-		if (_21_7_11016386267 != null) localLink = _14_4_1505764404._15_5_1549340999._20_6_01319919341._21_7_11016386267.localLink;
-		if (_20_6_01319919341 != null) _22_7_11132785025 = _14_4_1505764404._15_5_1549340999._20_6_01319919341._22_7_11132785025;
-		if (_22_7_11132785025 != null) match = _14_4_1505764404._15_5_1549340999._20_6_01319919341._22_7_11132785025.match;
-		if (_20_6_01319919341 != null) _23_7_01940714705 = _14_4_1505764404._15_5_1549340999._20_6_01319919341._23_7_01940714705;
-		if (_23_7_01940714705 != null) visitantLink = _14_4_1505764404._15_5_1549340999._20_6_01319919341._23_7_01940714705.visitantLink;
+		if (matchBlock == null) matchBlock = register(new MatchBlock(box()).<MatchBlock>id("a_392365176").owner(MatchTableMold.this));
+		if (matchBlock != null) _15_5_1549340999 = matchBlock._15_5_1549340999;
+		if (_15_5_1549340999 != null) _16_6_0308402801 = matchBlock._15_5_1549340999._16_6_0308402801;
+		if (_16_6_0308402801 != null) _17_7_0896608022 = matchBlock._15_5_1549340999._16_6_0308402801._17_7_0896608022;
+		if (_17_7_0896608022 != null) day = matchBlock._15_5_1549340999._16_6_0308402801._17_7_0896608022.day;
+		if (_16_6_0308402801 != null) _18_7_11567399895 = matchBlock._15_5_1549340999._16_6_0308402801._18_7_11567399895;
+		if (_18_7_11567399895 != null) matchDay = matchBlock._15_5_1549340999._16_6_0308402801._18_7_11567399895.matchDay;
+		if (_16_6_0308402801 != null) _19_7_11303616147 = matchBlock._15_5_1549340999._16_6_0308402801._19_7_11303616147;
+		if (_19_7_11303616147 != null) competitionLink = matchBlock._15_5_1549340999._16_6_0308402801._19_7_11303616147.competitionLink;
+		if (_15_5_1549340999 != null) _20_6_01319919341 = matchBlock._15_5_1549340999._20_6_01319919341;
+		if (_20_6_01319919341 != null) _21_7_11016386267 = matchBlock._15_5_1549340999._20_6_01319919341._21_7_11016386267;
+		if (_21_7_11016386267 != null) localLink = matchBlock._15_5_1549340999._20_6_01319919341._21_7_11016386267.localLink;
+		if (_20_6_01319919341 != null) _22_7_11132785025 = matchBlock._15_5_1549340999._20_6_01319919341._22_7_11132785025;
+		if (_22_7_11132785025 != null) match = matchBlock._15_5_1549340999._20_6_01319919341._22_7_11132785025.match;
+		if (_20_6_01319919341 != null) _23_7_01940714705 = matchBlock._15_5_1549340999._20_6_01319919341._23_7_01940714705;
+		if (_23_7_01940714705 != null) visitantLink = matchBlock._15_5_1549340999._20_6_01319919341._23_7_01940714705.visitantLink;
 	}
 
 	@Override
 	public void remove() {
 		super.remove();
-		if (_14_4_1505764404 != null) _14_4_1505764404.unregister();
+		if (matchBlock != null) matchBlock.unregister();
 	}
 
-	public class _14_4_1505764404 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, ProtrixBox>  {
-		public MatchTableMold._14_4_1505764404. _15_5_1549340999 _15_5_1549340999;
+	public class MatchBlock extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, ProtrixBox>  {
+		public MatchTableMold.MatchBlock. _15_5_1549340999 _15_5_1549340999;
 
-		public _14_4_1505764404(ProtrixBox box) {
+		public MatchBlock(ProtrixBox box) {
 			super(box);
 		}
 
 		@Override
 		public void init() {
 			super.init();
-			if (_15_5_1549340999 == null) _15_5_1549340999 = register(new _15_5_1549340999(box()).<_15_5_1549340999>id("a1476669745").owner(MatchTableMold.this));
+			if (_15_5_1549340999 == null) _15_5_1549340999 = register(new _15_5_1549340999(box()).<_15_5_1549340999>id("a_39396400").owner(MatchTableMold.this));
 		}
 
 		@Override
@@ -88,8 +88,8 @@ public class MatchTableMold extends io.intino.alexandria.ui.displays.components.
 		}
 
 		public class _15_5_1549340999 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, ProtrixBox>  {
-			public MatchTableMold._14_4_1505764404._15_5_1549340999. _16_6_0308402801 _16_6_0308402801;
-			public MatchTableMold._14_4_1505764404._15_5_1549340999. _20_6_01319919341 _20_6_01319919341;
+			public MatchTableMold.MatchBlock._15_5_1549340999. _16_6_0308402801 _16_6_0308402801;
+			public MatchTableMold.MatchBlock._15_5_1549340999. _20_6_01319919341 _20_6_01319919341;
 
 			public _15_5_1549340999(ProtrixBox box) {
 				super(box);
@@ -110,9 +110,9 @@ public class MatchTableMold extends io.intino.alexandria.ui.displays.components.
 			}
 
 			public class _16_6_0308402801 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, ProtrixBox>  {
-				public MatchTableMold._14_4_1505764404._15_5_1549340999._16_6_0308402801. _17_7_0896608022 _17_7_0896608022;
-				public MatchTableMold._14_4_1505764404._15_5_1549340999._16_6_0308402801. _18_7_11567399895 _18_7_11567399895;
-				public MatchTableMold._14_4_1505764404._15_5_1549340999._16_6_0308402801. _19_7_11303616147 _19_7_11303616147;
+				public MatchTableMold.MatchBlock._15_5_1549340999._16_6_0308402801. _17_7_0896608022 _17_7_0896608022;
+				public MatchTableMold.MatchBlock._15_5_1549340999._16_6_0308402801. _18_7_11567399895 _18_7_11567399895;
+				public MatchTableMold.MatchBlock._15_5_1549340999._16_6_0308402801. _19_7_11303616147 _19_7_11303616147;
 
 				public _16_6_0308402801(ProtrixBox box) {
 					super(box);
@@ -135,7 +135,7 @@ public class MatchTableMold extends io.intino.alexandria.ui.displays.components.
 				}
 
 				public class _17_7_0896608022 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, ProtrixBox>  {
-					public MatchTableMold._14_4_1505764404._15_5_1549340999._16_6_0308402801._17_7_0896608022. Day day;
+					public MatchTableMold.MatchBlock._15_5_1549340999._16_6_0308402801._17_7_0896608022. Day day;
 
 					public _17_7_0896608022(ProtrixBox box) {
 						super(box);
@@ -172,7 +172,7 @@ public class MatchTableMold extends io.intino.alexandria.ui.displays.components.
 				}
 
 				public class _18_7_11567399895 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, ProtrixBox>  {
-					public MatchTableMold._14_4_1505764404._15_5_1549340999._16_6_0308402801._18_7_11567399895. MatchDay matchDay;
+					public MatchTableMold.MatchBlock._15_5_1549340999._16_6_0308402801._18_7_11567399895. MatchDay matchDay;
 
 					public _18_7_11567399895(ProtrixBox box) {
 						super(box);
@@ -209,7 +209,7 @@ public class MatchTableMold extends io.intino.alexandria.ui.displays.components.
 				}
 
 				public class _19_7_11303616147 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, ProtrixBox>  {
-					public MatchTableMold._14_4_1505764404._15_5_1549340999._16_6_0308402801._19_7_11303616147. CompetitionLink competitionLink;
+					public MatchTableMold.MatchBlock._15_5_1549340999._16_6_0308402801._19_7_11303616147. CompetitionLink competitionLink;
 
 					public _19_7_11303616147(ProtrixBox box) {
 						super(box);
@@ -250,9 +250,9 @@ public class MatchTableMold extends io.intino.alexandria.ui.displays.components.
 			}
 
 			public class _20_6_01319919341 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, ProtrixBox>  {
-				public MatchTableMold._14_4_1505764404._15_5_1549340999._20_6_01319919341. _21_7_11016386267 _21_7_11016386267;
-				public MatchTableMold._14_4_1505764404._15_5_1549340999._20_6_01319919341. _22_7_11132785025 _22_7_11132785025;
-				public MatchTableMold._14_4_1505764404._15_5_1549340999._20_6_01319919341. _23_7_01940714705 _23_7_01940714705;
+				public MatchTableMold.MatchBlock._15_5_1549340999._20_6_01319919341. _21_7_11016386267 _21_7_11016386267;
+				public MatchTableMold.MatchBlock._15_5_1549340999._20_6_01319919341. _22_7_11132785025 _22_7_11132785025;
+				public MatchTableMold.MatchBlock._15_5_1549340999._20_6_01319919341. _23_7_01940714705 _23_7_01940714705;
 
 				public _20_6_01319919341(ProtrixBox box) {
 					super(box);
@@ -275,7 +275,7 @@ public class MatchTableMold extends io.intino.alexandria.ui.displays.components.
 				}
 
 				public class _21_7_11016386267 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, ProtrixBox>  {
-					public MatchTableMold._14_4_1505764404._15_5_1549340999._20_6_01319919341._21_7_11016386267. LocalLink localLink;
+					public MatchTableMold.MatchBlock._15_5_1549340999._20_6_01319919341._21_7_11016386267. LocalLink localLink;
 
 					public _21_7_11016386267(ProtrixBox box) {
 						super(box);
@@ -315,7 +315,7 @@ public class MatchTableMold extends io.intino.alexandria.ui.displays.components.
 				}
 
 				public class _22_7_11132785025 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, ProtrixBox>  {
-					public MatchTableMold._14_4_1505764404._15_5_1549340999._20_6_01319919341._22_7_11132785025. Match match;
+					public MatchTableMold.MatchBlock._15_5_1549340999._20_6_01319919341._22_7_11132785025. Match match;
 
 					public _22_7_11132785025(ProtrixBox box) {
 						super(box);
@@ -352,7 +352,7 @@ public class MatchTableMold extends io.intino.alexandria.ui.displays.components.
 				}
 
 				public class _23_7_01940714705 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, ProtrixBox>  {
-					public MatchTableMold._14_4_1505764404._15_5_1549340999._20_6_01319919341._23_7_01940714705. VisitantLink visitantLink;
+					public MatchTableMold.MatchBlock._15_5_1549340999._20_6_01319919341._23_7_01940714705. VisitantLink visitantLink;
 
 					public _23_7_01940714705(ProtrixBox box) {
 						super(box);

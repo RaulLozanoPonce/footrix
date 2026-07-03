@@ -32,14 +32,14 @@ Template(layout=Horizontal Flexible) appTemplate as Relative(height=100%, width=
 			Block(format=h100 scarletBackground) as Absolute(width=200px)
 				Selector menu as ListBox
 					Block(layout=Horizontal) overviewOpt as Option
-						MaterialIcon(icon="Home", format=middleAirRight centeredVertically, color="white")
-						Text(value="Inicio", format=h4 centeredVertically, color="white")
+						MaterialIcon(icon="Home", format=middleAirRight center, color="white")
+						Text(value="Inicio", format=h4 center, color="white")
 					Block(layout=Horizontal) competitionsOpt as Option
-						Icon(icon="/icons/menu/leaderboard.png", format=middleAirRight centeredVertically, color="white")
-						Text(value="Competiciones", format=h4 centeredVertically, color="white")
+						Icon(icon="/icons/menu/leaderboard.png", format=middleAirRight center, color="white")
+						Text(value="Competiciones", format=h4 center, color="white")
 					Block(layout=Horizontal) teamsOpt as Option
-						Icon(icon="/icons/menu/shield.png", format=middleAirRight centeredVertically, color="white")
-						Text(value="Equipos", format=h4 centeredVertically, color="white")
+						Icon(icon="/icons/menu/shield.png", format=middleAirRight center, color="white")
+						Text(value="Equipos", format=h4 center, color="white")
 			Block(layout=Vertical Flexible, format=spaced) as Relative(width=100%)
 				Block(layout=Vertical Flexible CenterCenter) loading > Spinner(format=secondary)
 

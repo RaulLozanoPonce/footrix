@@ -1,6 +1,7 @@
 package rlp.footrix.protrix;
 
-import rlp.footrix.framework.types.entities.Match;
+import rlp.footrix.framework.types.entities.match.Match;
+import rlp.footrix.framework.types.entities.match.MatchEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,8 +27,8 @@ public class Var {
         Map<Integer, Integer> substitutions = new HashMap<>();
         for (Match match : application.entityStore().matches("ESP-1", 0)) {
             Map<String, Integer> teamSubstitutions = new HashMap<>();
-            for (Match.MatchEvent event : match.events()) {
-                if (event.type() != Match.MatchEvent.Type.Substitution) continue;
+            for (MatchEvent event : match.events()) {
+                if (event.type() != MatchEvent.Type.Substitution) continue;
                 int minute = event.minute();
                 substitutions.putIfAbsent(minute, 0);
                 substitutions.put(minute, substitutions.get(minute) + 1);
@@ -53,8 +54,8 @@ public class Var {
     private static Map<Integer, Integer> injuries(ProtrixApplication application) {
         Map<Integer, Integer> injuries = new HashMap<>();
         for (Match match : application.entityStore().matches("ESP-1", 0)) {
-            for (Match.MatchEvent event : match.events()) {
-                if (event.type() != Match.MatchEvent.Type.Injury) continue;
+            for (MatchEvent event : match.events()) {
+                if (event.type() != MatchEvent.Type.Injury) continue;
                 int level = event.metaInfo().get("level").getAsInt();
                 injuries.putIfAbsent(level, 0);
                 injuries.put(level, injuries.get(level) + 1);

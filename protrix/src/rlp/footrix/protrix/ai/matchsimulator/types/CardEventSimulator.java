@@ -1,6 +1,6 @@
 package rlp.footrix.protrix.ai.matchsimulator.types;
 
-import rlp.footrix.framework.types.entities.Match;
+import rlp.footrix.framework.types.entities.match.MatchEvent;
 import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.framework.types.entities.team.PlayersLineup;
 import rlp.footrix.pes6.types.Pes6Player;
@@ -20,9 +20,9 @@ public class CardEventSimulator extends EventSimulator {
     }
 
     @Override
-    public List<Match.MatchEvent> simulate(int minute) {
+    public List<MatchEvent> simulate(int minute) {
         if (Math.random() > BaseCardChance) return new ArrayList<>();
-        Match.MatchEvent.Type type = Math.random() < 0.972 ? Match.MatchEvent.Type.YellowCard : Match.MatchEvent.Type.RedCard;
+        MatchEvent.Type type = Math.random() < 0.972 ? MatchEvent.Type.YellowCard : MatchEvent.Type.RedCard;
         if (Math.random() < 0.5) {
             String player = pickPlayerForCard(localLineup());
             return eventsOf(player, local(), type, minute);
@@ -32,16 +32,16 @@ public class CardEventSimulator extends EventSimulator {
         }
     }
 
-    private List<Match.MatchEvent> eventsOf(String player, String team, Match.MatchEvent.Type type, int minute) {
-        List<Match.MatchEvent> events = new ArrayList<>();
-        events.add(new Match.MatchEvent(team, type, minute, player, null, null));
-        if (type == Match.MatchEvent.Type.RedCard || hasDoubleYellowCard(player))
-            events.add(new Match.MatchEvent(team, Match.MatchEvent.Type.Expulsion, minute, player, null, null));
+    private List<MatchEvent> eventsOf(String player, String team, MatchEvent.Type type, int minute) {
+        List<MatchEvent> events = new ArrayList<>();
+        events.add(new MatchEvent(team, type, minute, player, null, null));
+        if (type == MatchEvent.Type.RedCard || hasDoubleYellowCard(player))
+            events.add(new MatchEvent(team, MatchEvent.Type.Expulsion, minute, player, null, null));
         return events;
     }
 
     private boolean hasDoubleYellowCard(String player) {
-        return state.events().stream().anyMatch(e -> e.type() == Match.MatchEvent.Type.YellowCard && e.who().equals(player));
+        return state.events().stream().anyMatch(e -> e.type() == MatchEvent.Type.YellowCard && e.who().equals(player));
     }
 
     private String pickPlayerForCard(PlayersLineup lineup) {

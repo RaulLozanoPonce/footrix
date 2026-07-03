@@ -26,16 +26,16 @@ public class TopScorersTableRow extends io.intino.alexandria.ui.displays.compone
 
 	public TopScorersTableRow(ProtrixBox box) {
 		super(box);
-		id("a1949047192");
+		id("a_1628154717");
 	}
 
 	@Override
 	public void init() {
 		super.init();
-		if (topScorersPositionMold == null) topScorersPositionMold = register(new TopScorersPositionMold((ProtrixBox)box()).<TopScorersPositionMold>id("a_859844011").<TopScorersPositionMold>item(TopScorersTableRow.this.item()).owner(TopScorersTableRow.this));
-		if (topScorersPlayerMold == null) topScorersPlayerMold = register(new TopScorersPlayerMold((ProtrixBox)box()).<TopScorersPlayerMold>id("a_277696139").<TopScorersPlayerMold>item(TopScorersTableRow.this.item()).owner(TopScorersTableRow.this));
-		if (topScorersGoalsMold == null) topScorersGoalsMold = register(new TopScorersGoalsMold((ProtrixBox)box()).<TopScorersGoalsMold>id("a1446038179").<TopScorersGoalsMold>item(TopScorersTableRow.this.item()).owner(TopScorersTableRow.this));
-		if (topScorersPlayedMatchesMold == null) topScorersPlayedMatchesMold = register(new TopScorersPlayedMatchesMold((ProtrixBox)box()).<TopScorersPlayedMatchesMold>id("a1989425542").<TopScorersPlayedMatchesMold>item(TopScorersTableRow.this.item()).owner(TopScorersTableRow.this));
+		if (topScorersPositionMold == null) topScorersPositionMold = register(new TopScorersPositionMold((ProtrixBox)box()).<TopScorersPositionMold>id("a_890863818").<TopScorersPositionMold>item(TopScorersTableRow.this.item()).owner(TopScorersTableRow.this));
+		if (topScorersPlayerMold == null) topScorersPlayerMold = register(new TopScorersPlayerMold((ProtrixBox)box()).<TopScorersPlayerMold>id("a1196452427").<TopScorersPlayerMold>item(TopScorersTableRow.this.item()).owner(TopScorersTableRow.this));
+		if (topScorersGoalsMold == null) topScorersGoalsMold = register(new TopScorersGoalsMold((ProtrixBox)box()).<TopScorersGoalsMold>id("a201273698").<TopScorersGoalsMold>item(TopScorersTableRow.this.item()).owner(TopScorersTableRow.this));
+		if (topScorersPlayedMatchesMold == null) topScorersPlayedMatchesMold = register(new TopScorersPlayedMatchesMold((ProtrixBox)box()).<TopScorersPlayedMatchesMold>id("a1638625605").<TopScorersPlayedMatchesMold>item(TopScorersTableRow.this.item()).owner(TopScorersTableRow.this));
 	}
 
 	@Override

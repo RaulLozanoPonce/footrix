@@ -41,7 +41,7 @@ public class PositionWeight {
     }
 
     public static double goal(Position position) {
-        //TODO MEJORAR
+        //TODO MEJORAR PORQUE LOS GOLEADORES NO REPRESENTAN
         return switch (position.id()) {
             case "PT" -> 0.05;
             case "CT" -> 0.25;

@@ -1,6 +1,7 @@
 package rlp.footrix.protrix.ai.matchsimulator;
 
-import rlp.footrix.framework.types.entities.Match;
+import rlp.footrix.framework.types.entities.match.Match;
+import rlp.footrix.framework.types.entities.match.MatchEvent;
 import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.framework.types.entities.player.Position;
 import rlp.footrix.framework.types.entities.team.PlayersLineup;
@@ -9,11 +10,11 @@ import rlp.footrix.protrix.ai.matchsimulator.weights.PositionWeight;
 
 import java.util.*;
 
-import static rlp.footrix.framework.types.entities.Match.MatchEvent.Type.*;
+import static rlp.footrix.framework.types.entities.match.MatchEvent.Type.*;
 
 public class MatchState {
-    private final List<Match.MatchEvent> events = new ArrayList<>();
-    private final List<Match.MatchEvent> minuteEvents = new ArrayList<>();
+    private final List<MatchEvent> events = new ArrayList<>();
+    private final List<MatchEvent> minuteEvents = new ArrayList<>();
 
     private final Map<String, Match.MatchRole> matchRoles = new HashMap<>();
     private final Map<String, Integer> minutes = new HashMap<>();
@@ -52,13 +53,15 @@ public class MatchState {
     }
 
     public void registerMinuteStatistics() {
-        for (Match.MatchEvent event : minuteEvents()) {
+        for (MatchEvent event : minuteEvents()) {
             if (event.type() == Substitution) {
                 this.enterMinute.put(event.who(), event.minute());
                 this.exitMinute.put(event.secondaryWho(), event.minute());
             } else if (event.type() == Goal) {
-                this.goals.put(event.who(), this.goals.getOrDefault(event.who(), 0) + 1);
-                this.assists.put(event.secondaryWho(), this.assists.getOrDefault(event.secondaryWho(), 0) + 1);
+                if (!event.metaInfo().get("type").getAsString().equals("own")) {
+                    this.goals.put(event.who(), this.goals.getOrDefault(event.who(), 0) + 1);
+                    this.assists.put(event.secondaryWho(), this.assists.getOrDefault(event.secondaryWho(), 0) + 1);
+                }
                 this.receivedGoals.put(goalKeeperOf(otherTeam(event.team())), this.receivedGoals.getOrDefault(event.secondaryWho(), 0) + 1);
             } else if (event.type() == YellowCard) {
                 this.yellowCards.put(event.who(), this.yellowCards.getOrDefault(event.who(), 0) + 1);
@@ -119,6 +122,17 @@ public class MatchState {
         PlayersLineup lineup = lineup(team);
         Player out = lineup.fieldPlayers().stream().filter(p -> p.definition().id().equals(playerId)).findFirst().orElse(null);
         if (out == null) return;
+        Position position = lineup.positionOf(out.definition().id());
+        if (position == Positions.PT) {
+            Integer[] location = lineup.locationOf(out.definition().id());
+            Player newGk = lineup.fieldPlayers().stream()
+                    .filter(p -> !p.definition().id().equals(out.definition().id()))
+                    .reduce((p1, p2) -> {
+                        if (p1.skills().overall(position) > p2.skills().overall(position)) return p1;
+                        return p2;
+                    }).orElse(null);
+            lineup.positions().put(newGk, location);
+        }
         lineup.positions().remove(out);
         lineup.expelled().add(out);
     }
@@ -129,7 +143,8 @@ public class MatchState {
         return exitMinute - enterMinute;
     }
 
-    private double bonusOf(Match.MatchEvent event, String team, String player) {
+    private double bonusOf(MatchEvent event, String team, String player) {
+        //TODO REVISAR ESTO
         return switch (event.type()) {
             case Goal -> bonusOfGoal(event, team, player);
             case Expulsion -> -1;
@@ -138,16 +153,20 @@ public class MatchState {
         };
     }
 
-    private double bonusOfGoal(Match.MatchEvent event, String team, String player) {
-        if (event.who().equals(player)) {
-            return bonusOfGoal(team, player);
+    private double bonusOfGoal(MatchEvent event, String team, String player) {
+        if (!event.metaInfo().get("type").getAsString().equals("own")) {
+            if (event.who().equals(player)) {
+                return bonusOfGoal(team, player);
+            } else {
+                return bonusOfAssist(team, player);
+            }
         } else {
-            return bonusOfAssist(team, player);
+            return 0;   //TODO REVISAR
         }
     }
 
     private boolean expelled(String player) {
-        return events().stream().anyMatch(e -> e.type() == Match.MatchEvent.Type.Expulsion && e.who().equals(player));
+        return events().stream().anyMatch(e -> e.type() == MatchEvent.Type.Expulsion && e.who().equals(player));
     }
 
     private double teamScore(String team, String player) {
@@ -182,11 +201,11 @@ public class MatchState {
         return lineup(team).fieldPlayers().stream().map(p -> p.definition().id()).filter(p -> positionOf(team, p) == Positions.PT).findFirst().orElse(null);
     }
 
-    public List<Match.MatchEvent> events() {
+    public List<MatchEvent> events() {
         return events;
     }
 
-    public List<Match.MatchEvent> minuteEvents() {
+    public List<MatchEvent> minuteEvents() {
         return minuteEvents;
     }
 

@@ -9,7 +9,7 @@ Template competitionsTemplate as Relative(height=100%, width=100%)
 	Block(layout=Horizontal Justified, format=w100)
 		Text(value="Competiciones", format=h2 airBottom)
 		Block(layout=Horizontal)
-			MaterialIcon(icon="Search", format=middleAirRight centeredVertically)
+			MaterialIcon(icon="Search", format=middleAirRight center)
 			Text(format=doubleFieldWidth mt16) search as Editable
 	List(itemClass="rlp.footrix.framework.types.entities.Competition", pageSize=10, format=wh100) competitionsTable as Selectable
 		noItemsMessage = "No existen competiciones registradas"
@@ -19,12 +19,13 @@ Template competitionsTemplate as Relative(height=100%, width=100%)
 				Block(layout=Horizontal CenterCenter, format=darkGreyBackground rounded) as Absolute(height=80px)
 					Block(layout=Horizontal, format=wh100)
 						Block(format=doubleAirLeft doubleAirRight)
-							Icon(icon="/icons/flags/0.png", format=middleAirRight centeredVertically)
+							Icon(icon="/icons/flags/0.png", format=middleAirRight center)
 						Block(layout=Flexible)
 							Text(format=h3) competitionName
 
 Template competitionTemplate as Relative(height=100%, width=100%)
 	Block(layout=Horizontal, format=darkGreyBackground) as Absolute(height=64px)
+		Block(format=airLeft h100 center) > Icon(icon="/icons/flags/0.png")
 		Text(format=h2 airLeft) competitionName
 	Block(format=darkGreyBackground)
 		Selector tabs as Tabs
@@ -34,7 +35,7 @@ Template competitionTemplate as Relative(height=100%, width=100%)
 			Text(value="Rankings") rankingsOpt as Option
 
 	Block(layout=Vertical Flexible, format=wh100) competitionClassificationBlock as Conditional
-		TemplateStamp(template=competitionClassificationTemplate) competitionClassificationStamp
+		TemplateStamp(template=fullClassificationTemplate) competitionClassificationStamp
 	Block(layout=Vertical Flexible, format=wh100) competitionTeamsBlock as Conditional
 		TemplateStamp(template=teamsTemplate) competitionTeamsStamp
 	Block(layout=Vertical Flexible, format=wh100) competitionMatchesBlock as Conditional

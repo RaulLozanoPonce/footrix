@@ -39,7 +39,7 @@ Template(layout=Horizontal Flexible) matchInfoTemplate as Relative(height=100%, 
 	Block(layout=Horizontal Flexible, format=leftSpaced)
 		Block(layout=Vertical Flexible) as Relative(width=50%)
 			Text(value="Eventos", format=h2 airBottom)
-			Table(itemClass="rlp.footrix.framework.types.entities.Match.MatchEvent", pageSize=20) matchEventsTable
+			Table(itemClass="rlp.footrix.framework.types.entities.match.MatchEvent", pageSize=20) matchEventsTable
 				noItemsMessage = ""
 				noItemsFoundMessage = ""
 				Mold
@@ -137,4 +137,4 @@ Template(layout=Horizontal Flexible) matchCompetitionTemplate as Relative(height
 	Block(layout=Vertical, format=rightSpaced rightBordered) as Absolute(width=500px)
 		TemplateStamp(template=matchesTemplate) matchesStamp
 	Block(layout=Vertical Flexible, format=leftSpaced)
-		TemplateStamp(template=competitionClassificationTemplate) classificationStamp
+		TemplateStamp(template=fullClassificationTemplate) classificationStamp

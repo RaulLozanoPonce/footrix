@@ -23,13 +23,13 @@ public class TopAssistersPlayerMold extends io.intino.alexandria.ui.displays.com
 
 	public TopAssistersPlayerMold(ProtrixBox box) {
 		super(box);
-		id("a1127815928");
+		id("a1096796121");
 	}
 
 	@Override
 	public void init() {
 		super.init();
-		if (topAssistersPlayer == null) topAssistersPlayer = register(new TopAssistersPlayer(box()).<TopAssistersPlayer>id("a_1242879440").owner(TopAssistersPlayerMold.this));
+		if (topAssistersPlayer == null) topAssistersPlayer = register(new TopAssistersPlayer(box()).<TopAssistersPlayer>id("a457861039").owner(TopAssistersPlayerMold.this));
 	}
 
 	@Override

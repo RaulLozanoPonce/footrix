@@ -1,11 +1,10 @@
 package rlp.footrix.framework.calculators;
 
 import rlp.footrix.framework.Application;
-import rlp.footrix.framework.types.entities.Match;
+import rlp.footrix.framework.types.entities.match.Match;
 import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.framework.types.entities.team.Team;
 import rlp.footrix.framework.types.entities.team_player.PlayerContract;
-import rlp.footrix.framework.types.records.TeamMatchRecord;
 
 public class PsychophysicsCalculator extends Calculator {
     //Energy

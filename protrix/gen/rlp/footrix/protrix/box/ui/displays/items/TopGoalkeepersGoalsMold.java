@@ -23,13 +23,13 @@ public class TopGoalkeepersGoalsMold extends io.intino.alexandria.ui.displays.co
 
 	public TopGoalkeepersGoalsMold(ProtrixBox box) {
 		super(box);
-		id("a2003318955");
+		id("a1041704938");
 	}
 
 	@Override
 	public void init() {
 		super.init();
-		if (topGoalkeepersGoals == null) topGoalkeepersGoals = register(new TopGoalkeepersGoals(box()).<TopGoalkeepersGoals>id("a_2145343245").owner(TopGoalkeepersGoalsMold.this));
+		if (topGoalkeepersGoals == null) topGoalkeepersGoals = register(new TopGoalkeepersGoals(box()).<TopGoalkeepersGoals>id("a178684594").owner(TopGoalkeepersGoalsMold.this));
 	}
 
 	@Override

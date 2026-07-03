@@ -1,7 +1,8 @@
 package rlp.footrix.framework.calculators;
 
 import rlp.footrix.framework.Application;
-import rlp.footrix.framework.types.entities.Match;
+import rlp.footrix.framework.types.entities.match.Match;
+import rlp.footrix.framework.types.entities.match.MatchEvent;
 import rlp.footrix.framework.types.entities.player.Player;
 
 import java.util.List;
@@ -26,9 +27,9 @@ public class Calculator {
 
     private int maxMinutesOf(Player player, Match match, int playedMinutes) {
         List<Integer> minutes = match.events().stream()
-                .filter(e -> e.type() == Match.MatchEvent.Type.Injury || e.type() == Match.MatchEvent.Type.Expulsion)
+                .filter(e -> e.type() == MatchEvent.Type.Injury || e.type() == MatchEvent.Type.Expulsion)
                 .filter(e -> e.who().equals(player.definition().id()))
-                .map(Match.MatchEvent::minute)
+                .map(MatchEvent::minute)
                 .toList();
         if (minutes.isEmpty()) return match.duration();
         return Math.max(playedMinutes, minutes.stream().mapToInt(m -> m).max().orElse(match.duration()));

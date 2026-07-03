@@ -1,8 +1,9 @@
 package rlp.footrix.protrix.box.ui.displays.templates;
 
 import io.intino.alexandria.ui.displays.events.AddCollectionItemEvent;
-import rlp.footrix.framework.types.entities.Match;
 
+import rlp.footrix.framework.types.entities.definitions.MatchDefinition;
+import rlp.footrix.framework.types.entities.match.Match;
 import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.protrix.box.ProtrixBox;
 import rlp.footrix.protrix.box.helper.Math;
@@ -10,12 +11,13 @@ import rlp.footrix.protrix.box.ui.datasources.PlayerMatchRecordDatasource;
 import rlp.footrix.protrix.box.ui.displays.rows.MatchPlayersTableRow;
 import rlp.footrix.protrix.model.PlayerMatchRecord;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 public class MatchPlayersTemplate extends AbstractMatchPlayersTemplate<ProtrixBox> {
     private final PlayerMatchRecordDatasource playerMatchRecordDatasource;
-    private Map<Player, Integer[]> lineup;
+    private Map<Player, Integer[]> lineup = new HashMap<>();
 
     public MatchPlayersTemplate(ProtrixBox box) {
 		super(box);
@@ -28,9 +30,11 @@ public class MatchPlayersTemplate extends AbstractMatchPlayersTemplate<ProtrixBo
         matchPlayersTable.onAddItem(this::addPlayer);
     }
 
-    public MatchPlayersTemplate setup(Match match, String team) {
-        this.playerMatchRecordDatasource.filter(match, team);
-        this.lineup = team.equals(match.definition().local()) ? match.localLineup() : match.visitantLineup();
+    public MatchPlayersTemplate setup(MatchDefinition definition, Match match, String team) {
+        this.playerMatchRecordDatasource.filter(definition, team);
+        if (match != null) {
+            this.lineup = team.equals(definition.local()) ? match.localLineup() : match.visitantLineup();
+        }
         return this;
     }
 

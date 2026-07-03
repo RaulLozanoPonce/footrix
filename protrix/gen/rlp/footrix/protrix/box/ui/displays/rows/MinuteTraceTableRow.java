@@ -27,7 +27,7 @@ public class MinuteTraceTableRow extends io.intino.alexandria.ui.displays.compon
 
 	public MinuteTraceTableRow(ProtrixBox box) {
 		super(box);
-		id("a_458556273");
+		id("a317334244");
 	}
 
 	@Override

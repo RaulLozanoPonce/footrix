@@ -1,8 +1,9 @@
 package rlp.footrix.framework.calculators;
 
 import rlp.footrix.framework.Application;
-import rlp.footrix.framework.types.entities.Match;
+import rlp.footrix.framework.types.entities.match.Match;
 import rlp.footrix.framework.types.entities.definitions.PlayerDefinition;
+import rlp.footrix.framework.types.entities.match.MatchEvent;
 import rlp.footrix.framework.types.entities.player.Player;
 
 import java.util.List;
@@ -13,28 +14,32 @@ public class InjuryCalculator extends Calculator {
         super(application);
     }
 
+    public int injuryDays(int level, Player player) {
+        return injuryDays(level, player.psychophysics().energy(), player.psychophysics().physicalCondition(), player.psychophysics().selfConfidence(), player.definition().injuryResistance());
+    }
+
     public int injuryDays(Player player, Match match) {
-        List<Match.MatchEvent> injuries = injuriesOf(player, match);
+        List<MatchEvent> injuries = injuriesOf(player, match);
         if (injuries.isEmpty()) return 0;
         int level = injuryLevel(injuries);
         return injuryDays(level, player.psychophysics().energy(), player.psychophysics().physicalCondition(), player.psychophysics().selfConfidence(), player.definition().injuryResistance());
     }
 
-    public int injuryDays(int level, double energy, double physicalCondition, double selfConfidence, PlayerDefinition.InjuryResistance resistance) {
+    private int injuryDays(int level, double energy, double physicalCondition, double selfConfidence, PlayerDefinition.InjuryResistance resistance) {
         double random = 0.99 * Math.random();
         double baseDays = minInjuryDays(level) - meanInjuryDays(level) * Math.log10(1 - random);
         double factor = fatigueFactor(energy) * physicalConditionFactor(physicalCondition) * selfConfidenceFactor(selfConfidence) * injuryResistanceFactor(resistance);
         return (int) Math.round(baseDays * factor);
     }
 
-    private List<Match.MatchEvent> injuriesOf(Player player, Match match) {
+    private List<MatchEvent> injuriesOf(Player player, Match match) {
         return match.events().stream()
                 .filter(e -> e.who().equals(player.definition().id()))
-                .filter(e -> e.type() == Match.MatchEvent.Type.Injury)
+                .filter(e -> e.type() == MatchEvent.Type.Injury)
                 .toList();
     }
 
-    private int injuryLevel(List<Match.MatchEvent> injuries) {
+    private int injuryLevel(List<MatchEvent> injuries) {
         return injuries.stream()
                 .filter(i -> i.metaInfo().has("level"))
                 .mapToInt(i -> i.metaInfo().get("level").getAsInt())

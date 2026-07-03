@@ -32,7 +32,7 @@ public class MatchPlayersTableRow extends io.intino.alexandria.ui.displays.compo
 
 	public MatchPlayersTableRow(ProtrixBox box) {
 		super(box);
-		id("a1234602503");
+		id("a_482595246");
 	}
 
 	@Override

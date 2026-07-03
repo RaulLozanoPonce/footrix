@@ -2,9 +2,9 @@ package rlp.footrix.protrix.box;
 
 import rlp.footrix.framework.events.Subscriber;
 import rlp.footrix.framework.events.types.PlayedMatchEvent;
-import rlp.footrix.framework.types.entities.Match;
 import rlp.footrix.framework.types.entities.definitions.MatchDefinition;
 import rlp.footrix.framework.types.entities.definitions.TeamDefinition;
+import rlp.footrix.framework.types.entities.match.Match;
 import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.protrix.ProtrixApplication;
 import rlp.footrix.protrix.model.Classification;

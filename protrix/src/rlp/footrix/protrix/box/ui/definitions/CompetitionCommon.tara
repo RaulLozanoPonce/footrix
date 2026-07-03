@@ -2,42 +2,41 @@ dsl konos
 
 use Theme
 
-Template competitionClassificationTemplate as Relative(height=100%, width=100%)
+Template fullClassificationTemplate as Relative(height=100%, width=100%)
 	Text(value="Clasificación", format=h2 airBottom)
-	Table(itemClass="rlp.footrix.protrix.model.Classification", pageSize=20) matchCompetitionClassificationTable
+	Table(itemClass="rlp.footrix.protrix.model.Classification", pageSize=20) fullClassificationTable
 		noItemsMessage = "No existen partidos para esta competición"
 		noItemsFoundMessage = "No existen partidos para esta competición"
 		Mold
-			Heading matchCompetitionClassificationPositionHeading > Text(value = "Pos.", format=bold)
-			Item(height=30px, width=10%) matchCompetitionClassificationPositionMold > Text matchCompetitionClassificationPosition
+			Heading fullClassificationPositionHeading > Text(value = "Pos.", format=bold)
+			Item(height=30px, width=10%) fullClassificationPositionMold > Block(format=centerVertically) as Absolute(height=30px) > Text fullClassificationPosition
 		Mold
-			Heading matchCompetitionClassificationTeamHeading > Text(value = "Equipo", format=bold)
-			Item(height=30px, width=30%) matchCompetitionClassificationTeamMold > Text matchCompetitionClassificationTeam
+			Heading fullClassificationTeamHeading > Text(value = "Equipo", format=bold)
+			Item(height=30px, width=30%) fullClassificationTeamMold > Block(format=centerVertically) as Absolute(height=30px) > Text fullClassificationTeam
 		Mold
-			Heading matchCompetitionClassificationPlayedMatchesHeading > Text(value = "PJ", format=bold)
-			Item(height=30px, width=10%) matchCompetitionClassificationPlayedMatchesMold > Text matchCompetitionClassificationPlayedMatches
+			Heading fullClassificationPlayedMatchesHeading > Text(value = "PJ", format=bold)
+			Item(height=30px, width=10%) fullClassificationPlayedMatchesMold > Block(format=centerVertically) as Absolute(height=30px) > Text fullClassificationPlayedMatches
 		Mold
-			Heading matchCompetitionClassificationWinMatchesHeading > Text(value = "V", format=bold)
-			Item(height=30px, width=10%) matchCompetitionClassificationWinMatchesMold > Text matchCompetitionClassificationWinMatches
+			Heading fullClassificationWinMatchesHeading > Text(value = "V", format=bold)
+			Item(height=30px, width=10%) fullClassificationWinMatchesMold > Block(format=centerVertically) as Absolute(height=30px) > Text fullClassificationWinMatches
 		Mold
-			Heading matchCompetitionClassificationDrawMatchesHeading > Text(value = "E", format=bold)
-			Item(height=30px, width=10%) matchCompetitionClassificationDrawMatchesMold > Text matchCompetitionClassificationDrawMatches
+			Heading fullClassificationDrawMatchesHeading > Text(value = "E", format=bold)
+			Item(height=30px, width=10%) fullClassificationDrawMatchesMold > Block(format=centerVertically) as Absolute(height=30px) > Text fullClassificationDrawMatches
 		Mold
-			Heading matchCompetitionClassificationLostMatchesHeading > Text(value = "D", format=bold)
-			Item(height=30px, width=10%) matchCompetitionClassificationLostMatchesMold > Text matchCompetitionClassificationLostMatches
+			Heading fullClassificationLostMatchesHeading > Text(value = "D", format=bold)
+			Item(height=30px, width=10%) fullClassificationLostMatchesMold > Block(format=centerVertically) as Absolute(height=30px) > Text fullClassificationLostMatches
 		Mold
-			Heading matchCompetitionClassificationGoalsForHeading > Text(value = "GF", format=bold)
-			Item(height=30px, width=10%) matchCompetitionClassificationGoalsForMold > Text matchCompetitionClassificationGoalsFor
+			Heading fullClassificationGoalsForHeading > Text(value = "GF", format=bold)
+			Item(height=30px, width=10%) fullClassificationGoalsForMold > Block(format=centerVertically) as Absolute(height=30px) > Text fullClassificationGoalsFor
 		Mold
-			Heading matchCompetitionClassificationGoalsAgainstHeading > Text(value = "GC", format=bold)
-			Item(height=30px, width=10%) matchCompetitionClassificationGoalsAgainstMold > Text matchCompetitionClassificationGoalsAgainst
+			Heading fullClassificationGoalsAgainstHeading > Text(value = "GC", format=bold)
+			Item(height=30px, width=10%) fullClassificationGoalsAgainstMold > Block(format=centerVertically) as Absolute(height=30px) > Text fullClassificationGoalsAgainst
 		Mold
-			Heading matchCompetitionClassificationGoalsDifferenceHeading > Text(value = "DG", format=bold)
-			Item(height=30px, width=10%) matchCompetitionClassificationGoalsDifferenceMold > Text matchCompetitionClassificationGoalsDifference
+			Heading fullClassificationGoalsDifferenceHeading > Text(value = "DG", format=bold)
+			Item(height=30px, width=10%) fullClassificationGoalsDifferenceMold > Block(format=centerVertically) as Absolute(height=30px) > Text fullClassificationGoalsDifference
 		Mold
-			Heading matchCompetitionClassificationPointsHeading > Text(value = "Pts.", format=bold)
-			Item(height=30px, width=10%) matchCompetitionClassificationPointsMold > Text matchCompetitionClassificationPoints
-
+			Heading fullClassificationPointsHeading > Text(value = "Pts.", format=bold)
+			Item(height=30px, width=10%) fullClassificationPointsMold > Block(format=centerVertically) as Absolute(height=30px) > Text fullClassificationPoints
 
 Template competitionGoalRankingTemplate as Relative(height=100%, width=100%)
 	Text(value="Máximos Goleadores", format=h2 airBottom)

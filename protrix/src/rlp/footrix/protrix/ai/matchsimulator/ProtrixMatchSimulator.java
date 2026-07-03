@@ -2,8 +2,9 @@ package rlp.footrix.protrix.ai.matchsimulator;
 
 import rlp.footrix.framework.Application;
 import rlp.footrix.framework.ai.MatchSimulator;
-import rlp.footrix.framework.types.entities.Match;
 import rlp.footrix.framework.types.entities.definitions.MatchDefinition;
+import rlp.footrix.framework.types.entities.match.Match;
+import rlp.footrix.framework.types.entities.match.MatchEvent;
 import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.framework.types.entities.team.PlayersLineup;
 import rlp.footrix.protrix.ai.matchsimulator.types.*;
@@ -14,8 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static rlp.footrix.framework.types.entities.Match.MatchEvent.Type.Expulsion;
-import static rlp.footrix.framework.types.entities.Match.MatchEvent.Type.Substitution;
+import static rlp.footrix.framework.types.entities.match.MatchEvent.Type.Expulsion;
+import static rlp.footrix.framework.types.entities.match.MatchEvent.Type.Substitution;
 
 public class ProtrixMatchSimulator implements MatchSimulator {
     private final Application application;
@@ -58,15 +59,15 @@ public class ProtrixMatchSimulator implements MatchSimulator {
         for (Player player : state.visitantLineup().fieldPlayers()) this.state.addMinute(player.definition().id());
     }
 
-    private void handle(List<Match.MatchEvent> events, MatchState state, int minute) {
-        for (Match.MatchEvent event : events) {
+    private void handle(List<MatchEvent> events, MatchState state, int minute) {
+        for (MatchEvent event : events) {
             if (event.type() == Substitution) {
                 if (event.team().equals(state.local())) {
                     state.substitute(state.local(), event.who(), event.secondaryWho());
                 } else {
                     state.substitute(state.visitant(), event.who(), event.secondaryWho());
                 }
-                if (minute == 90) this.state.addMinute(event.who());    //TODO
+                if (minute == 90) this.state.addMinute(event.who());    //TODO PUEDE SER MAS
             } else if (event.type() == Expulsion) {
                 if (event.team().equals(state.local())) {
                     state.expell(state.local(), event.who());

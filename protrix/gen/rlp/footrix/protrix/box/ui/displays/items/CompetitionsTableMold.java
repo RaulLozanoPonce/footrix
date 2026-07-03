@@ -19,12 +19,12 @@ import rlp.footrix.protrix.box.ui.displays.rows.*;
 import io.intino.alexandria.ui.displays.notifiers.ItemNotifier;
 
 public class CompetitionsTableMold extends io.intino.alexandria.ui.displays.components.Item<ItemNotifier, rlp.footrix.framework.types.entities.Competition, ProtrixBox> {
-	public _19_4_01883789413 _19_4_01883789413;
-	public CompetitionsTableMold._19_4_01883789413. _20_5_11096110070 _20_5_11096110070;
-	public CompetitionsTableMold._19_4_01883789413._20_5_11096110070. _21_6_0805800026 _21_6_0805800026;
-	public CompetitionsTableMold._19_4_01883789413._20_5_11096110070._21_6_0805800026. _22_7_01437157531 _22_7_01437157531;
-	public CompetitionsTableMold._19_4_01883789413._20_5_11096110070. _23_6_1163073903 _23_6_1163073903;
-	public CompetitionsTableMold._19_4_01883789413._20_5_11096110070._23_6_1163073903. CompetitionName competitionName;
+	public _19_4_1133743261 _19_4_1133743261;
+	public CompetitionsTableMold._19_4_1133743261. _20_5_0906776712 _20_5_0906776712;
+	public CompetitionsTableMold._19_4_1133743261._20_5_0906776712. _21_6_0199745308 _21_6_0199745308;
+	public CompetitionsTableMold._19_4_1133743261._20_5_0906776712._21_6_0199745308. _22_7_0855106525 _22_7_0855106525;
+	public CompetitionsTableMold._19_4_1133743261._20_5_0906776712. _23_6_1163073903 _23_6_1163073903;
+	public CompetitionsTableMold._19_4_1133743261._20_5_0906776712._23_6_1163073903. CompetitionName competitionName;
 
 	public CompetitionsTableMold(ProtrixBox box) {
 		super(box);
@@ -34,83 +34,83 @@ public class CompetitionsTableMold extends io.intino.alexandria.ui.displays.comp
 	@Override
 	public void init() {
 		super.init();
-		if (_19_4_01883789413 == null) _19_4_01883789413 = register(new _19_4_01883789413(box()).<_19_4_01883789413>id("a1693066631").owner(CompetitionsTableMold.this));
-		if (_19_4_01883789413 != null) _20_5_11096110070 = _19_4_01883789413._20_5_11096110070;
-		if (_20_5_11096110070 != null) _21_6_0805800026 = _19_4_01883789413._20_5_11096110070._21_6_0805800026;
-		if (_21_6_0805800026 != null) _22_7_01437157531 = _19_4_01883789413._20_5_11096110070._21_6_0805800026._22_7_01437157531;
-		if (_20_5_11096110070 != null) _23_6_1163073903 = _19_4_01883789413._20_5_11096110070._23_6_1163073903;
-		if (_23_6_1163073903 != null) competitionName = _19_4_01883789413._20_5_11096110070._23_6_1163073903.competitionName;
+		if (_19_4_1133743261 == null) _19_4_1133743261 = register(new _19_4_1133743261(box()).<_19_4_1133743261>id("a811402432").owner(CompetitionsTableMold.this));
+		if (_19_4_1133743261 != null) _20_5_0906776712 = _19_4_1133743261._20_5_0906776712;
+		if (_20_5_0906776712 != null) _21_6_0199745308 = _19_4_1133743261._20_5_0906776712._21_6_0199745308;
+		if (_21_6_0199745308 != null) _22_7_0855106525 = _19_4_1133743261._20_5_0906776712._21_6_0199745308._22_7_0855106525;
+		if (_20_5_0906776712 != null) _23_6_1163073903 = _19_4_1133743261._20_5_0906776712._23_6_1163073903;
+		if (_23_6_1163073903 != null) competitionName = _19_4_1133743261._20_5_0906776712._23_6_1163073903.competitionName;
 	}
 
 	@Override
 	public void remove() {
 		super.remove();
-		if (_19_4_01883789413 != null) _19_4_01883789413.unregister();
+		if (_19_4_1133743261 != null) _19_4_1133743261.unregister();
 	}
 
-	public class _19_4_01883789413 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, ProtrixBox>  {
-		public CompetitionsTableMold._19_4_01883789413. _20_5_11096110070 _20_5_11096110070;
+	public class _19_4_1133743261 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, ProtrixBox>  {
+		public CompetitionsTableMold._19_4_1133743261. _20_5_0906776712 _20_5_0906776712;
 
-		public _19_4_01883789413(ProtrixBox box) {
+		public _19_4_1133743261(ProtrixBox box) {
 			super(box);
 		}
 
 		@Override
 		public void init() {
 			super.init();
-			if (_20_5_11096110070 == null) _20_5_11096110070 = register(new _20_5_11096110070(box()).<_20_5_11096110070>id("a_610489981").owner(CompetitionsTableMold.this));
+			if (_20_5_0906776712 == null) _20_5_0906776712 = register(new _20_5_0906776712(box()).<_20_5_0906776712>id("a_8225964").owner(CompetitionsTableMold.this));
 		}
 
 		@Override
 		public void unregister() {
 			super.unregister();
-			if (_20_5_11096110070 != null) _20_5_11096110070.unregister();
+			if (_20_5_0906776712 != null) _20_5_0906776712.unregister();
 		}
 
-		public class _20_5_11096110070 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, ProtrixBox>  {
-			public CompetitionsTableMold._19_4_01883789413._20_5_11096110070. _21_6_0805800026 _21_6_0805800026;
-			public CompetitionsTableMold._19_4_01883789413._20_5_11096110070. _23_6_1163073903 _23_6_1163073903;
+		public class _20_5_0906776712 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, ProtrixBox>  {
+			public CompetitionsTableMold._19_4_1133743261._20_5_0906776712. _21_6_0199745308 _21_6_0199745308;
+			public CompetitionsTableMold._19_4_1133743261._20_5_0906776712. _23_6_1163073903 _23_6_1163073903;
 
-			public _20_5_11096110070(ProtrixBox box) {
+			public _20_5_0906776712(ProtrixBox box) {
 				super(box);
 			}
 
 			@Override
 			public void init() {
 				super.init();
-				if (_21_6_0805800026 == null) _21_6_0805800026 = register(new _21_6_0805800026(box()).<_21_6_0805800026>id("a_844042733").owner(CompetitionsTableMold.this));
+				if (_21_6_0199745308 == null) _21_6_0199745308 = register(new _21_6_0199745308(box()).<_21_6_0199745308>id("a953891886").owner(CompetitionsTableMold.this));
 				if (_23_6_1163073903 == null) _23_6_1163073903 = register(new _23_6_1163073903(box()).<_23_6_1163073903>id("a1880022613").owner(CompetitionsTableMold.this));
 			}
 
 			@Override
 			public void unregister() {
 				super.unregister();
-				if (_21_6_0805800026 != null) _21_6_0805800026.unregister();
+				if (_21_6_0199745308 != null) _21_6_0199745308.unregister();
 				if (_23_6_1163073903 != null) _23_6_1163073903.unregister();
 			}
 
-			public class _21_6_0805800026 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, ProtrixBox>  {
-				public CompetitionsTableMold._19_4_01883789413._20_5_11096110070._21_6_0805800026. _22_7_01437157531 _22_7_01437157531;
+			public class _21_6_0199745308 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, ProtrixBox>  {
+				public CompetitionsTableMold._19_4_1133743261._20_5_0906776712._21_6_0199745308. _22_7_0855106525 _22_7_0855106525;
 
-				public _21_6_0805800026(ProtrixBox box) {
+				public _21_6_0199745308(ProtrixBox box) {
 					super(box);
 				}
 
 				@Override
 				public void init() {
 					super.init();
-					if (_22_7_01437157531 == null) _22_7_01437157531 = register(new _22_7_01437157531(box()).<_22_7_01437157531>id("a_1418448047").owner(CompetitionsTableMold.this));
+					if (_22_7_0855106525 == null) _22_7_0855106525 = register(new _22_7_0855106525(box()).<_22_7_0855106525>id("a1592448655").owner(CompetitionsTableMold.this));
 				}
 
 				@Override
 				public void unregister() {
 					super.unregister();
-					if (_22_7_01437157531 != null) _22_7_01437157531.unregister();
+					if (_22_7_0855106525 != null) _22_7_0855106525.unregister();
 				}
 
-				public class _22_7_01437157531 extends io.intino.alexandria.ui.displays.components.Icon<io.intino.alexandria.ui.displays.notifiers.IconNotifier, ProtrixBox>  {
+				public class _22_7_0855106525 extends io.intino.alexandria.ui.displays.components.Icon<io.intino.alexandria.ui.displays.notifiers.IconNotifier, ProtrixBox>  {
 
-					public _22_7_01437157531(ProtrixBox box) {
+					public _22_7_0855106525(ProtrixBox box) {
 						super(box);
 						_icon(CompetitionsTableMold.class.getResource("/icons/flags/0.png"));
 					}
@@ -128,7 +128,7 @@ public class CompetitionsTableMold extends io.intino.alexandria.ui.displays.comp
 			}
 
 			public class _23_6_1163073903 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, ProtrixBox>  {
-				public CompetitionsTableMold._19_4_01883789413._20_5_11096110070._23_6_1163073903. CompetitionName competitionName;
+				public CompetitionsTableMold._19_4_1133743261._20_5_0906776712._23_6_1163073903. CompetitionName competitionName;
 
 				public _23_6_1163073903(ProtrixBox box) {
 					super(box);

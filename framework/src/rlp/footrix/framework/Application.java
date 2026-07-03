@@ -39,6 +39,7 @@ public abstract class Application {
     private final PlayerManager playerManager;
     private final RulesManager rulesManager;
     private final EloManager eloManager;
+    private final MatchManager matchManager;
 
     private final ModelCloudAccessor models;
 
@@ -67,6 +68,7 @@ public abstract class Application {
         this.playerManager = new PlayerManager(this.game, this.entityStore);
         this.lineupsManager = new LineupsManager();
         this.eloManager = new EloManager();
+        this.matchManager = new MatchManager(this);
 
         this.cacheCalculator = new CacheCalculator(this);
         this.psychophysicsCalculator = new PsychophysicsCalculator(this);
@@ -157,13 +159,13 @@ public abstract class Application {
         return eloManager;
     }
 
+    public MatchManager matchManager() {
+        return matchManager;
+    }
+
     public EntityStore entityStore() {
         return entityStore;
     }
-
-    /*public RecordStore recordStore() {
-        return recordStore;
-    }*/
 
     public TableStore tableStore() {
         return tableStore;

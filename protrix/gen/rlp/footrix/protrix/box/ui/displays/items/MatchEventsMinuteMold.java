@@ -18,7 +18,7 @@ import rlp.footrix.protrix.box.ui.displays.items.*;
 import rlp.footrix.protrix.box.ui.displays.rows.*;
 import io.intino.alexandria.ui.displays.notifiers.ItemNotifier;
 
-public class MatchEventsMinuteMold extends io.intino.alexandria.ui.displays.components.Item<ItemNotifier, rlp.footrix.framework.types.entities.Match.MatchEvent, ProtrixBox> {
+public class MatchEventsMinuteMold extends io.intino.alexandria.ui.displays.components.Item<ItemNotifier, rlp.footrix.framework.types.entities.match.MatchEvent, ProtrixBox> {
 	public _55_6_01365237416 _55_6_01365237416;
 	public MatchEventsMinuteMold._55_6_01365237416. MatchEventsMinute matchEventsMinute;
 

@@ -1,7 +1,8 @@
 package rlp.footrix.protrix.box.ui.displays.templates;
 
 import rlp.footrix.framework.types.entities.Competition;
-import rlp.footrix.framework.types.entities.Match;
+import rlp.footrix.framework.types.entities.definitions.MatchDefinition;
+import rlp.footrix.framework.types.entities.match.Match;
 import rlp.footrix.protrix.box.ProtrixBox;
 
 public class MatchCompetitionTemplate extends AbstractMatchCompetitionTemplate<ProtrixBox> {
@@ -10,10 +11,10 @@ public class MatchCompetitionTemplate extends AbstractMatchCompetitionTemplate<P
 		super(box);
 	}
 
-    public MatchCompetitionTemplate setup(Match match) {
-        Competition competition = box().application().entityStore().competition(match.definition().competition(), match.definition().season());
-        matchesStamp.setup(competition, match.definition().season());
-        classificationStamp.setup(competition, match.definition().season());
+    public MatchCompetitionTemplate setup(MatchDefinition definition) {
+        Competition competition = box().application().entityStore().competition(definition.competition(), definition.season());
+        matchesStamp.setup(competition, definition.season()).refresh();
+        classificationStamp.setup(competition, definition.season()).refresh();
         return this;
     }
 

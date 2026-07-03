@@ -2,7 +2,7 @@ package rlp.footrix.framework.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import rlp.footrix.framework.types.entities.Match;
+import rlp.footrix.framework.types.entities.match.Match;
 
 public class Json {
 

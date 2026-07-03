@@ -25,10 +25,10 @@ public abstract class AbstractMatchInfoTemplate<B extends Box> extends io.intino
 	public _36_1_0636403011 _36_1_0636403011;
 	public MatchInfoTemplate._36_1_0636403011. _37_2_0829405132 _37_2_0829405132;
 	public MatchPlayersTemplate visitantMatchPlayersStamp;
-	public _39_1_0559060411 _39_1_0559060411;
-	public MatchInfoTemplate._39_1_0559060411. _40_2_1185018969 _40_2_1185018969;
-	public MatchInfoTemplate._39_1_0559060411._40_2_1185018969. _41_3_0489841367 _41_3_0489841367;
-	public MatchInfoTemplate._39_1_0559060411._40_2_1185018969. MatchEventsTable matchEventsTable;
+	public _39_1_11387591269 _39_1_11387591269;
+	public MatchInfoTemplate._39_1_11387591269. _40_2_01326655879 _40_2_01326655879;
+	public MatchInfoTemplate._39_1_11387591269._40_2_01326655879. _41_3_0489841367 _41_3_0489841367;
+	public MatchInfoTemplate._39_1_11387591269._40_2_01326655879. MatchEventsTable matchEventsTable;
 
 	public AbstractMatchInfoTemplate(B box) {
 		super(box);
@@ -44,10 +44,10 @@ public abstract class AbstractMatchInfoTemplate<B extends Box> extends io.intino
 		if (_36_1_0636403011 == null) _36_1_0636403011 = register(new _36_1_0636403011(box()).<_36_1_0636403011>id("a_1630464578").owner(AbstractMatchInfoTemplate.this));
 		if (_36_1_0636403011 != null) _37_2_0829405132 = _36_1_0636403011._37_2_0829405132;
 		if (_36_1_0636403011 != null) visitantMatchPlayersStamp = _36_1_0636403011.visitantMatchPlayersStamp;
-		if (_39_1_0559060411 == null) _39_1_0559060411 = register(new _39_1_0559060411(box()).<_39_1_0559060411>id("a404417420").owner(AbstractMatchInfoTemplate.this));
-		if (_39_1_0559060411 != null) _40_2_1185018969 = _39_1_0559060411._40_2_1185018969;
-		if (_40_2_1185018969 != null) _41_3_0489841367 = _39_1_0559060411._40_2_1185018969._41_3_0489841367;
-		if (_40_2_1185018969 != null) matchEventsTable = _39_1_0559060411._40_2_1185018969.matchEventsTable;
+		if (_39_1_11387591269 == null) _39_1_11387591269 = register(new _39_1_11387591269(box()).<_39_1_11387591269>id("a_1884575103").owner(AbstractMatchInfoTemplate.this));
+		if (_39_1_11387591269 != null) _40_2_01326655879 = _39_1_11387591269._40_2_01326655879;
+		if (_40_2_01326655879 != null) _41_3_0489841367 = _39_1_11387591269._40_2_01326655879._41_3_0489841367;
+		if (_40_2_01326655879 != null) matchEventsTable = _39_1_11387591269._40_2_01326655879.matchEventsTable;
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public abstract class AbstractMatchInfoTemplate<B extends Box> extends io.intino
 		super.remove();
 		if (_33_1_1242467398 != null) _33_1_1242467398.unregister();
 		if (_36_1_0636403011 != null) _36_1_0636403011.unregister();
-		if (_39_1_0559060411 != null) _39_1_0559060411.unregister();
+		if (_39_1_11387591269 != null) _39_1_11387591269.unregister();
 	}
 
 	public class _33_1_1242467398 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, B>  {
@@ -140,30 +140,30 @@ public abstract class AbstractMatchInfoTemplate<B extends Box> extends io.intino
 		}
 	}
 
-	public class _39_1_0559060411 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, B>  {
-		public MatchInfoTemplate._39_1_0559060411. _40_2_1185018969 _40_2_1185018969;
+	public class _39_1_11387591269 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, B>  {
+		public MatchInfoTemplate._39_1_11387591269. _40_2_01326655879 _40_2_01326655879;
 
-		public _39_1_0559060411(B box) {
+		public _39_1_11387591269(B box) {
 			super(box);
 		}
 
 		@Override
 		public void init() {
 			super.init();
-			if (_40_2_1185018969 == null) _40_2_1185018969 = register(new _40_2_1185018969(box()).<_40_2_1185018969>id("a166851808").owner(AbstractMatchInfoTemplate.this));
+			if (_40_2_01326655879 == null) _40_2_01326655879 = register(new _40_2_01326655879(box()).<_40_2_01326655879>id("a_936390436").owner(AbstractMatchInfoTemplate.this));
 		}
 
 		@Override
 		public void unregister() {
 			super.unregister();
-			if (_40_2_1185018969 != null) _40_2_1185018969.unregister();
+			if (_40_2_01326655879 != null) _40_2_01326655879.unregister();
 		}
 
-		public class _40_2_1185018969 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, B>  {
-			public MatchInfoTemplate._39_1_0559060411._40_2_1185018969. _41_3_0489841367 _41_3_0489841367;
-			public MatchInfoTemplate._39_1_0559060411._40_2_1185018969. MatchEventsTable matchEventsTable;
+		public class _40_2_01326655879 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, B>  {
+			public MatchInfoTemplate._39_1_11387591269._40_2_01326655879. _41_3_0489841367 _41_3_0489841367;
+			public MatchInfoTemplate._39_1_11387591269._40_2_01326655879. MatchEventsTable matchEventsTable;
 
-			public _40_2_1185018969(B box) {
+			public _40_2_01326655879(B box) {
 				super(box);
 			}
 
@@ -199,7 +199,7 @@ public abstract class AbstractMatchInfoTemplate<B extends Box> extends io.intino
 				}
 			}
 
-			public class MatchEventsTable extends io.intino.alexandria.ui.displays.components.Table<B, io.intino.alexandria.ui.displays.components.Row, rlp.footrix.framework.types.entities.Match.MatchEvent>  {
+			public class MatchEventsTable extends io.intino.alexandria.ui.displays.components.Table<B, io.intino.alexandria.ui.displays.components.Row, rlp.footrix.framework.types.entities.match.MatchEvent>  {
 
 				public MatchEventsTable(B box) {
 					super(box);
@@ -218,7 +218,7 @@ public abstract class AbstractMatchInfoTemplate<B extends Box> extends io.intino
 				}
 
 
-				public MatchEventsTableRow create(rlp.footrix.framework.types.entities.Match.MatchEvent item) {
+				public MatchEventsTableRow create(rlp.footrix.framework.types.entities.match.MatchEvent item) {
 					MatchEventsTableRow row = new MatchEventsTableRow((ProtrixBox)box());
 					row.id(java.util.UUID.randomUUID().toString());
 					row.item(item);

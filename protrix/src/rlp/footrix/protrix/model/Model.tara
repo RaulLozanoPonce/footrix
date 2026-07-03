@@ -1,15 +1,5 @@
 dsl proteo
 
-Concept Match
-	var string matchId
-	var string competitionName
-	var instant date
-	var string matchDay
-	var string localName
-	var string visitantName
-	var string localGoals
-	var string visitantGoals
-
 Concept Classification is decorable
 	var string competitionId
 	var integer phase
@@ -60,3 +50,13 @@ Concept PlayerDayRecord
 	var integer minutes
 	var double stamina
 	var boolean injured
+
+Concept TeamOut
+	var instant from
+	var instant to
+	var string teamId
+	var string playerId
+	var boolean closed
+	var word:{Injury Sanction} type
+	var string competition
+	var integer matches

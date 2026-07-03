@@ -19,12 +19,12 @@ import rlp.footrix.protrix.box.ui.displays.rows.*;
 import io.intino.alexandria.ui.displays.notifiers.ItemNotifier;
 
 public class TeamsTableMold extends io.intino.alexandria.ui.displays.components.Item<ItemNotifier, rlp.footrix.pes6.types.Pes6Team, ProtrixBox> {
-	public _16_4_1595815687 _16_4_1595815687;
-	public TeamsTableMold._16_4_1595815687. _17_5_11021908368 _17_5_11021908368;
-	public TeamsTableMold._16_4_1595815687._17_5_11021908368. _18_6_0805800026 _18_6_0805800026;
-	public TeamsTableMold._16_4_1595815687._17_5_11021908368._18_6_0805800026. _19_7_01437157531 _19_7_01437157531;
-	public TeamsTableMold._16_4_1595815687._17_5_11021908368. _20_6_1345780411 _20_6_1345780411;
-	public TeamsTableMold._16_4_1595815687._17_5_11021908368._20_6_1345780411. TeamName teamName;
+	public _16_4_123033413 _16_4_123033413;
+	public TeamsTableMold._16_4_123033413. _17_5_0732886962 _17_5_0732886962;
+	public TeamsTableMold._16_4_123033413._17_5_0732886962. _18_6_0199745308 _18_6_0199745308;
+	public TeamsTableMold._16_4_123033413._17_5_0732886962._18_6_0199745308. _19_7_0855106525 _19_7_0855106525;
+	public TeamsTableMold._16_4_123033413._17_5_0732886962. _20_6_1345780411 _20_6_1345780411;
+	public TeamsTableMold._16_4_123033413._17_5_0732886962._20_6_1345780411. TeamName teamName;
 
 	public TeamsTableMold(ProtrixBox box) {
 		super(box);
@@ -34,83 +34,83 @@ public class TeamsTableMold extends io.intino.alexandria.ui.displays.components.
 	@Override
 	public void init() {
 		super.init();
-		if (_16_4_1595815687 == null) _16_4_1595815687 = register(new _16_4_1595815687(box()).<_16_4_1595815687>id("a1745807546").owner(TeamsTableMold.this));
-		if (_16_4_1595815687 != null) _17_5_11021908368 = _16_4_1595815687._17_5_11021908368;
-		if (_17_5_11021908368 != null) _18_6_0805800026 = _16_4_1595815687._17_5_11021908368._18_6_0805800026;
-		if (_18_6_0805800026 != null) _19_7_01437157531 = _16_4_1595815687._17_5_11021908368._18_6_0805800026._19_7_01437157531;
-		if (_17_5_11021908368 != null) _20_6_1345780411 = _16_4_1595815687._17_5_11021908368._20_6_1345780411;
-		if (_20_6_1345780411 != null) teamName = _16_4_1595815687._17_5_11021908368._20_6_1345780411.teamName;
+		if (_16_4_123033413 == null) _16_4_123033413 = register(new _16_4_123033413(box()).<_16_4_123033413>id("a438944951").owner(TeamsTableMold.this));
+		if (_16_4_123033413 != null) _17_5_0732886962 = _16_4_123033413._17_5_0732886962;
+		if (_17_5_0732886962 != null) _18_6_0199745308 = _16_4_123033413._17_5_0732886962._18_6_0199745308;
+		if (_18_6_0199745308 != null) _19_7_0855106525 = _16_4_123033413._17_5_0732886962._18_6_0199745308._19_7_0855106525;
+		if (_17_5_0732886962 != null) _20_6_1345780411 = _16_4_123033413._17_5_0732886962._20_6_1345780411;
+		if (_20_6_1345780411 != null) teamName = _16_4_123033413._17_5_0732886962._20_6_1345780411.teamName;
 	}
 
 	@Override
 	public void remove() {
 		super.remove();
-		if (_16_4_1595815687 != null) _16_4_1595815687.unregister();
+		if (_16_4_123033413 != null) _16_4_123033413.unregister();
 	}
 
-	public class _16_4_1595815687 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, ProtrixBox>  {
-		public TeamsTableMold._16_4_1595815687. _17_5_11021908368 _17_5_11021908368;
+	public class _16_4_123033413 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, ProtrixBox>  {
+		public TeamsTableMold._16_4_123033413. _17_5_0732886962 _17_5_0732886962;
 
-		public _16_4_1595815687(ProtrixBox box) {
+		public _16_4_123033413(ProtrixBox box) {
 			super(box);
 		}
 
 		@Override
 		public void init() {
 			super.init();
-			if (_17_5_11021908368 == null) _17_5_11021908368 = register(new _17_5_11021908368(box()).<_17_5_11021908368>id("a855487889").owner(TeamsTableMold.this));
+			if (_17_5_0732886962 == null) _17_5_0732886962 = register(new _17_5_0732886962(box()).<_17_5_0732886962>id("a487915063").owner(TeamsTableMold.this));
 		}
 
 		@Override
 		public void unregister() {
 			super.unregister();
-			if (_17_5_11021908368 != null) _17_5_11021908368.unregister();
+			if (_17_5_0732886962 != null) _17_5_0732886962.unregister();
 		}
 
-		public class _17_5_11021908368 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, ProtrixBox>  {
-			public TeamsTableMold._16_4_1595815687._17_5_11021908368. _18_6_0805800026 _18_6_0805800026;
-			public TeamsTableMold._16_4_1595815687._17_5_11021908368. _20_6_1345780411 _20_6_1345780411;
+		public class _17_5_0732886962 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, ProtrixBox>  {
+			public TeamsTableMold._16_4_123033413._17_5_0732886962. _18_6_0199745308 _18_6_0199745308;
+			public TeamsTableMold._16_4_123033413._17_5_0732886962. _20_6_1345780411 _20_6_1345780411;
 
-			public _17_5_11021908368(ProtrixBox box) {
+			public _17_5_0732886962(ProtrixBox box) {
 				super(box);
 			}
 
 			@Override
 			public void init() {
 				super.init();
-				if (_18_6_0805800026 == null) _18_6_0805800026 = register(new _18_6_0805800026(box()).<_18_6_0805800026>id("a_1380440233").owner(TeamsTableMold.this));
+				if (_18_6_0199745308 == null) _18_6_0199745308 = register(new _18_6_0199745308(box()).<_18_6_0199745308>id("a417494386").owner(TeamsTableMold.this));
 				if (_20_6_1345780411 == null) _20_6_1345780411 = register(new _20_6_1345780411(box()).<_20_6_1345780411>id("a_1512492929").owner(TeamsTableMold.this));
 			}
 
 			@Override
 			public void unregister() {
 				super.unregister();
-				if (_18_6_0805800026 != null) _18_6_0805800026.unregister();
+				if (_18_6_0199745308 != null) _18_6_0199745308.unregister();
 				if (_20_6_1345780411 != null) _20_6_1345780411.unregister();
 			}
 
-			public class _18_6_0805800026 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, ProtrixBox>  {
-				public TeamsTableMold._16_4_1595815687._17_5_11021908368._18_6_0805800026. _19_7_01437157531 _19_7_01437157531;
+			public class _18_6_0199745308 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, ProtrixBox>  {
+				public TeamsTableMold._16_4_123033413._17_5_0732886962._18_6_0199745308. _19_7_0855106525 _19_7_0855106525;
 
-				public _18_6_0805800026(ProtrixBox box) {
+				public _18_6_0199745308(ProtrixBox box) {
 					super(box);
 				}
 
 				@Override
 				public void init() {
 					super.init();
-					if (_19_7_01437157531 == null) _19_7_01437157531 = register(new _19_7_01437157531(box()).<_19_7_01437157531>id("a_866901363").owner(TeamsTableMold.this));
+					if (_19_7_0855106525 == null) _19_7_0855106525 = register(new _19_7_0855106525(box()).<_19_7_0855106525>id("a1056051155").owner(TeamsTableMold.this));
 				}
 
 				@Override
 				public void unregister() {
 					super.unregister();
-					if (_19_7_01437157531 != null) _19_7_01437157531.unregister();
+					if (_19_7_0855106525 != null) _19_7_0855106525.unregister();
 				}
 
-				public class _19_7_01437157531 extends io.intino.alexandria.ui.displays.components.Icon<io.intino.alexandria.ui.displays.notifiers.IconNotifier, ProtrixBox>  {
+				public class _19_7_0855106525 extends io.intino.alexandria.ui.displays.components.Icon<io.intino.alexandria.ui.displays.notifiers.IconNotifier, ProtrixBox>  {
 
-					public _19_7_01437157531(ProtrixBox box) {
+					public _19_7_0855106525(ProtrixBox box) {
 						super(box);
 						_icon(TeamsTableMold.class.getResource("/icons/flags/0.png"));
 					}
@@ -128,7 +128,7 @@ public class TeamsTableMold extends io.intino.alexandria.ui.displays.components.
 			}
 
 			public class _20_6_1345780411 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, ProtrixBox>  {
-				public TeamsTableMold._16_4_1595815687._17_5_11021908368._20_6_1345780411. TeamName teamName;
+				public TeamsTableMold._16_4_123033413._17_5_0732886962._20_6_1345780411. TeamName teamName;
 
 				public _20_6_1345780411(ProtrixBox box) {
 					super(box);

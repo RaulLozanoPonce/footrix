@@ -2,13 +2,15 @@ package rlp.footrix.framework.stores.types;
 
 import rlp.footrix.framework.stores.EntityStore;
 import rlp.footrix.framework.types.entities.Competition;
-import rlp.footrix.framework.types.entities.Match;
 import rlp.footrix.framework.types.entities.definitions.MatchDefinition;
 import rlp.footrix.framework.types.entities.definitions.PlayerDefinition;
+import rlp.footrix.framework.types.entities.match.Match;
 import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.framework.types.entities.team.Team;
 
+import java.time.Instant;
 import java.util.*;
+import java.util.function.Predicate;
 
 public class MemoryEntityStore implements EntityStore {
     private final Map<Integer, Map<String, Competition>> competitions = new HashMap<>();
@@ -97,6 +99,29 @@ public class MemoryEntityStore implements EntityStore {
     }
 
     @Override
+    public List<Match> matches(Instant from, Instant to, Integer season, String competition, List<Predicate<MatchDefinition>> predicates) {
+        List<Match> matches = new ArrayList<>();
+        for (Integer matchesSeason : this.matches.keySet()) {
+            if (season != null && !matchesSeason.equals(season)) continue;
+            for (String matchesCompetition : this.matches.get(matchesSeason).keySet()) {
+                if (competition != null && !matchesCompetition.equals(competition)) continue;
+                for (Integer phase : this.matches.get(matchesSeason).get(matchesCompetition).keySet()) {
+                    for (String matchDay : this.matches.get(matchesSeason).get(matchesCompetition).get(phase).keySet()) {
+                        for (Match match : this.matches.get(matchesSeason).get(matchesCompetition).get(phase).get(matchDay)) {
+                            if (match.date().isBefore(from)) continue;
+                            if (match.date().isAfter(to)) continue;
+                            if (predicates.stream().allMatch(p -> p.test(match.definition()))) {
+                                matches.add(match);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return matches;
+    }
+
+    @Override
     public Match match(String id) {
         for (Integer season : matches.keySet()) {
             for (String competition : matches.get(season).keySet()) {
@@ -114,10 +139,10 @@ public class MemoryEntityStore implements EntityStore {
 
     @Override
     public Match match(MatchDefinition definition) {
-        return matches.get(definition.season())
-                .get(definition.competition())
-                .get(definition.phase())
-                .get(definition.matchDay()).stream()
+        return matches.getOrDefault(definition.season(), new HashMap<>())
+                .getOrDefault(definition.competition(), new HashMap<>())
+                .getOrDefault(definition.phase(), new HashMap<>())
+                .getOrDefault(definition.matchDay(), new ArrayList<>()).stream()
                 .filter(m -> m.definition().equals(definition))
                 .findFirst().orElse(null);
     }

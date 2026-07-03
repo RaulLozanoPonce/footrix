@@ -103,7 +103,7 @@ public abstract class AbstractMatchesTemplate<B extends Box> extends io.intino.a
 		}
 	}
 
-	public class MatchTable extends io.intino.alexandria.ui.displays.components.List<B, MatchTableMold, rlp.footrix.protrix.model.Match> implements io.intino.alexandria.ui.displays.components.collection.Selectable {
+	public class MatchTable extends io.intino.alexandria.ui.displays.components.List<B, MatchTableMold, rlp.footrix.framework.types.entities.definitions.MatchDefinition> implements io.intino.alexandria.ui.displays.components.collection.Selectable {
 
 		public MatchTable(B box) {
 			super(box);
@@ -123,7 +123,7 @@ public abstract class AbstractMatchesTemplate<B extends Box> extends io.intino.a
 		public void onSelect(io.intino.alexandria.ui.displays.events.SelectionListener listener) {
 			super.addSelectionListener(listener);
 		}
-		public MatchTableMold create(rlp.footrix.protrix.model.Match element) {
+		public MatchTableMold create(rlp.footrix.framework.types.entities.definitions.MatchDefinition element) {
 			MatchTableMold result = new MatchTableMold((ProtrixBox)box());
 			result.id(java.util.UUID.randomUUID().toString());
 			result.item(element);

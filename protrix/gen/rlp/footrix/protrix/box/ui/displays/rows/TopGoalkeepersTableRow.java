@@ -26,16 +26,16 @@ public class TopGoalkeepersTableRow extends io.intino.alexandria.ui.displays.com
 
 	public TopGoalkeepersTableRow(ProtrixBox box) {
 		super(box);
-		id("a_115948781");
+		id("a_1075543906");
 	}
 
 	@Override
 	public void init() {
 		super.init();
-		if (topGoalkeepersPositionMold == null) topGoalkeepersPositionMold = register(new TopGoalkeepersPositionMold((ProtrixBox)box()).<TopGoalkeepersPositionMold>id("a1812792792").<TopGoalkeepersPositionMold>item(TopGoalkeepersTableRow.this.item()).owner(TopGoalkeepersTableRow.this));
-		if (topGoalkeepersPlayerMold == null) topGoalkeepersPlayerMold = register(new TopGoalkeepersPlayerMold((ProtrixBox)box()).<TopGoalkeepersPlayerMold>id("a381328109").<TopGoalkeepersPlayerMold>item(TopGoalkeepersTableRow.this.item()).owner(TopGoalkeepersTableRow.this));
-		if (topGoalkeepersGoalsMold == null) topGoalkeepersGoalsMold = register(new TopGoalkeepersGoalsMold((ProtrixBox)box()).<TopGoalkeepersGoalsMold>id("a2003318955").<TopGoalkeepersGoalsMold>item(TopGoalkeepersTableRow.this.item()).owner(TopGoalkeepersTableRow.this));
-		if (topGoalkeepersPlayedMinutesMold == null) topGoalkeepersPlayedMinutesMold = register(new TopGoalkeepersPlayedMinutesMold((ProtrixBox)box()).<TopGoalkeepersPlayedMinutesMold>id("a_779510129").<TopGoalkeepersPlayedMinutesMold>item(TopGoalkeepersTableRow.this.item()).owner(TopGoalkeepersTableRow.this));
+		if (topGoalkeepersPositionMold == null) topGoalkeepersPositionMold = register(new TopGoalkeepersPositionMold((ProtrixBox)box()).<TopGoalkeepersPositionMold>id("a1801476665").<TopGoalkeepersPositionMold>item(TopGoalkeepersTableRow.this.item()).owner(TopGoalkeepersTableRow.this));
+		if (topGoalkeepersPlayerMold == null) topGoalkeepersPlayerMold = register(new TopGoalkeepersPlayerMold((ProtrixBox)box()).<TopGoalkeepersPlayerMold>id("a636064654").<TopGoalkeepersPlayerMold>item(TopGoalkeepersTableRow.this.item()).owner(TopGoalkeepersTableRow.this));
+		if (topGoalkeepersGoalsMold == null) topGoalkeepersGoalsMold = register(new TopGoalkeepersGoalsMold((ProtrixBox)box()).<TopGoalkeepersGoalsMold>id("a1041704938").<TopGoalkeepersGoalsMold>item(TopGoalkeepersTableRow.this.item()).owner(TopGoalkeepersTableRow.this));
+		if (topGoalkeepersPlayedMinutesMold == null) topGoalkeepersPlayedMinutesMold = register(new TopGoalkeepersPlayedMinutesMold((ProtrixBox)box()).<TopGoalkeepersPlayedMinutesMold>id("a1789976270").<TopGoalkeepersPlayedMinutesMold>item(TopGoalkeepersTableRow.this.item()).owner(TopGoalkeepersTableRow.this));
 	}
 
 	@Override

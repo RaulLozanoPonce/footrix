@@ -19,11 +19,11 @@ import rlp.footrix.protrix.box.ui.displays.rows.*;
 import io.intino.alexandria.ui.displays.notifiers.TemplateNotifier;
 
 public abstract class AbstractCompetitionsTemplate<B extends Box> extends io.intino.alexandria.ui.displays.components.Template<TemplateNotifier, java.lang.Void, B> {
-	public _9_1_11316090840 _9_1_11316090840;
-	public CompetitionsTemplate._9_1_11316090840. _10_2_01134602359 _10_2_01134602359;
-	public CompetitionsTemplate._9_1_11316090840. _11_2_11288142427 _11_2_11288142427;
-	public CompetitionsTemplate._9_1_11316090840._11_2_11288142427. _12_3_11554743587 _12_3_11554743587;
-	public CompetitionsTemplate._9_1_11316090840._11_2_11288142427. Search search;
+	public _9_1_1881641494 _9_1_1881641494;
+	public CompetitionsTemplate._9_1_1881641494. _10_2_01134602359 _10_2_01134602359;
+	public CompetitionsTemplate._9_1_1881641494. _11_2_0193886823 _11_2_0193886823;
+	public CompetitionsTemplate._9_1_1881641494._11_2_0193886823. _12_3_01562438943 _12_3_01562438943;
+	public CompetitionsTemplate._9_1_1881641494._11_2_0193886823. Search search;
 	public CompetitionsTable competitionsTable;
 
 	public AbstractCompetitionsTemplate(B box) {
@@ -34,26 +34,26 @@ public abstract class AbstractCompetitionsTemplate<B extends Box> extends io.int
 	@Override
 	public void init() {
 		super.init();
-		if (_9_1_11316090840 == null) _9_1_11316090840 = register(new _9_1_11316090840(box()).<_9_1_11316090840>id("a_318733660").owner(AbstractCompetitionsTemplate.this));
-		if (_9_1_11316090840 != null) _10_2_01134602359 = _9_1_11316090840._10_2_01134602359;
-		if (_9_1_11316090840 != null) _11_2_11288142427 = _9_1_11316090840._11_2_11288142427;
-		if (_11_2_11288142427 != null) _12_3_11554743587 = _9_1_11316090840._11_2_11288142427._12_3_11554743587;
-		if (_11_2_11288142427 != null) search = _9_1_11316090840._11_2_11288142427.search;
+		if (_9_1_1881641494 == null) _9_1_1881641494 = register(new _9_1_1881641494(box()).<_9_1_1881641494>id("a904204957").owner(AbstractCompetitionsTemplate.this));
+		if (_9_1_1881641494 != null) _10_2_01134602359 = _9_1_1881641494._10_2_01134602359;
+		if (_9_1_1881641494 != null) _11_2_0193886823 = _9_1_1881641494._11_2_0193886823;
+		if (_11_2_0193886823 != null) _12_3_01562438943 = _9_1_1881641494._11_2_0193886823._12_3_01562438943;
+		if (_11_2_0193886823 != null) search = _9_1_1881641494._11_2_0193886823.search;
 		if (competitionsTable == null) competitionsTable = register(new CompetitionsTable(box()).<CompetitionsTable>id("a36904936").owner(AbstractCompetitionsTemplate.this));
 	}
 
 	@Override
 	public void remove() {
 		super.remove();
-		if (_9_1_11316090840 != null) _9_1_11316090840.unregister();
+		if (_9_1_1881641494 != null) _9_1_1881641494.unregister();
 		if (competitionsTable != null) competitionsTable.unregister();
 	}
 
-	public class _9_1_11316090840 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, B>  {
-		public CompetitionsTemplate._9_1_11316090840. _10_2_01134602359 _10_2_01134602359;
-		public CompetitionsTemplate._9_1_11316090840. _11_2_11288142427 _11_2_11288142427;
+	public class _9_1_1881641494 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, B>  {
+		public CompetitionsTemplate._9_1_1881641494. _10_2_01134602359 _10_2_01134602359;
+		public CompetitionsTemplate._9_1_1881641494. _11_2_0193886823 _11_2_0193886823;
 
-		public _9_1_11316090840(B box) {
+		public _9_1_1881641494(B box) {
 			super(box);
 		}
 
@@ -61,14 +61,14 @@ public abstract class AbstractCompetitionsTemplate<B extends Box> extends io.int
 		public void init() {
 			super.init();
 			if (_10_2_01134602359 == null) _10_2_01134602359 = register(new _10_2_01134602359(box()).<_10_2_01134602359>id("a805473571").owner(AbstractCompetitionsTemplate.this));
-			if (_11_2_11288142427 == null) _11_2_11288142427 = register(new _11_2_11288142427(box()).<_11_2_11288142427>id("a_2051666736").owner(AbstractCompetitionsTemplate.this));
+			if (_11_2_0193886823 == null) _11_2_0193886823 = register(new _11_2_0193886823(box()).<_11_2_0193886823>id("a_2076393334").owner(AbstractCompetitionsTemplate.this));
 		}
 
 		@Override
 		public void unregister() {
 			super.unregister();
 			if (_10_2_01134602359 != null) _10_2_01134602359.unregister();
-			if (_11_2_11288142427 != null) _11_2_11288142427.unregister();
+			if (_11_2_0193886823 != null) _11_2_0193886823.unregister();
 		}
 
 		public class _10_2_01134602359 extends io.intino.alexandria.ui.displays.components.Text<io.intino.alexandria.ui.displays.notifiers.TextNotifier, B>  {
@@ -89,31 +89,31 @@ public abstract class AbstractCompetitionsTemplate<B extends Box> extends io.int
 			}
 		}
 
-		public class _11_2_11288142427 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, B>  {
-			public CompetitionsTemplate._9_1_11316090840._11_2_11288142427. _12_3_11554743587 _12_3_11554743587;
-			public CompetitionsTemplate._9_1_11316090840._11_2_11288142427. Search search;
+		public class _11_2_0193886823 extends io.intino.alexandria.ui.displays.components.Block<io.intino.alexandria.ui.displays.notifiers.BlockNotifier, B>  {
+			public CompetitionsTemplate._9_1_1881641494._11_2_0193886823. _12_3_01562438943 _12_3_01562438943;
+			public CompetitionsTemplate._9_1_1881641494._11_2_0193886823. Search search;
 
-			public _11_2_11288142427(B box) {
+			public _11_2_0193886823(B box) {
 				super(box);
 			}
 
 			@Override
 			public void init() {
 				super.init();
-				if (_12_3_11554743587 == null) _12_3_11554743587 = register(new _12_3_11554743587(box()).<_12_3_11554743587>id("a_1223889178").owner(AbstractCompetitionsTemplate.this));
+				if (_12_3_01562438943 == null) _12_3_01562438943 = register(new _12_3_01562438943(box()).<_12_3_01562438943>id("a454206851").owner(AbstractCompetitionsTemplate.this));
 				if (search == null) search = register(new Search(box()).<Search>id("a793583753").owner(AbstractCompetitionsTemplate.this));
 			}
 
 			@Override
 			public void unregister() {
 				super.unregister();
-				if (_12_3_11554743587 != null) _12_3_11554743587.unregister();
+				if (_12_3_01562438943 != null) _12_3_01562438943.unregister();
 				if (search != null) search.unregister();
 			}
 
-			public class _12_3_11554743587 extends io.intino.alexandria.ui.displays.components.MaterialIcon<io.intino.alexandria.ui.displays.notifiers.MaterialIconNotifier, B>  {
+			public class _12_3_01562438943 extends io.intino.alexandria.ui.displays.components.MaterialIcon<io.intino.alexandria.ui.displays.notifiers.MaterialIconNotifier, B>  {
 
-				public _12_3_11554743587(B box) {
+				public _12_3_01562438943(B box) {
 					super(box);
 					_icon("Search");
 				}

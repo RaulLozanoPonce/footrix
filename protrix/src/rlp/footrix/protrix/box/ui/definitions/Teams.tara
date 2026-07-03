@@ -1,5 +1,87 @@
 dsl konos
 
+use CompetitionCommon
+use MatchCommon
 use Theme
 
 Template teamTemplate as Relative(height=100%, width=100%)
+	Block(layout=Horizontal, format=darkGreyBackground) as Absolute(height=160px)
+		Block(format=doubleAirLeft h100 center) > Icon(icon="/icons/flags/0.png", format=crestHeader)
+		Text(format=h2 doubleAirLeft) teamName
+	Block(format=darkGreyBackground)
+		Selector tabs as Tabs
+			Text(value="Info") infoOpt as Option
+			Text(value="Partidos") matchesOpt as Option
+			Text(value="Plantilla") squadOpt as Option
+			Text(value="Clasificación") classificationOpt as Option
+			Text(value="Lesiones/Sanciones") outOpt as Option
+			Text(value="Palmarés") trophiesOpt as Option
+
+	Block(layout=Vertical Flexible, format=wh100) teamMatchesBlock as Conditional
+		TemplateStamp(template=matchesTemplate) teamMatchesStamp
+	Block(layout=Vertical Flexible, format=wh100) teamSquadBlock as Conditional
+		TemplateStamp(template=squadTeamTemplate) teamSquadStamp
+	Block(layout=Vertical Flexible, format=wh100) teamClassificationBlock as Conditional
+		TemplateStamp(template=fullClassificationTemplate) teamClassificationStamp
+	Block(layout=Vertical Flexible, format=wh100) teamOutBlock as Conditional
+		TemplateStamp(template=outTeamTemplate) teamOutStamp
+
+//	Block(layout=Vertical Flexible, format=wh100) competitionRankingsBlock as Conditional
+//		TemplateStamp(template=competitionRankingsTemplate) competitionRankingsStamp
+
+Template squadTeamTemplate as Relative(height=100%, width=100%)
+	Text(value="Plantilla", format=h2 airBottom)
+	Table(itemClass="rlp.footrix.pes6.types.Pes6Player", pageSize=20) squadTeamTable
+		noItemsMessage = "No existen jugadores en este equipo"
+		noItemsFoundMessage = "No existen jugadores en este equipo"
+		Mold
+			Heading squadTeamNumberHeading > Text(value = "Dorsal", format=bold)
+			Item(height=30px, width=10%) squadTeamNumberMold > Text squadTeamNumber
+		Mold
+			Heading squadTeamPositionHeading > Text(value = "Posición", format=bold)
+			Item(height=30px, width=10%) squadTeamPositionMold > Text(format=positionChip) squadTeamPosition as Highlighted(backgroundColor="black", textColor = "white")
+		Mold
+			Heading squadTeamNameHeading > Text(value = "Nombre", format=bold)
+			Item(height=30px, width=30%) squadTeamNameMold > Text squadTeamName
+		Mold
+			Heading squadTeamCountryHeading > Text(value = "Nacionalidad", format=bold)
+			Item(height=30px, width=10%) squadTeamCountryMold > Icon(icon="/icons/flags/0.png", format=middleAirRight center) squadTeamCountry
+		Mold
+			Heading squadTeamMatchesHeading > Text(value = "Partidos", format=bold)
+			Item(height=30px, width=10%) squadTeamMatchesMold > Text squadTeamMatches
+		Mold
+			Heading squadTeamMinutesHeading > Text(value = "Minutos", format=bold)
+			Item(height=30px, width=10%) squadTeamMinutesMold > Text squadTeamMinutes
+		Mold
+			Heading squadTeamGoalsHeading > Text(value = "Goles", format=bold)
+			Item(height=30px, width=10%) squadTeamGoalsMold > Text squadTeamGoals
+		Mold
+			Heading squadTeamAssistsHeading > Text(value = "Asistencias", format=bold)
+			Item(height=30px, width=10%) squadTeamAssistsMold > Text squadTeamAssists
+		Mold
+			Heading squadTeamYellowCardsHeading > Text(value = "Tarjetas Amarillas", format=bold)
+			Item(height=30px, width=10%) squadTeamYellowCardsMold > Text squadTeamYellowCards
+		Mold
+			Heading squadTeamRedCardsHeading > Text(value = "Tarjetas Rojas", format=bold)
+			Item(height=30px, width=10%) squadTeamRedCardsMold > Text squadTeamRedCards
+
+Template outTeamTemplate as Relative(height=100%, width=100%)
+	Text(value="Lesiones / Sanciones", format=h2 airBottom)
+	Table(itemClass="rlp.footrix.protrix.model.TeamOut", pageSize=20) outTeamTable
+		noItemsMessage = "No existen jugadores lesionados o sancionados"
+		noItemsFoundMessage = "No existen jugadores lesionados o sancionados"
+		Mold
+			Heading outTeamPositionHeading > Text(value = "Posición", format=bold)
+			Item(height=30px, width=10%) outTeamPositionMold > Text(format=positionChip) outTeamPosition as Highlighted(backgroundColor="black", textColor = "white")
+		Mold
+			Heading outTeamNameHeading > Text(value = "Nombre", format=bold)
+			Item(height=30px, width=30%) outTeamNameMold > Text outTeamName
+		Mold
+			Heading outTeamFromHeading > Text(value = "Desde", format=bold)
+			Item(height=30px, width=10%) outTeamFromMold > Text outTeamFrom
+		Mold
+			Heading outTeamToHeading > Text(value = "Hasta", format=bold)
+			Item(height=30px, width=10%) outTeamToMold > Text outTeamTo
+		Mold
+			Heading outTeamDescriptionHeading > Text(value = "Descripción", format=bold)
+			Item(height=30px, width=35%) outTeamDescriptionMold > Text outTeamDescription

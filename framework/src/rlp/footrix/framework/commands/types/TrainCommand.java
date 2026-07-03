@@ -52,7 +52,7 @@ public class TrainCommand extends Command {
             double random = Math.random();
             if (random < riskPerMinute) {
                 Player injuredPlayer = injuredPlayer(trainedPlayers, injuredPlayers);
-                int injuryDays = application.injuryCalculator().injuryDays(injuryLevel());
+                int injuryDays = application.injuryCalculator().injuryDays(injuryLevel(), injuredPlayer);
                 if (injuryDays == 0) continue;
                 injuredPlayer.addInjury(application.timeManager().future(injuryDays));
                 injuredPlayers.add(injuredPlayer.definition().id());

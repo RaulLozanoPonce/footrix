@@ -95,6 +95,10 @@ public class Player {
         this.accumulatedYellowCards.put(competition, Math.max(0, this.accumulatedYellowCards.get(competition) + deltaYellowCards));
     }
 
+    public Map<String, Integer> sanctions() {
+        return this.sanctionsMatches;
+    }
+
     public boolean hasSanction(String competition) {
         return this.sanctionsMatches.containsKey(competition) && this.sanctionsMatches.get(competition) > 0;
     }

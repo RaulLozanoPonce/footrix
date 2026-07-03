@@ -23,13 +23,13 @@ public class TopGoalkeepersPlayerMold extends io.intino.alexandria.ui.displays.c
 
 	public TopGoalkeepersPlayerMold(ProtrixBox box) {
 		super(box);
-		id("a381328109");
+		id("a636064654");
 	}
 
 	@Override
 	public void init() {
 		super.init();
-		if (topGoalkeepersPlayer == null) topGoalkeepersPlayer = register(new TopGoalkeepersPlayer(box()).<TopGoalkeepersPlayer>id("a_83953908").owner(TopGoalkeepersPlayerMold.this));
+		if (topGoalkeepersPlayer == null) topGoalkeepersPlayer = register(new TopGoalkeepersPlayer(box()).<TopGoalkeepersPlayer>id("a_76194549").owner(TopGoalkeepersPlayerMold.this));
 	}
 
 	@Override

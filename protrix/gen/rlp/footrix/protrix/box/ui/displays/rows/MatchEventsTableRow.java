@@ -18,14 +18,14 @@ import rlp.footrix.protrix.box.ui.displays.items.*;
 import rlp.footrix.protrix.box.ui.displays.rows.*;
 import io.intino.alexandria.ui.displays.notifiers.RowNotifier;
 
-public class MatchEventsTableRow extends io.intino.alexandria.ui.displays.components.Row<RowNotifier, rlp.footrix.framework.types.entities.Match.MatchEvent, ProtrixBox> {
+public class MatchEventsTableRow extends io.intino.alexandria.ui.displays.components.Row<RowNotifier, rlp.footrix.framework.types.entities.match.MatchEvent, ProtrixBox> {
 	public MatchEventsLocalPlayerMold matchEventsLocalPlayerMold;
 	public MatchEventsMinuteMold matchEventsMinuteMold;
 	public MatchEventsVisitantPlayerMold matchEventsVisitantPlayerMold;
 
 	public MatchEventsTableRow(ProtrixBox box) {
 		super(box);
-		id("a_2089781444");
+		id("a_1313890927");
 	}
 
 	@Override

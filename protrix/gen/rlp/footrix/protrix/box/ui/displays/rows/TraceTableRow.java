@@ -32,7 +32,7 @@ public class TraceTableRow extends io.intino.alexandria.ui.displays.components.R
 
 	public TraceTableRow(ProtrixBox box) {
 		super(box);
-		id("a_1049796669");
+		id("a1044982232");
 	}
 
 	@Override

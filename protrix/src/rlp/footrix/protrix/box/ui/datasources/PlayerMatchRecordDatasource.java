@@ -3,7 +3,7 @@ package rlp.footrix.protrix.box.ui.datasources;
 import io.intino.alexandria.ui.model.datasource.Filter;
 import io.intino.alexandria.ui.model.datasource.Group;
 import io.intino.alexandria.ui.model.datasource.PageDatasource;
-import rlp.footrix.framework.types.entities.Match;
+import rlp.footrix.framework.types.entities.definitions.MatchDefinition;
 import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.protrix.box.ProtrixBox;
 import rlp.footrix.protrix.model.PlayerMatchRecord;
@@ -14,7 +14,7 @@ import java.util.List;
 public class PlayerMatchRecordDatasource extends PageDatasource<PlayerMatchRecord> {
     private final ProtrixBox box;
 
-    private Match match;
+    private MatchDefinition definition;
     private String team;
 
     private List<PlayerMatchRecord> playerMatchRecords;
@@ -44,14 +44,14 @@ public class PlayerMatchRecordDatasource extends PageDatasource<PlayerMatchRecor
 
     public void loadData() {
         this.playerMatchRecords = box.graph().playerMatchRecordList().stream()
-                .filter(r -> r.matchId().equals(match.definition().id()))
+                .filter(r -> r.matchId().equals(definition.id()))
                 .filter(r -> r.teamId().equals(team))
                 .sorted(Comparator.comparingInt(PlayerMatchRecord::number))
                 .toList();
     }
 
-    public void filter(Match match, String team) {
-        this.match = match;
+    public void filter(MatchDefinition definition, String team) {
+        this.definition = definition;
         this.team = team;
     }
 

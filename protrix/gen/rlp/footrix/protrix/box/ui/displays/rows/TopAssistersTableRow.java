@@ -26,16 +26,16 @@ public class TopAssistersTableRow extends io.intino.alexandria.ui.displays.compo
 
 	public TopAssistersTableRow(ProtrixBox box) {
 		super(box);
-		id("a149333858");
+		id("a_1567863891");
 	}
 
 	@Override
 	public void init() {
 		super.init();
-		if (topAssistersPositionMold == null) topAssistersPositionMold = register(new TopAssistersPositionMold((ProtrixBox)box()).<TopAssistersPositionMold>id("a_1568760861").<TopAssistersPositionMold>item(TopAssistersTableRow.this.item()).owner(TopAssistersTableRow.this));
-		if (topAssistersPlayerMold == null) topAssistersPlayerMold = register(new TopAssistersPlayerMold((ProtrixBox)box()).<TopAssistersPlayerMold>id("a1127815928").<TopAssistersPlayerMold>item(TopAssistersTableRow.this.item()).owner(TopAssistersTableRow.this));
-		if (topAssistersAssistsMold == null) topAssistersAssistsMold = register(new TopAssistersAssistsMold((ProtrixBox)box()).<TopAssistersAssistsMold>id("a1357215935").<TopAssistersAssistsMold>item(TopAssistersTableRow.this.item()).owner(TopAssistersTableRow.this));
-		if (topAssistersPlayedMatchesMold == null) topAssistersPlayedMatchesMold = register(new TopAssistersPlayedMatchesMold((ProtrixBox)box()).<TopAssistersPlayedMatchesMold>id("a_1006909128").<TopAssistersPlayedMatchesMold>item(TopAssistersTableRow.this.item()).owner(TopAssistersTableRow.this));
+		if (topAssistersPositionMold == null) topAssistersPositionMold = register(new TopAssistersPositionMold((ProtrixBox)box()).<TopAssistersPositionMold>id("a_1314024316").<TopAssistersPositionMold>item(TopAssistersTableRow.this.item()).owner(TopAssistersTableRow.this));
+		if (topAssistersPlayerMold == null) topAssistersPlayerMold = register(new TopAssistersPlayerMold((ProtrixBox)box()).<TopAssistersPlayerMold>id("a1096796121").<TopAssistersPlayerMold>item(TopAssistersTableRow.this.item()).owner(TopAssistersTableRow.this));
+		if (topAssistersAssistsMold == null) topAssistersAssistsMold = register(new TopAssistersAssistsMold((ProtrixBox)box()).<TopAssistersAssistsMold>id("a395601918").<TopAssistersAssistsMold>item(TopAssistersTableRow.this.item()).owner(TopAssistersTableRow.this));
+		if (topAssistersPlayedMatchesMold == null) topAssistersPlayedMatchesMold = register(new TopAssistersPlayedMatchesMold((ProtrixBox)box()).<TopAssistersPlayedMatchesMold>id("a1176767799").<TopAssistersPlayedMatchesMold>item(TopAssistersTableRow.this.item()).owner(TopAssistersTableRow.this));
 	}
 
 	@Override

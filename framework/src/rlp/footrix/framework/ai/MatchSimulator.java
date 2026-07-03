@@ -1,6 +1,6 @@
 package rlp.footrix.framework.ai;
 
-import rlp.footrix.framework.types.entities.Match;
+import rlp.footrix.framework.types.entities.match.Match;
 import rlp.footrix.framework.types.entities.definitions.MatchDefinition;
 import rlp.footrix.framework.types.entities.team.PlayersLineup;
 

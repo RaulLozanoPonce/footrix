@@ -1,6 +1,5 @@
-package rlp.footrix.framework.types.entities;
+package rlp.footrix.framework.types.entities.match;
 
-import com.google.gson.JsonObject;
 import rlp.footrix.framework.types.entities.definitions.MatchDefinition;
 import rlp.footrix.framework.types.entities.player.Player;
 
@@ -8,9 +7,16 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
-import static rlp.footrix.framework.types.entities.Match.MatchEvent.Type.Goal;
+import static rlp.footrix.framework.types.entities.match.MatchEvent.Type.Goal;
 
 public record Match(MatchDefinition definition, Instant date, Map<Player, Integer[]> localLineup, Map<Player, Integer[]> visitantLineup, Map<String, Map<String, Match.PlayerStatistics>> playerStatistics, List<MatchEvent> events, int duration, Penalties penalties) {
+
+    public boolean isDraw() {
+        if (penalties != null) return false;
+        int localGoals = goalsFor(definition().local());
+        int visitantGoals = goalsFor(definition().visitant());
+        return localGoals == visitantGoals;
+    }
 
     public String winner() {
         if (penalties != null) return penalties.winner();
@@ -54,10 +60,6 @@ public record Match(MatchDefinition definition, Instant date, Map<Player, Intege
     }
 
     public record PlayerStatistics(Integer minutes, Double score, Double fatigue, MatchRole matchRole, Integer enterMinute, Integer exitMinute, Integer goals, Integer assists, Integer yellowCards, Integer redCards, Integer receivedGoals) {}
-
-    public record MatchEvent(String team, Type type, int minute, String who, String secondaryWho, JsonObject metaInfo) {
-        public enum Type {Goal, RedCard, YellowCard, Substitution, Injury, Expulsion}
-    }
 
     public record Penalties(String winner) {
         //TODO DETALLAR MÁS

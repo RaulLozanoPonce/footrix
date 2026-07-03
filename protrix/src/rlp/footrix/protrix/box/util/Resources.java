@@ -11,6 +11,22 @@ public class Resources {
         return Resources.class.getResource("/icons/goal.png");
     }
 
+    public static URL penaltyGoalIconPath() {
+        return Resources.class.getResource("/icons/penalty-goal.png");
+    }
+
+    public static URL freeKickGoalIconPath() {
+        return Resources.class.getResource("/icons/free-kick-goal.png");
+    }
+
+    public static URL penaltyFailIconPath() {
+        return Resources.class.getResource("/icons/penalty-fail.png");
+    }
+
+    public static URL penaltySaveIconPath() {
+        return Resources.class.getResource("/icons/penalty-save.png");
+    }
+
     public static URL substitutionIconPath() {
         return Resources.class.getResource("/icons/substitution.png");
     }

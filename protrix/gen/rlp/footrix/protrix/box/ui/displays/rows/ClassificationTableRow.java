@@ -30,7 +30,7 @@ public class ClassificationTableRow extends io.intino.alexandria.ui.displays.com
 
 	public ClassificationTableRow(ProtrixBox box) {
 		super(box);
-		id("a2014011712");
+		id("a1054416587");
 	}
 
 	@Override
