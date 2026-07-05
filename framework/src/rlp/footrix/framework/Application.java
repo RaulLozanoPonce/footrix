@@ -1,17 +1,18 @@
 package rlp.footrix.framework;
 
 import rlp.footrix.framework.ai.ModelCloudAccessor;
-import rlp.footrix.framework.calculators.*;
+import rlp.footrix.framework.calculators.CacheCalculator;
+import rlp.footrix.framework.calculators.InjuryCalculator;
+import rlp.footrix.framework.calculators.PsychophysicsCalculator;
+import rlp.footrix.framework.calculators.RetireCalculator;
 import rlp.footrix.framework.configuration.TeamRule;
 import rlp.footrix.framework.events.Event;
 import rlp.footrix.framework.events.EventHub;
+import rlp.footrix.framework.events.TaskHub;
 import rlp.footrix.framework.events.subscribers.*;
 import rlp.footrix.framework.events.types.*;
 import rlp.footrix.framework.managers.*;
 import rlp.footrix.framework.stores.EntityStore;
-import rlp.footrix.framework.stores.RecordStore;
-import rlp.footrix.framework.stores.TableStore;
-import rlp.footrix.framework.events.TaskHub;
 import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.framework.types.entities.team.Lineup;
 
@@ -26,8 +27,6 @@ public abstract class Application {
     private final Game game;
 
     private final EntityStore entityStore;
-    private final RecordStore recordStore;
-    private final TableStore tableStore;
 
     private final EventHub eventHub;
     private final TaskHub taskHub;
@@ -38,8 +37,9 @@ public abstract class Application {
     private final TeamManager teamManager;
     private final PlayerManager playerManager;
     private final RulesManager rulesManager;
-    private final EloManager eloManager;
     private final MatchManager matchManager;
+    private final EloManager eloManager;
+    private final StreakManager streakManager;
 
     private final ModelCloudAccessor models;
 
@@ -54,8 +54,6 @@ public abstract class Application {
 
         this.game = new Game().date(configuration.initDate()).initSeason(configuration.initSeason()).seasonProvider(configuration.seasonProvider());
         this.entityStore = configuration.entityStore();
-        this.recordStore = configuration.recordStore();
-        this.tableStore = configuration.tableStore();
         this.models = configuration.models(this);
 
         this.eventHub = new EventHub();
@@ -67,23 +65,22 @@ public abstract class Application {
         this.teamManager = new TeamManager(this.game, this.entityStore);
         this.playerManager = new PlayerManager(this.game, this.entityStore);
         this.lineupsManager = new LineupsManager();
-        this.eloManager = new EloManager();
         this.matchManager = new MatchManager(this);
+        this.eloManager = new EloManager(this);
 
         this.cacheCalculator = new CacheCalculator(this);
         this.psychophysicsCalculator = new PsychophysicsCalculator(this);
         this.injuryCalculator = new InjuryCalculator(this);
         this.retireCalculator = new RetireCalculator(this);
 
-        this.taskHub.add(configuration.initDate(), new InitGameEvent()); //TODO SOLO CUANDO ESTÉ INICIALIZADO
-        this.tableStore.setup(configuration.initDatabase(this).elos());
-        configuration.initDatabase(this).competitions().forEach(c -> {
-            this.competitionManager.add(c);
-            this.eloManager.addCompetition(c);
-        });
+        //TODO INICIALIZACION ------------------------------------------------------------------------------------------
+        this.taskHub.add(configuration.initDate(), new InitGameEvent());
+        configuration.initDatabase(this).competitions().forEach(this.competitionManager::add);
         configuration.initDatabase(this).teams().forEach(this.teamManager::add);
         configuration.initDatabase(this).players().forEach(this.playerManager::add);
         this.competitionManager.setupNewSeason();
+
+        this.streakManager = new StreakManager(this);
     }
 
     protected void add(Lineup lineup) {
@@ -155,20 +152,20 @@ public abstract class Application {
         return timeManager;
     }
 
-    public EloManager eloManager() {
-        return eloManager;
-    }
-
     public MatchManager matchManager() {
         return matchManager;
     }
 
-    public EntityStore entityStore() {
-        return entityStore;
+    public EloManager eloManager() {
+        return eloManager;
     }
 
-    public TableStore tableStore() {
-        return tableStore;
+    public StreakManager streakManager() {
+        return streakManager;
+    }
+
+    public EntityStore entityStore() {
+        return entityStore;
     }
 
     public Function<Player, Double> energyRecoveryProvider() {

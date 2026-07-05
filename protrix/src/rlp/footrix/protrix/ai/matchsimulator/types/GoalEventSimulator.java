@@ -69,7 +69,7 @@ public class GoalEventSimulator extends EventSimulator {
 
     private List<MatchEvent> assistedGoal(int minute) {
         String team = chooseAttackTeam();
-        String scorer = chooseGoalScorer(players(team), lineup(team));
+        String scorer = chooseGoalScorer(players(team), lineup(team), "normal");
         String assistant = chooseAssister(players(team), scorer);
         JsonObject metainfo = new JsonObject();
         metainfo.addProperty("type", "normal");
@@ -78,7 +78,7 @@ public class GoalEventSimulator extends EventSimulator {
 
     private List<MatchEvent> unassistedGoal(int minute, String type) {
         String team = chooseAttackTeam();
-        String scorer = chooseGoalScorer(players(team), lineup(team));
+        String scorer = chooseGoalScorer(players(team), lineup(team), type);
         JsonObject metainfo = new JsonObject();
         metainfo.addProperty("type", type);
         return List.of(new MatchEvent(team, MatchEvent.Type.Goal, minute, scorer, null, metainfo));
@@ -94,7 +94,7 @@ public class GoalEventSimulator extends EventSimulator {
 
     private List<MatchEvent> fail(int minute, String type) {
         String team = chooseAttackTeam();
-        String failer = chooseGoalScorer(players(team), lineup(team));
+        String failer = chooseGoalScorer(players(team), lineup(team), type);
         JsonObject metainfo = new JsonObject();
         metainfo.addProperty("type", type);
         return List.of(new MatchEvent(team, MatchEvent.Type.Fail, minute, failer, null, metainfo));
@@ -103,7 +103,7 @@ public class GoalEventSimulator extends EventSimulator {
     private List<MatchEvent> save(int minute, String type) {
         String team = other(chooseAttackTeam());
         String goalkeeper = goalkeeper(players(team), lineup(team));
-        String failer = chooseGoalScorer(players(other(team)), lineup(other(team)));
+        String failer = chooseGoalScorer(players(other(team)), lineup(other(team)), type);
         JsonObject metainfo = new JsonObject();
         metainfo.addProperty("type", type);
         return List.of(new MatchEvent(team, MatchEvent.Type.Save, minute, goalkeeper, failer, metainfo));
@@ -144,7 +144,8 @@ public class GoalEventSimulator extends EventSimulator {
 
     //TODO REVISAR DE AQUI PA BAJO.
 
-    private String chooseGoalScorer(List<Player> players, PlayersLineup lineup) {
+    private String chooseGoalScorer(List<Player> players, PlayersLineup lineup, String type) {
+        //TODO SERÁ DIFERENTE CON LOS PENALTIS
         List<Double> weights = new ArrayList<>();
         for (Player p : players) {
             Pes6Player player = (Pes6Player) p;

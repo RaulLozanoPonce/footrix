@@ -1,29 +1,31 @@
 package rlp.footrix.framework.managers;
 
-import rlp.footrix.framework.types.entities.definitions.CompetitionDefinition;
-
-import java.util.HashMap;
-import java.util.Map;
+import rlp.footrix.framework.Application;
 
 public class EloManager {
-    private final Map<String, Integer> competitionScores = new HashMap<>();
+    private final Application application;
 
-    public void addCompetition(CompetitionDefinition competition) {
-        for (int i = 0; i < competition.phases().size(); i++) {
-            this.competitionScores.put(competition.id() + "-" + i, competition.phases().get(i).rankingScore());
-        }
+    public EloManager(Application application) {
+        this.application = application;
     }
 
-    public int deltaElo(int teamElo, int rivalElo, String competition, int result, boolean withPenalties) {
-        return (int) Math.round(importance(competition) * (result(result, withPenalties) - expectedResult(teamElo, rivalElo)));
+    public double percentElo(String team) {
+        int teamElo = application.teamManager().get(team).elo().quantity();
+        int maxElo = maxElo();
+        if (maxElo == 0) return 0.0;
+        return teamElo / (double) maxElo;
     }
 
-    public double importanceOf(String competition, int phase) {
-        return importance(competition + "-" + phase);
+    public int maxElo() {
+        return application.teamManager().teams().stream().mapToInt(t -> t.elo().quantity()).max().orElse(0);
     }
 
-    private double importance(String competition) {
-        return this.competitionScores.get(competition);
+    public int deltaElo(int teamElo, int rivalElo, String competition, int phase, int result, boolean withPenalties) {
+        return (int) Math.round(importance(competition, phase) * (result(result, withPenalties) - expectedResult(teamElo, rivalElo)));
+    }
+
+    public double importance(String competition, int phase) {
+        return application.competitionManager().get(competition).phase(phase).definition().rankingScore();
     }
 
     private double result(int result, boolean withPenalties) {

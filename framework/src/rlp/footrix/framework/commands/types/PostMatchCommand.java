@@ -8,7 +8,6 @@ import rlp.footrix.framework.types.entities.match.Match;
 import rlp.footrix.framework.types.entities.match.MatchEvent;
 import rlp.footrix.framework.types.entities.player.Player;
 import rlp.footrix.framework.types.entities.team.Team;
-import rlp.footrix.framework.types.tables.TeamElo;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,13 +30,13 @@ public class PostMatchCommand extends Command {
         this.local = team(match.definition().local());
         this.visitant = team(match.definition().visitant());
         this.deltaElo = deltaElo();
-        this.localMatchImportance = matchImportance(local.definition().id(), visitant.definition().id());
-        this.visitantMatchImportance = matchImportance(visitant.definition().id(), local.definition().id());
+        this.localMatchImportance = matchImportance(local, visitant);
+        this.visitantMatchImportance = matchImportance(visitant, local);
     }
 
     public void execute() {
+        registerMatch();
         adjustTeamElo();
-        //adjustStatistics();
         adjustMood();
         adjustCache();
         reduceSanctions();
@@ -47,21 +46,21 @@ public class PostMatchCommand extends Command {
     }
 
     private int deltaElo() {
-        TeamElo localElo = eloOf(match.definition().local());
-        TeamElo visitantElo = eloOf(match.definition().visitant());
-        return application.eloManager().deltaElo(localElo.elo(), visitantElo.elo(), match.definition().competition() + "-" + match.definition().phase(), pointsOf(match.definition().local()), match.withPenalties());
+        return application.eloManager().deltaElo(local.elo().quantity(), visitant.elo().quantity(), match.definition().competition(), match.definition().phase(), pointsOf(match.definition().local()), match.withPenalties());
     }
 
-    private double matchImportance(String team, String other) {
+    private double matchImportance(Team team, Team other) {
         //TODO SI NO FUNCIONA, DEVOLVER 1
-        return Math.max(0, Math.min(2, (application.eloManager().importanceOf(match.definition().competition(), match.definition().phase()) / 15.0) * (application.tableStore().teamElo(other).elo() / (double) application.tableStore().teamElo(team).elo())));
+        return Math.max(0, Math.min(2, (application.eloManager().importance(match.definition().competition(), match.definition().phase()) / 15.0) * (other.elo().quantity() / (double) team.elo().quantity())));
+    }
+
+    private void registerMatch() {
+        application.streakManager().newMatch(match);
     }
 
     private void adjustTeamElo() {
-        TeamElo localElo = eloOf(match.definition().local());
-        TeamElo visitantElo = eloOf(match.definition().visitant());
-        localElo.elo(localElo.elo() + deltaElo);
-        visitantElo.elo(visitantElo.elo() - deltaElo);
+        local.elo().adjust(local.elo().quantity() + deltaElo);
+        visitant.elo().adjust(visitant.elo().quantity() - deltaElo);
     }
 
     private void reduceSanctions() {
@@ -148,12 +147,6 @@ public class PostMatchCommand extends Command {
             if (injuryDays == 0) continue;
             player.addInjury(application.timeManager().future(injuryDays));
         }
-    }
-
-    private TeamElo eloOf(String teamId) {
-        TeamElo analysis = application.tableStore().teamElo(teamId);
-        if (analysis == null) analysis = application.tableStore().create().teamElo(teamId);
-        return analysis;
     }
 
     private int pointsOf(String team) {

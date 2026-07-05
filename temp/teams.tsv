@@ -1,21 +1,21 @@
-Id	Name	Country	Lineup
-1	Real Madrid	Spain	4_3_1_2
-2	FC Barcelona	Spain	4_3_3_A
-3	Atlético Madrid	Spain	3_5_2_B
-4	Sevilla	Spain	3_5_2_A
-5	Villarreal	Spain	4_4_2
-6	Valencia	Spain	4_2_2_2
-7	Real Sociedad	Spain	4_1_2_3
-8	Athletic Club	Spain	4_2_1_3
-9	Real Betis	Spain	4_2_1_3
-10	Espanyol	Spain	4_4_2
-11	Celta de Vigo	Spain	4_4_2
-12	Getafe	Spain	4_5_1
-13	Deportivo Alavés	Spain	4_2_1_3
-14	Osasuna	Spain	5_2_1_2
-15	Rayo Vallecano	Spain	4_4_1_1
-16	Girona	Spain	4_2_1_3
-17	Mallorca	Spain	3_5_2_A
-18	Leganés	Spain	4_4_1_1
-19	Las Palmas	Spain	4_3_3_A
-20	Real Valladolid	Spain	4_3_3_B
+Id	Name	Country	Lineup	Elo	Fans	StadiumCapacity
+1	Real Madrid	Spain	4_3_1_2	847	8950000	83000
+2	FC Barcelona	Spain	4_3_3_A	849	7250000	99000
+3	Atlético Madrid	Spain	3_5_2_B	769	2670000	71000
+4	Sevilla	Spain	3_5_2_A	568	1440000	44000
+5	Villarreal	Spain	4_4_2	610	1105000	22000
+6	Valencia	Spain	4_2_2_2	487	630000	49000
+7	Real Sociedad	Spain	4_1_2_3	564	910000	40000
+8	Athletic Club	Spain	4_2_1_3	567	1200000	53000
+9	Real Betis	Spain	4_2_1_3	557	1860000	61000
+10	Espanyol	Spain	4_4_2	331	380800	40000
+11	Celta de Vigo	Spain	4_4_2	462	516000	24000
+12	Getafe	Spain	4_5_1	424	455200	11000
+13	Deportivo Alavés	Spain	4_2_1_3	354	194400	20000
+14	Osasuna	Spain	5_2_1_2	367	352750	24000
+15	Rayo Vallecano	Spain	4_4_1_1	294	306000	15000
+16	Girona	Spain	4_2_1_3	302	770000	15000
+17	Mallorca	Spain	3_5_2_A	270	366000	26000
+18	Leganés	Spain	4_4_1_1	176	315200	14000
+19	Las Palmas	Spain	4_3_3_A	158	272000	32000
+20	Real Valladolid	Spain	4_3_3_B	172	498400	28000

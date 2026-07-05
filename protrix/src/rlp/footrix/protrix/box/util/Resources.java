@@ -27,6 +27,10 @@ public class Resources {
         return Resources.class.getResource("/icons/penalty-save.png");
     }
 
+    public static URL ownGoalIconPath() {
+        return Resources.class.getResource("/icons/own-goal.png");
+    }
+
     public static URL substitutionIconPath() {
         return Resources.class.getResource("/icons/substitution.png");
     }

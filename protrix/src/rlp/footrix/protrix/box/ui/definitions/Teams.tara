@@ -17,6 +17,8 @@ Template teamTemplate as Relative(height=100%, width=100%)
 			Text(value="Lesiones/Sanciones") outOpt as Option
 			Text(value="Palmarés") trophiesOpt as Option
 
+	Block(layout=Vertical Flexible, format=wh100) teamInfoBlock as Conditional
+		TemplateStamp(template=infoTeamTemplate) teamInfoStamp
 	Block(layout=Vertical Flexible, format=wh100) teamMatchesBlock as Conditional
 		TemplateStamp(template=matchesTemplate) teamMatchesStamp
 	Block(layout=Vertical Flexible, format=wh100) teamSquadBlock as Conditional
@@ -26,8 +28,12 @@ Template teamTemplate as Relative(height=100%, width=100%)
 	Block(layout=Vertical Flexible, format=wh100) teamOutBlock as Conditional
 		TemplateStamp(template=outTeamTemplate) teamOutStamp
 
-//	Block(layout=Vertical Flexible, format=wh100) competitionRankingsBlock as Conditional
-//		TemplateStamp(template=competitionRankingsTemplate) competitionRankingsStamp
+Template infoTeamTemplate as Relative(height=100%, width=100%)
+	Text(value="Info", format=h2 airBottom)
+	Number fans as Labeled("Fans")
+	Number subscribers as Labeled("Abonados")
+	Number elo as Labeled("ELO")
+	Number(countDecimals = 3) eloPercentage as Labeled("% elo")
 
 Template squadTeamTemplate as Relative(height=100%, width=100%)
 	Text(value="Plantilla", format=h2 airBottom)

@@ -37,8 +37,7 @@ public class TeamManager {
         return definitions.keySet().stream().map(store::team).toList();
     }
 
-    @Deprecated
-    public List<TeamDefinition> teamDefinitions() {
+    public List<TeamDefinition> definitions() {
         return new ArrayList<>(this.definitions.values());
     }
 

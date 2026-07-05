@@ -30,8 +30,20 @@ public class TeamLoader {
     private static Team teamOf(String[] team) {
         String id = team[0];
         String name = team[1];
+        String country = team[2];
         String lineupId = team[3];
-        TeamDefinition definition = new TeamDefinition.Simple(id, name, team[2]);
-        return new Pes6Team(definition).lineup(lineupId);
+        int elo = (int) eloOf(team);
+        int fans = Integer.parseInt(team[5]);
+        int stadiumCapacity = Integer.parseInt(team[6]);
+
+        TeamDefinition definition = new TeamDefinition.Simple(id, name, country);
+        Pes6Team pes6Team = new Pes6Team(definition);
+        pes6Team.init(elo, elo, fans, stadiumCapacity);
+        pes6Team.lineup(lineupId);  //TODO PONER EN EL INIT
+        return pes6Team;
+    }
+
+    private static double eloOf(String[] line) {
+        return Double.parseDouble(line[4]);
     }
 }

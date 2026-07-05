@@ -49,9 +49,9 @@ public class ProtrixBox extends AbstractBox {
 
     public void afterStart() {
         this.initialCaches = application.entityStore().players().stream().collect(Collectors.toMap(p -> p.definition().id(), p -> p.cache().absoluteCache()));
-		//application.setDate(Instant.parse("2025-08-02T00:00:00Z"));
-        application.setDate(Instant.parse("2025-07-01T00:00:00Z"));
         //application.setDate(Instant.parse("2025-03-01T00:00:00Z"));
+        //application.setDate(Instant.parse("2025-07-01T00:00:00Z"));
+        application.setDate(Instant.parse("2029-08-02T00:00:00Z"));
 
         System.out.println("Finish");
 

@@ -20,6 +20,7 @@ public class NewSeasonCommand {
         initSeason();
         initEvents();
         createPlayers();
+        adjustTeamFans();
     }
 
     private void retirePlayers() {
@@ -43,13 +44,19 @@ public class NewSeasonCommand {
         for (Team team : application.teamManager().teams()) {
             for (int i = 0; i < 5; i++) {
                 Player player = application.models().playerGenerator().generate(application.getDate());
-                team.setPlayer(player, ContractHelper.youngContractOf(player, application.tableStore().eloPosition(team.definition().id())));
+                team.setPlayer(player, ContractHelper.youngContractOf(player, application.eloManager().percentElo(team.definition().id())));
                 application.playerManager().add(player);
                 count++;
             }
         }
         for (int i = count; i < 275; i++) {
             application.playerManager().add(application.models().playerGenerator().generate(application.getDate()));
+        }
+    }
+
+    private void adjustTeamFans() {
+        for (Team team : application.teamManager().teams()) {
+            team.fans().newSeason(team.elo().quantity());
         }
     }
 }

@@ -22,6 +22,7 @@ public class TeamTemplate extends AbstractTeamTemplate<ProtrixBox> {
             openView(selectedOption);
         });
         Competition competition = box().application().competitionManager().get("ESP-1");    //TODO
+        teamInfoBlock.onShow(s -> teamInfoStamp.setup(competition, box().application().game().seasonNumber(), team).refresh());
         teamMatchesBlock.onShow(s -> teamMatchesStamp.setup(competition, box().application().game().seasonNumber(), team).refresh());
         teamSquadBlock.onShow(s -> teamSquadStamp.setup(box().application().game().seasonNumber(), team).refresh());
         teamClassificationBlock.onShow(s -> teamClassificationStamp.setup(competition, box().application().game().seasonNumber(), team).refresh());
@@ -45,11 +46,13 @@ public class TeamTemplate extends AbstractTeamTemplate<ProtrixBox> {
 
     private void openView(String selectedOption) {
         tabs.selection(selectedOption);
+        teamInfoBlock.hide();
         teamMatchesBlock.hide();
         teamSquadBlock.hide();
         teamClassificationBlock.hide();
         teamOutBlock.hide();
-        if (selectedOption.equals("matchesOpt")) teamMatchesBlock.show();
+        if (selectedOption.equals("infoOpt")) teamInfoBlock.show();
+        else if (selectedOption.equals("matchesOpt")) teamMatchesBlock.show();
         else if (selectedOption.equals("squadOpt")) teamSquadBlock.show();
         else if (selectedOption.equals("classificationOpt")) teamClassificationBlock.show();
         else if (selectedOption.equals("outOpt")) teamOutBlock.show();

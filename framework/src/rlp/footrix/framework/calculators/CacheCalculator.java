@@ -3,9 +3,7 @@ package rlp.footrix.framework.calculators;
 import rlp.footrix.framework.Application;
 import rlp.footrix.framework.types.entities.match.Match;
 import rlp.footrix.framework.types.entities.player.Player;
-import rlp.footrix.framework.types.entities.team.Team;
 import rlp.footrix.framework.types.entities.team_player.PlayerContract;
-import rlp.footrix.framework.types.tables.TeamElo;
 
 public class CacheCalculator extends Calculator {
     private static final double ExceptionalAbsoluteCachePerSeason = -0.1;
@@ -34,7 +32,7 @@ public class CacheCalculator extends Calculator {
     public double deltaAbsoluteCache(Player player, Match match, double matchImportance) {
         if (player.isInjured()) return exceptionalDeltaAbsoluteCachePerMatch;
         if (player.hasSanction(match.definition().competition())) return exceptionalDeltaAbsoluteCachePerMatch;
-        double percentElo = percentElo(player.team());
+        double percentElo = application.eloManager().percentElo(player.team().definition().id());
         double percentTeamRole = percentElo * (player.contract().role().expectedPlayingTime() + 0.3);
         double percentPerformance = Math.max(0, Math.min(1, (0.5 * percentMinutes(player, match) + 0.5 * percentScore(player, match)) * matchImportance));
         double percentWin = (match.winner() == null ? 0.5 : (match.winner().equals(player.team().definition().id()) ? 1 : 0)) * (1 - (percentElo/2));
@@ -53,25 +51,9 @@ public class CacheCalculator extends Calculator {
         };
     }
 
-    private double percentElo(Team team) {
-        return elo(team) / maxElo();
-    }
-
     private double percentScore(Player player, Match match) {
         Match.PlayerStatistics statistics = match.playerStatistics().get(player.team().definition().id()).get(player.definition().id());
         return statistics != null ? fix(statistics.score()) : 0;
-    }
-
-    private double elo(Team team) {
-        TeamElo analysis = application.tableStore().teamElo(team.definition().id());
-        if (analysis == null) return 0.0;
-        return analysis.elo();
-    }
-
-    private double maxElo() {
-        TeamElo analysis = application.tableStore().maxElo();
-        if (analysis == null) return 1.0;
-        return analysis.elo();
     }
 
     private double fix(Double score) {

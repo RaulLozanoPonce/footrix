@@ -46,7 +46,7 @@ public class PlayersDatasource extends PageDatasource<Pes6Player> {
     @Override
     public List<Group> groups(String key) {
         if (key.equalsIgnoreCase(TeamGroup))
-            return box.application().teamManager().teamDefinitions().stream().map(t -> new Group().label(t.name()).name(t.name())).toList();
+            return box.application().teamManager().definitions().stream().map(t -> new Group().label(t.name()).name(t.name())).toList();
         if (key.equalsIgnoreCase(PositionGroup))
             return Positions.values().stream().map(p -> new Group().name(p.id()).label(p.id())).toList();
         if (key.equalsIgnoreCase(RoleGroup))

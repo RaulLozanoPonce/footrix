@@ -69,6 +69,7 @@ public class MatchInfoTemplate extends AbstractMatchInfoTemplate<ProtrixBox> {
         if (event.type() == MatchEvent.Type.Fail && event.metaInfo().get("type").getAsString().equals("penalty")) return Resources.penaltyFailIconPath();
         if (event.type() == MatchEvent.Type.Goal && event.metaInfo().get("type").getAsString().equals("penalty")) return Resources.penaltyGoalIconPath();
         if (event.type() == MatchEvent.Type.Goal && event.metaInfo().get("type").getAsString().equals("free-kick")) return Resources.freeKickGoalIconPath();
+        if (event.type() == MatchEvent.Type.Goal && event.metaInfo().get("type").getAsString().equals("own")) return Resources.ownGoalIconPath();
         if (event.type() == MatchEvent.Type.Goal) return Resources.goalIconPath();
         if (event.type() == MatchEvent.Type.Substitution) return Resources.substitutionIconPath();
         if (event.type() == MatchEvent.Type.YellowCard) return Resources.yellowCardIconPath();

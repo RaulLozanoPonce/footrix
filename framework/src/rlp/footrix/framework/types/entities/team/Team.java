@@ -2,6 +2,9 @@ package rlp.footrix.framework.types.entities.team;
 
 import rlp.footrix.framework.types.entities.definitions.TeamDefinition;
 import rlp.footrix.framework.types.entities.player.Player;
+import rlp.footrix.framework.types.entities.team.facets.EloFacet;
+import rlp.footrix.framework.types.entities.team.facets.FanFacet;
+import rlp.footrix.framework.types.entities.team.facets.StadiumFacet;
 import rlp.footrix.framework.types.entities.team_player.PlayerContract;
 
 import java.util.HashMap;
@@ -15,8 +18,19 @@ public abstract class Team {
     private String lineup;
     private Set<String> competitions = new HashSet<>();
 
+    private final EloFacet elo = new EloFacet(this);
+    private final FanFacet fans = new FanFacet(this);
+    private final StadiumFacet stadium = new StadiumFacet(this);
+
     public Team(TeamDefinition definition) {
         this.definition = definition;
+    }
+
+    public Team init(int eloQuantity, double eloPoints, int nFans, int stadiumCapacity) {
+        elo.init(eloQuantity);
+        stadium.init(stadiumCapacity);
+        fans.init(nFans, eloPoints);
+        return this;
     }
 
     public TeamDefinition definition() {
@@ -59,7 +73,15 @@ public abstract class Team {
         competitions = new HashSet<>();
     }
 
-    public abstract double attack();
-    public abstract double midfield();
-    public abstract double defense();
+    public EloFacet elo() {
+        return elo;
+    }
+
+    public FanFacet fans() {
+        return fans;
+    }
+
+    public StadiumFacet stadium() {
+        return stadium;
+    }
 }

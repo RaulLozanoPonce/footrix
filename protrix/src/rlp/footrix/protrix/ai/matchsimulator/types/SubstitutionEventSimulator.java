@@ -50,14 +50,27 @@ public class SubstitutionEventSimulator extends EventSimulator {
     }
 
     private Set<String> neededSubstitutions(String team) {
+        int remainingSubstitutions = state.lineup(team).remainingSubstitutions(5);
+        if (remainingSubstitutions <= 0) return new HashSet<>();
+
         Set<String> expelled = state.minuteEvents().stream().filter(e -> e.type() == Expulsion && e.team().equals(team)).map(MatchEvent::who).collect(Collectors.toSet());
-        return state.minuteEvents().stream()
+        Player goalkeeper = state.goalkeeper(team);
+
+        Set<String> neededSubstitutions = new HashSet<>();
+        if (goalkeeper.mainPosition() != Positions.PT && !expelled.contains(goalkeeper.definition().id())) {
+            neededSubstitutions.add(goalkeeper.definition().id());
+        }
+        Set<String> injureds = state.minuteEvents().stream()
                 .filter(e -> e.type() == Injury)
                 .filter(e -> e.team().equals(team))
                 .map(MatchEvent::who)
                 .filter(p -> !expelled.contains(p))
-                .limit(state.lineup(team).remainingSubstitutions(5))
                 .collect(Collectors.toSet());
+        for (String injured : injureds) {
+            if (neededSubstitutions.size() == remainingSubstitutions) break;
+            neededSubstitutions.add(injured);
+        }
+        return neededSubstitutions;
     }
 
     private Set<String> tacticPlayersToSubstitute(String team, int minute) {

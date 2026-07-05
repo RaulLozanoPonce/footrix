@@ -62,7 +62,7 @@ public class MatchState {
                     this.goals.put(event.who(), this.goals.getOrDefault(event.who(), 0) + 1);
                     this.assists.put(event.secondaryWho(), this.assists.getOrDefault(event.secondaryWho(), 0) + 1);
                 }
-                this.receivedGoals.put(goalKeeperOf(otherTeam(event.team())), this.receivedGoals.getOrDefault(event.secondaryWho(), 0) + 1);
+                this.receivedGoals.put(goalkeeper(otherTeam(event.team())).definition().id(), this.receivedGoals.getOrDefault(event.secondaryWho(), 0) + 1);
             } else if (event.type() == YellowCard) {
                 this.yellowCards.put(event.who(), this.yellowCards.getOrDefault(event.who(), 0) + 1);
             } else if (event.type() == RedCard) {
@@ -70,8 +70,8 @@ public class MatchState {
             }
         }
 
-        this.receivedGoals.putIfAbsent(goalKeeperOf(local), 0);
-        this.receivedGoals.putIfAbsent(goalKeeperOf(visitant), 0);
+        this.receivedGoals.putIfAbsent(goalkeeper(local).definition().id(), 0);
+        this.receivedGoals.putIfAbsent(goalkeeper(visitant).definition().id(), 0);
     }
 
     public void addMinute(String player) {
@@ -128,8 +128,8 @@ public class MatchState {
             Player newGk = lineup.fieldPlayers().stream()
                     .filter(p -> !p.definition().id().equals(out.definition().id()))
                     .reduce((p1, p2) -> {
-                        if (p1.skills().overall(position) > p2.skills().overall(position)) return p1;
-                        return p2;
+                        if (p1.skills().overall(position) > p2.skills().overall(position)) return p2;
+                        return p1;
                     }).orElse(null);
             lineup.positions().put(newGk, location);
         }
@@ -197,8 +197,11 @@ public class MatchState {
         return local;
     }
 
-    private String goalKeeperOf(String team) {
-        return lineup(team).fieldPlayers().stream().map(p -> p.definition().id()).filter(p -> positionOf(team, p) == Positions.PT).findFirst().orElse(null);
+    public Player goalkeeper(String team) {
+        for (Player player : lineup(team).fieldPlayers()) {
+            if (lineup(team).positionOf(player.definition().id()) == Positions.PT) return player;
+        }
+        return null;
     }
 
     public List<MatchEvent> events() {

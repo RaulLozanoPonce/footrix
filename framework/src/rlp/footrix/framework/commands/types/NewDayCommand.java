@@ -41,6 +41,7 @@ public class NewDayCommand extends Command {
     private void makeTimePassTo(Team team) {
         //TODO ESTOS SON ENTRENAMIENTOS BÁSICOS. SE DEBERÍA GENERAR CON LO QUE EL MANAGER PONGA EN SU EQUIPO
         //TODO VARIAR LOS ENTRENAMIENTOS
+        team.fans().restoreDailyFans(team.elo().quantity());
         if (weekDayOf(newDate) != 7) return;
         application.taskHub().add(nextInstant(newDate, Day), new TrainEvent().teamId(team.definition().id()).type(TrainEvent.TrainType.Technique).minutes(120));
         application.taskHub().add(nextInstant(newDate, Day, 2), new TrainEvent().teamId(team.definition().id()).type(TrainEvent.TrainType.Technique).minutes(120));

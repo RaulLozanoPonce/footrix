@@ -68,7 +68,7 @@ public class PsychophysicsCalculator extends Calculator {
     }
 
     public double deltaCollectivePerformanceMatchMood(Team team, int deltaElo) {
-        int streak = streak(team);
+        int streak = application.streakManager().streak(team);
         double eloFactor = deltaElo / 15.0;
         double streakFactor = (streak + 5) / 10.0;
         return 0.2 * eloFactor * (deltaElo <= 0 ? (1 - streakFactor) : streakFactor);
@@ -99,12 +99,5 @@ public class PsychophysicsCalculator extends Calculator {
         if (matchRole == Match.MatchRole.Starter) return -1.665 * contractRole.expectedPlayingTime() + 2.1635;
         else if (matchRole == Match.MatchRole.Substitute) return -0.835 * contractRole.expectedPlayingTime() + 1.0815;
         return -0.835 * contractRole.expectedPlayingTime() + 0.5815;
-    }
-
-    private int streak(Team team) {
-        return application.entityStore().matches(team).stream()
-                .sorted((r1, r2) -> r2.date().compareTo(r1.date()))
-                .limit(5)
-                .mapToInt(m -> m.streak(team.definition().id())).sum();
     }
 }

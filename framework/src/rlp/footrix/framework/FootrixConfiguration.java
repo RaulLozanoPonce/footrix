@@ -2,15 +2,10 @@ package rlp.footrix.framework;
 
 import rlp.footrix.framework.ai.ModelCloudAccessor;
 import rlp.footrix.framework.configuration.DataBase;
-import rlp.footrix.framework.events.Event;
 import rlp.footrix.framework.stores.EntityStore;
-import rlp.footrix.framework.stores.RecordStore;
-import rlp.footrix.framework.stores.TableStore;
 import rlp.footrix.framework.types.entities.player.Player;
 
 import java.time.Instant;
-import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 
 public interface FootrixConfiguration {
@@ -21,8 +16,6 @@ public interface FootrixConfiguration {
     Function<Player, Double> energyRecoveryProvider();  //TODO POR QUE?
     ModelCloudAccessor models(Application application);
     EntityStore entityStore();
-    RecordStore recordStore();
-    TableStore tableStore();
     double averageMatchPlayer();
 
     public interface SimpleFootrixConfiguration extends FootrixConfiguration {
